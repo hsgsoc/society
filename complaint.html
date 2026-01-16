@@ -138,32 +138,38 @@
                 <p id="txt-form-sub">We take your concerns seriously. Please fill in the details below.</p>
             </div>
 
-            <form id="complaintForm" onsubmit="submitComplaint(event)">
+            <form id="complaintForm" action="https://formsubmit.co/YOUR_EMAIL@GMAIL.COM" method="POST" onsubmit="submitComplaint(event)">
                 
+                <input type="hidden" name="_captcha" value="false">
+                
+                <input type="hidden" name="_next" value="https://yourusername.github.io/complaint.html">
+                
+                <input type="hidden" name="_subject" value="New Society Complaint Registered!">
+
                 <div class="form-grid">
                     <div class="form-group">
                         <label id="lbl-name">Complainant Name</label>
-                        <input type="text" id="inp-name" class="form-input" placeholder="Your Full Name" required>
+                        <input type="text" name="Name" id="inp-name" class="form-input" placeholder="Your Full Name" required>
                     </div>
                     
                     <div class="form-group">
                         <label id="lbl-wing">Wing & Flat No</label>
-                        <input type="text" id="inp-flat" class="form-input" placeholder="e.g. A-101" required>
+                        <input type="text" name="Flat_No" id="inp-flat" class="form-input" placeholder="e.g. A-101" required>
                     </div>
 
                     <div class="form-group">
                         <label id="lbl-phone">Phone Number</label>
-                        <input type="tel" id="inp-phone" class="form-input" placeholder="10-digit Mobile No" required pattern="[0-9]{10}">
+                        <input type="tel" name="Phone" id="inp-phone" class="form-input" placeholder="10-digit Mobile No" required>
                     </div>
 
                     <div class="form-group">
                         <label id="lbl-email">Email ID</label>
-                        <input type="email" id="inp-email" class="form-input" placeholder="name@example.com" required>
+                        <input type="email" name="Email" id="inp-email" class="form-input" placeholder="name@example.com" required>
                     </div>
 
                     <div class="form-group full-width">
                         <label id="lbl-type">Type of Complaint</label>
-                        <select id="inp-type" class="form-select" required>
+                        <select name="Complaint_Type" id="inp-type" class="form-select" required>
                             <option value="" disabled selected>-- Select Category --</option>
                             <option value="Water">Water Supply / Leakage</option>
                             <option value="Electricity">Electricity / Power Failure</option>
@@ -176,7 +182,7 @@
 
                     <div class="form-group full-width">
                         <label id="lbl-desc">Complaint Description</label>
-                        <textarea id="inp-desc" class="form-input" rows="5" placeholder="Please describe the issue in detail..." required></textarea>
+                        <textarea name="Message" id="inp-desc" class="form-input" rows="5" placeholder="Please describe the issue in detail..." required></textarea>
                     </div>
                 </div>
 
@@ -205,34 +211,52 @@
         </div>
     </footer>
 
-    <script>
+   <script>
         function submitComplaint(event) {
-            event.preventDefault(); // Stop page reload
+            event.preventDefault(); // Stop the standard redirect
 
-            // 1. Get Values
-            const name = document.getElementById('inp-name').value;
-            const phone = document.getElementById('inp-phone').value;
-            const email = document.getElementById('inp-email').value;
-            const type = document.getElementById('inp-type').value;
-
-            // 2. Simulate Sending Email/SMS (Console Log for now)
-            console.log(`Sending Complaint to Secretary Email...`);
-            console.log(`From: ${name} (${phone})`);
-            console.log(`Type: ${type}`);
+            const submitBtn = document.getElementById('btn-submit');
+            const form = document.getElementById('complaintForm');
             
-            // 3. Generate Random Ticket ID
+            // 1. Loading State
+            const originalText = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Sending...';
+            submitBtn.disabled = true;
+
+            // 2. Generate Random Ticket ID for display
             const ticketID = "SR-" + Math.floor(1000 + Math.random() * 9000);
-            document.getElementById('complaint-id').innerText = ticketID;
 
-            // 4. Show Confirmation, Hide Form
-            document.getElementById('form-card').style.display = 'none';
-            document.getElementById('confirmation-box').style.display = 'block';
-
-            // 5. Simulate Alert for "Sending..."
-            alert(`System: Sending confirmation SMS to ${phone} and Email to ${email}... Sent!`);
+            // 3. Send Data using Fetch (AJAX)
+            fetch(form.action, {
+                method: "POST",
+                body: new FormData(form),
+                headers: { 
+                    'Accept': 'application/json' 
+                }
+            })
+            .then(response => {
+                if (response.ok) {
+                    // SUCCESS
+                    document.getElementById('complaint-id').innerText = ticketID;
+                    document.getElementById('form-card').style.display = 'none';
+                    document.getElementById('confirmation-box').style.display = 'block';
+                    form.reset();
+                } else {
+                    // SERVER ERROR
+                    alert("Oops! There was a problem submitting your form.");
+                    submitBtn.innerHTML = originalText;
+                    submitBtn.disabled = false;
+                }
+            })
+            .catch(error => {
+                // NETWORK ERROR
+                alert("Network error. Please check your connection.");
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+            });
         }
 
-        // --- TRANSLATIONS ---
+        // --- TRANSLATIONS (Keep as is) ---
         const compTranslations = {
             en: {
                 title: "SHREE SAMBHAJI RAJE HOUSING SOCIETY", sub: "Excellence in Community Living",
@@ -240,7 +264,7 @@
                 lblName: "Complainant Name", lblWing: "Wing & Flat No", lblPhone: "Phone Number", lblEmail: "Email ID",
                 lblType: "Type of Complaint", lblDesc: "Complaint Description", btnSubmit: "Submit Complaint",
                 successHead: "Complaint Registered Successfully!", 
-                successMsg2: "A confirmation SMS and Email has been sent to your registered contact details."
+                successMsg2: "A confirmation Email has been sent to your registered contact details."
             },
             mr: {
                 title: "श्री संभाजी राजे हाऊसिंग सोसायटी", sub: "सामुदायिक जीवनातील उत्कृष्टता",
@@ -248,7 +272,7 @@
                 lblName: "तक्रारदाराचे नाव", lblWing: "विंग आणि फ्लॅट क्र.", lblPhone: "मोबाईल नंबर", lblEmail: "ईमेल आयडी",
                 lblType: "तक्रारीचा प्रकार", lblDesc: "तक्रार वर्णन", btnSubmit: "तक्रार सबमिट करा",
                 successHead: "तक्रार यशस्वीरित्या नोंदवली गेली!", 
-                successMsg2: "तुमच्या नोंदणीकृत संपर्कावर पुष्टीकरण एसएमएस आणि ईमेल पाठवला गेला आहे."
+                successMsg2: "तुमच्या नोंदणीकृत संपर्कावर पुष्टीकरण ईमेल पाठवला गेला आहे."
             },
             hi: {
                 title: "श्री संभाजी राजे हाउसिंग सोसाइटी", sub: "सामुदायिक जीवन में उत्कृष्टता",
@@ -256,7 +280,7 @@
                 lblName: "शिकायतकर्ता का नाम", lblWing: "विंग और फ्लैट नंबर", lblPhone: "फोन नंबर", lblEmail: "ईमेल आईडी",
                 lblType: "शिकायत का प्रकार", lblDesc: "शिकायत विवरण", btnSubmit: "शिकायत जमा करें",
                 successHead: "शिकायत सफलतापूर्वक दर्ज की गई!", 
-                successMsg2: "आपके पंजीकृत संपर्क विवरण पर पुष्टि एसएमएस और ईमेल भेजा गया है।"
+                successMsg2: "आपके पंजीकृत संपर्क विवरण पर पुष्टि ईमेल भेजा गया है।"
             }
         };
 
