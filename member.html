@@ -277,9 +277,25 @@
         </div>
 
         <div style="text-align:center; margin-top:40px;">
-            <a href="index.html" style="color:var(--secondary); text-decoration:none; font-weight:bold; padding: 10px 20px; border: 1px solid #ccc; border-radius: 30px;">
-                <i class="fa-solid fa-arrow-left"></i> Logout & Return Home
-            </a>
+            <div style="text-align:center; margin-top:40px; padding-bottom: 20px;">
+            <button onclick="logout()" style="
+                background: white; 
+                color: var(--secondary); 
+                border: 2px solid #cbd5e1; 
+                padding: 12px 30px; 
+                border-radius: 30px; 
+                cursor: pointer; 
+                font-size: 1rem; 
+                font-weight: bold; 
+                transition: 0.3s;
+                display: inline-flex;
+                align-items: center;
+                gap: 10px;
+            ">
+                <i class="fa-solid fa-power-off" style="color: red;"></i> 
+                <span id="btn-logout">Logout & Return Home</span>
+            </button>
+        </div>
         </div>
 
     </div>
@@ -395,7 +411,17 @@
                 alert("Please fill in Title and Description.");
             }
         }
-
+        // --- 5. LOGOUT FUNCTION ---
+        function logout() {
+            // 1. Remove the "Saved" login key
+            sessionStorage.removeItem('memberAuth');
+            
+            // 2. Alert the user (Optional, looks nice)
+            alert("You have been logged out securely.");
+            
+            // 3. Redirect to Index Page
+            window.location.href = 'index.html';
+        }
         // --- 3. TRANSLATION LOGIC ---
         const memTranslations = {
             en: {
