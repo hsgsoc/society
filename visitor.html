@@ -3,138 +3,135 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Visitor Reception - Shree Sambhaji Raje HSG SOC</title>
+    <title>Distinguished Guests - Shree Sambhaji Raje HSG SOC</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Tiro+Devanagari+Marathi&display=swap" rel="stylesheet">
+    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-    <link rel="stylesheet" href="assest/style.css">
+    <link rel="stylesheet" href="style.css">
 
     <style>
-        /* --- HERO SECTION --- */
-        .visitor-hero {
-            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1577054947476-80db69c65609?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80');
-            background-size: cover;
-            background-position: center;
-            height: 350px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
+        /* --- VISITOR PAGE SPECIFIC STYLES --- */
+        .vip-hero {
             text-align: center;
-            color: white;
-            position: relative;
-        }
-
-        .visitor-hero h1 { font-size: 3.5rem; color: #fbbf24; text-shadow: 0 4px 10px rgba(0,0,0,0.8); margin-bottom: 10px; }
-        .visitor-hero p { font-size: 1.5rem; font-style: italic; letter-spacing: 2px; }
-
-        /* --- VIP GALLERY (Politicians/Guests) --- */
-        .vip-section {
             padding: 60px 20px;
-            background: #fdfbf7;
-            text-align: center;
+            background: linear-gradient(rgba(255,255,255,0.9), rgba(255,255,255,0.9)), url('https://www.transparenttextures.com/patterns/diamond-upholstery.png');
+            border-bottom: 2px solid var(--primary);
         }
-        .vip-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 30px;
-            max-width: 1100px;
-            margin: 40px auto 0;
+        
+        .vip-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px 20px;
         }
+
+        /* VIP CARD DESIGN */
         .vip-card {
+            display: flex;
+            flex-direction: row; /* Side by side on desktop */
             background: white;
-            border-radius: 15px;
+            border-radius: 20px;
             overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.08);
+            margin-bottom: 40px;
             border: 1px solid #e2e8f0;
             transition: transform 0.3s;
         }
-        .vip-card:hover { transform: translateY(-10px); }
         
-        .vip-img-box {
-            height: 250px;
-            width: 100%;
-            overflow: hidden;
-            border-bottom: 4px solid var(--primary);
+        .vip-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 50px rgba(194, 65, 12, 0.15);
+            border-color: var(--primary);
         }
-        .vip-img-box img { width: 100%; height: 100%; object-fit: cover; }
+
+        .vip-img-box {
+            flex: 1;
+            min-height: 300px;
+            position: relative;
+            overflow: hidden;
+        }
         
-        .vip-info { padding: 20px; }
-        .vip-info h3 { color: var(--primary); margin-bottom: 5px; font-size: 1.4rem; }
-        .vip-info p { color: #64748b; font-size: 0.9rem; margin-bottom: 10px; }
-        .visit-date {
+        .vip-img-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+        .vip-card:hover .vip-img-box img { transform: scale(1.05); }
+
+        .vip-content {
+            flex: 1.5;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .vip-date {
             display: inline-block;
-            background: #f1f5f9;
+            background: var(--bg-light);
+            color: var(--primary);
             padding: 5px 15px;
             border-radius: 20px;
-            font-size: 0.8rem;
-            color: #475569;
-            border: 1px solid #cbd5e1;
-        }
-
-        /* --- GUESTBOOK FORM --- */
-        .guestbook-section {
-            padding: 60px 20px;
-            background: white;
-        }
-        .form-wrapper {
-            max-width: 600px;
-            margin: 0 auto;
-            background: #fff;
-            padding: 40px;
-            border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.15);
-            border: 2px solid var(--primary);
-            position: relative;
-        }
-        /* Ribbon Effect */
-        .form-wrapper::before {
-            content: '';
-            position: absolute;
-            top: -10px; left: 50%; transform: translateX(-50%);
-            width: 100px; height: 10px;
-            background: var(--primary);
-            border-radius: 10px;
-        }
-
-        .input-group { margin-bottom: 20px; text-align: left; }
-        .input-group label { display: block; margin-bottom: 8px; color: var(--secondary); font-weight: bold; }
-        .input-group input, .input-group select, .input-group textarea {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid #cbd5e1;
-            border-radius: 8px;
-            font-size: 1rem;
-            outline: none;
-        }
-        .input-group input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(194, 65, 12, 0.1); }
-
-        .submit-btn {
-            background: var(--primary);
-            color: white;
-            padding: 15px 40px;
-            border: none;
-            border-radius: 30px;
-            font-size: 1.1rem;
+            font-size: 0.9rem;
             font-weight: bold;
-            cursor: pointer;
-            width: 100%;
-            transition: 0.3s;
+            margin-bottom: 15px;
+            align-self: flex-start;
+        }
+
+        .vip-name {
+            font-size: 2rem;
+            color: var(--secondary);
+            margin-bottom: 5px;
+            font-family: var(--font-eng);
+        }
+
+        .vip-title {
+            font-size: 1.1rem;
+            color: #ea580c; /* Orange */
+            font-style: italic;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        .vip-desc {
+            font-size: 1.05rem;
+            color: #64748b;
+            line-height: 1.8;
+            border-left: 4px solid #cbd5e1;
+            padding-left: 20px;
+        }
+
+        /* DECORATIVE BADGE */
+        .guest-badge {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(0,0,0,0.7);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 5px;
+            font-size: 0.8rem;
             text-transform: uppercase;
             letter-spacing: 1px;
+            backdrop-filter: blur(5px);
         }
-        .submit-btn:hover { background: #9a3412; box-shadow: 0 10px 20px rgba(194, 65, 12, 0.3); }
+
+        /* MOBILE RESPONSIVE */
+        @media (max-width: 768px) {
+            .vip-card { flex-direction: column; }
+            .vip-img-box { height: 250px; }
+            .vip-content { padding: 25px; }
+            .vip-name { font-size: 1.6rem; }
+        }
 
         /* DARK MODE */
-        body.dark-mode .vip-section { background: #0f172a; }
         body.dark-mode .vip-card { background: #1e293b; border-color: #334155; }
-        body.dark-mode .vip-info h3 { color: #fdba74; }
-        body.dark-mode .vip-info p, body.dark-mode .visit-date { color: #cbd5e1; background: #334155; }
-        body.dark-mode .guestbook-section { background: #0f172a; }
-        body.dark-mode .form-wrapper { background: #1e293b; border-color: #fdba74; }
-        body.dark-mode .input-group label { color: #cbd5e1; }
-        body.dark-mode .input-group input, body.dark-mode select, body.dark-mode textarea { background: #334155; color: white; border-color: #475569; }
+        body.dark-mode .vip-hero { background: #0f172a; border-bottom-color: #334155; }
+        body.dark-mode .vip-name { color: white; }
+        body.dark-mode .vip-desc { color: #cbd5e1; border-left-color: #475569; }
+        body.dark-mode .vip-date { background: #334155; color: #fbbf24; }
     </style>
 </head>
 <body>
@@ -165,148 +162,180 @@
         </div>
     </header>
 
-    <div class="visitor-hero">
-        <a href="index.html" style="position: absolute; top: 20px; left: 20px; color: white; background: rgba(0,0,0,0.5); padding: 10px 20px; border-radius: 30px; text-decoration: none; backdrop-filter: blur(5px);">
-            <i class="fa-solid fa-arrow-left"></i> Home
-        </a>
-        <h1 id="txt-hero-title">Atithi Devo Bhava</h1>
-        <p id="txt-hero-sub">Honoring Our Esteemed Guests</p>
+    <div class="vip-hero">
+        <h2 id="txt-hero-title" style="font-size: 2.5rem; color: var(--primary); margin-bottom: 10px;">Distinguished Guests</h2>
+        <p id="txt-hero-sub" style="font-size: 1.2rem; color: var(--secondary);">Honoring the dignitaries who graced our society</p>
     </div>
 
-    <section class="vip-section">
-        <h2 id="txt-vip-head" style="font-size: 2.5rem; color: var(--primary); margin-bottom: 10px;">Distinguished Guests</h2>
-        <p id="txt-vip-sub" style="color: #64748b;">A glipmse of honorable personalities who graced our society.</p>
-        
-        <div class="vip-grid">
-            <div class="vip-card">
-                <div class="vip-img-box">
-                    <img src="https://images.unsplash.com/photo-1557862921-37829c790f19?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60" alt="Chief Guest">
-                </div>
-                <div class="vip-info">
-                    <h3>Hon. Shri. Amit Patil</h3>
-                    <p>MLA (Member of Legislative Assembly)</p>
-                    <span class="visit-date"><i class="fa-solid fa-calendar-check"></i> 15th Aug 2024</span>
-                </div>
-            </div>
+    <main class="vip-container">
 
-            <div class="vip-card">
-                <div class="vip-img-box">
-                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60" alt="Corporator">
-                </div>
-                <div class="vip-info">
-                    <h3>Hon. Mrs. Sunita Deshmukh</h3>
-                    <p>PCMC Corporator (Nagar-Sevak)</p>
-                    <span class="visit-date"><i class="fa-solid fa-calendar-check"></i> 26th Jan 2025</span>
-                </div>
+        <div class="vip-card">
+            <div class="vip-img-box">
+                <span class="guest-badge"><i class="fa-solid fa-star"></i> Chief Guest</span>
+                <img src="https://images.unsplash.com/photo-1557862921-37829c790f19?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Guest 1">
             </div>
-
-            <div class="vip-card">
-                <div class="vip-img-box">
-                    <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60" alt="Commissioner">
-                </div>
-                <div class="vip-info">
-                    <h3>Dr. R.K. Sharma</h3>
-                    <p>Municipal Commissioner</p>
-                    <span class="visit-date"><i class="fa-solid fa-calendar-check"></i> 10th Oct 2024</span>
-                </div>
+            <div class="vip-content">
+                <span class="vip-date"><i class="fa-regular fa-calendar"></i> <span id="date-1">26 Jan 2025</span></span>
+                <h3 class="vip-name" id="name-1">Hon. Shri. Mahesh Landge</h3>
+                <p class="vip-title" id="title-1">MLA (Member of Legislative Assembly)</p>
+                <p class="vip-desc" id="desc-1">
+                    Visited our society on the occasion of Republic Day Flag Hoisting ceremony. He inaugurated the new Garden Gym facility and appreciated the society's cleanliness initiatives under the Swachh Bharat mission.
+                </p>
             </div>
         </div>
-    </section>
 
-    <section class="guestbook-section">
-        <div class="form-wrapper">
-            <h2 id="txt-form-head" style="text-align: center; color: var(--primary); margin-bottom: 30px; font-size: 2rem;">Digital Guest Entry</h2>
-            
-            <div class="input-group">
-                <label id="lbl-name">Full Name</label>
-                <input type="text" placeholder="Enter Name of Guest / Official">
+        <div class="vip-card">
+            <div class="vip-img-box">
+                <span class="guest-badge"><i class="fa-solid fa-user-tie"></i> Special Visit</span>
+                <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Guest 2">
             </div>
-
-            <div class="input-group">
-                <label id="lbl-type">Visitor Category</label>
-                <select>
-                    <option>Chief Guest (VIP)</option>
-                    <option>Government Official</option>
-                    <option>Relative / Friend</option>
-                    <option>Vendor / Service</option>
-                </select>
+            <div class="vip-content">
+                <span class="vip-date"><i class="fa-regular fa-calendar"></i> <span id="date-2">15 Aug 2024</span></span>
+                <h3 class="vip-name" id="name-2">Mrs. Smita Patil</h3>
+                <p class="vip-title" id="title-2">Corporator, PCMC Ward 12</p>
+                <p class="vip-desc" id="desc-2">
+                    Graced the Independence Day celebration. She interacted with the residents regarding water supply improvements in Talwade and planted a sapling during the Tree Plantation Drive organized by the committee.
+                </p>
             </div>
-
-            <div class="input-group">
-                <label id="lbl-purpose">Purpose of Visit</label>
-                <textarea rows="3" placeholder="e.g. Inauguration, Meeting, Inspection"></textarea>
-            </div>
-
-            <button class="submit-btn" onclick="registerVisitor()" id="btn-submit">Register Entry</button>
         </div>
-    </section>
 
-       <footer>
-        <div class="text"> Contact: shrisambhajiraje.hsgsoc.2017@gmail.com</div>
-        <div class="text"> PCMC: egov@pcmcindia.gov.in</div>
-        <div class="footer-links">
-            <a href="https://www.pcmcindia.gov.in" target="_blank" class="f-link"><i class="fa-solid fa-building"></i> PCMC</a>
-            <a href="https://www.mahadiscom.in" target="_blank" class="f-link"><i class="fa-solid fa-bolt"></i> Mahavitran</a>
-            <a href="#" class="f-link"><i class="fa-solid fa-hand-holding-dollar"></i> Tax</a>
-            <a href="#" class="f-link"><i class="fa-solid fa-faucet-drip"></i> Water</a>
-            <a href="https://www.india.gov.in" target="_blank" class="f-link"><i class="fa-solid fa-flag"></i> India Gov</a>
+        <div class="vip-card">
+            <div class="vip-img-box">
+                <span class="guest-badge"><i class="fa-solid fa-om"></i> Religious Visit</span>
+                <img src="https://images.unsplash.com/photo-1606293926075-69a00dbfde81?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Guest 3">
+            </div>
+            <div class="vip-content">
+                <span class="vip-date"><i class="fa-regular fa-calendar"></i> <span id="date-3">19 Feb 2024</span></span>
+                <h3 class="vip-name" id="name-3">Shiv Jayanti Utsav</h3>
+                <p class="vip-title" id="title-3">Grand Celebration</p>
+                <p class="vip-desc" id="desc-3">
+                    A grand procession was held to honor Chhatrapati Shivaji Maharaj. The event was attended by local leaders and social workers who praised the unity and cultural spirit of the Shree Sambhaji Raje Housing Society members.
+                </p>
+            </div>
         </div>
+
+        <div style="text-align: center; margin-top: 50px;">
+            <a href="index.html" style="
+                display: inline-block;
+                text-decoration: none;
+                background: white;
+                color: var(--primary);
+                border: 2px solid var(--primary);
+                padding: 12px 30px;
+                border-radius: 30px;
+                font-weight: bold;
+                transition: 0.3s;
+            ">
+                <i class="fa-solid fa-arrow-left"></i> <span id="btn-back">Back to Home</span>
+            </a>
+        </div>
+
+    </main>
+
+    <footer>
         <div class="copyright">
-            &copy; 2026 Shree Sambaji Raje Housing Society
+            &copy; 2026 Shree Sambhaji Raje Housing Society | Dignitaries Page
         </div>
     </footer>
-   
 
     <script>
-        function registerVisitor() {
-            alert("Visitor Entry Registered Successfully! \nThank you for visiting Shree Sambhaji Raje HSG SOC.");
-            // In a real app, this would send data to a server.
-        }
-
-        // --- TRANSLATIONS ---
-        const vTranslations = {
+        // --- VISITOR PAGE TRANSLATIONS ---
+        const vipTranslations = {
             en: {
-                title: "SHREE SAMBHAJI RAJE HOUSING SOCIETY", sub: "Excellence in Community Living",
-                heroTitle: "Atithi Devo Bhava", heroSub: "Honoring Our Esteemed Guests",
-                vipHead: "Distinguished Guests", vipSub: "A glimpse of honorable personalities who graced our society.",
-                formHead: "Digital Guest Entry",
-                lblName: "Full Name", lblType: "Visitor Category", lblPurpose: "Purpose of Visit",
-                btnSubmit: "Register Entry"
+                title: "SHREE SAMBHAJI RAJE HOUSING SOCIETY",
+                sub: "Excellence in Community Living",
+                heroTitle: "Distinguished Guests",
+                heroSub: "Honoring the dignitaries who graced our society",
+                btnBack: "Back to Home",
+                
+                // Guest 1
+                name1: "Hon. Shri. Mahesh Landge",
+                title1: "MLA (Member of Legislative Assembly)",
+                desc1: "Visited our society on the occasion of Republic Day Flag Hoisting ceremony. He inaugurated the new Garden Gym facility and appreciated the society's cleanliness initiatives under the Swachh Bharat mission.",
+                
+                // Guest 2
+                name2: "Mrs. Smita Patil",
+                title2: "Corporator, PCMC Ward 12",
+                desc2: "Graced the Independence Day celebration. She interacted with the residents regarding water supply improvements in Talwade and planted a sapling during the Tree Plantation Drive organized by the committee.",
+                
+                // Guest 3
+                name3: "Shiv Jayanti Utsav",
+                title3: "Grand Celebration",
+                desc3: "A grand procession was held to honor Chhatrapati Shivaji Maharaj. The event was attended by local leaders and social workers who praised the unity and cultural spirit of the society."
             },
             mr: {
-                title: "श्री संभाजी राजे हाऊसिंग सोसायटी", sub: "सामुदायिक जीवनातील उत्कृष्टता",
-                heroTitle: "अतिथी देवो भव", heroSub: "आमच्या सन्माननीय पाहुण्यांचा आदर",
-                vipHead: "माननीय अतिथी", vipSub: "आमच्या सोसायटीला भेट देणाऱ्या प्रतिष्ठित व्यक्तींची झलक.",
-                formHead: "डिजिटल अतिथी नोंदणी",
-                lblName: "पूर्ण नाव", lblType: "पाहुण्यांचा प्रकार", lblPurpose: "भेटीचे कारण",
-                btnSubmit: "प्रवेश नोंदवा"
+                title: "श्री संभाजी राजे हाऊसिंग सोसायटी",
+                sub: "सामुदायिक जीवनातील उत्कृष्टता",
+                heroTitle: "सन्माननीय अतिथी",
+                heroSub: "आमच्या सोसायटीला भेट देणाऱ्या मान्यवरांचा सन्मान",
+                btnBack: "मुख्यपृष्ठावर परत जा",
+                
+                // Guest 1
+                name1: "मा. श्री. महेश लांडगे",
+                title1: "आमदार (विधानसभा सदस्य)",
+                desc1: "प्रजासत्ताक दिनाच्या ध्वजारोहण समारंभाच्या निमित्ताने आमच्या सोसायटीला भेट दिली. त्यांनी नवीन गार्डन जिम सुविधेचे उद्घाटन केले आणि स्वच्छ भारत अभियानांतर्गत सोसायटीच्या स्वच्छता उपक्रमांचे कौतुक केले.",
+                
+                // Guest 2
+                name2: "सौ. स्मिता पाटील",
+                title2: "नगरसेविका, PCMC प्रभाग १२",
+                desc2: "स्वातंत्र्य दिन सोहळ्याला उपस्थित राहिल्या. त्यांनी तळवडे येथील पाणीपुरवठा सुधारणेबाबत रहिवाशांशी संवाद साधला आणि समितीने आयोजित केलेल्या वृक्षारोपण मोहिमेत वृक्षारोपण केले.",
+                
+                // Guest 3
+                name3: "शिवजयंती उत्सव",
+                title3: "भव्य सोहळा",
+                desc3: "छत्रपती शिवाजी महाराजांच्या सन्मानार्थ भव्य मिरवणूक काढण्यात आली. या कार्यक्रमाला स्थानिक नेते आणि सामाजिक कार्यकर्ते उपस्थित होते, ज्यांनी सोसायटी सदस्यांच्या एकतेचे आणि सांस्कृतिक भावनेचे कौतुक केले."
             },
             hi: {
-                title: "श्री संभाजी राजे हाउसिंग सोसाइटी", sub: "सामुदायिक जीवन में उत्कृष्टता",
-                heroTitle: "अतिथि देवो भव", heroSub: "हमारे सम्मानित अतिथियों का सम्मान",
-                vipHead: "विशिष्ट अतिथि", vipSub: "हमारे समाज की शोभा बढ़ाने वाले माननीय व्यक्तियों की एक झलक।",
-                formHead: "डिजिटल अतिथि प्रविष्टि",
-                lblName: "पूरा नाम", lblType: "अतिथि श्रेणी", lblPurpose: "आने का कारण",
-                btnSubmit: "प्रविष्टि दर्ज करें"
+                title: "श्री संभाजी राजे हाउसिंग सोसाइटी",
+                sub: "सामुदायिक जीवन में उत्कृष्टता",
+                heroTitle: "विशिष्ट अतिथि",
+                heroSub: "हमारी सोसाइटी में पधारे गणमान्य व्यक्तियों का सम्मान",
+                btnBack: "होम पेज पर वापस जाएं",
+                
+                // Guest 1
+                name1: "माननीय श्री महेश लांडगे",
+                title1: "विधायक (विधानसभा सदस्य)",
+                desc1: "गणतंत्र दिवस ध्वजारोहण समारोह के अवसर पर हमारी सोसाइटी का दौरा किया। उन्होंने नई गार्डन जिम सुविधा का उद्घाटन किया और स्वच्छ भारत मिशन के तहत सोसाइटी की स्वच्छता पहल की सराहना की।",
+                
+                // Guest 2
+                name2: "श्रीमती स्मिता पाटिल",
+                title2: "नगरसेविका, PCMC वार्ड १२",
+                desc2: "स्वतंत्रता दिवस समारोह की शोभा बढ़ाई। उन्होंने तलवडे में जल आपूर्ति सुधार के संबंध में निवासियों के साथ बातचीत की और समिति द्वारा आयोजित वृक्षारोपण अभियान के दौरान एक पौधा लगाया।",
+                
+                // Guest 3
+                name3: "शिव जयंती उत्सव",
+                title3: "भव्य समारोह",
+                desc3: "छत्रपति शिवाजी महाराज के सम्मान में एक भव्य जुलूस निकाला गया। इस कार्यक्रम में स्थानीय नेताओं और सामाजिक कार्यकर्ताओं ने भाग लिया जिन्होंने सोसाइटी के सदस्यों की एकता और सांस्कृतिक भावना की प्रशंसा की।"
             }
         };
 
+        // --- TRANSLATE FUNCTION ---
         function changeVisitorLanguage() {
             const lang = document.getElementById('lang-select').value;
-            const t = vTranslations[lang];
+            const t = vipTranslations[lang];
 
             document.getElementById('txt-title').innerText = t.title;
             document.getElementById('txt-subtitle').innerText = t.sub;
             document.getElementById('txt-hero-title').innerText = t.heroTitle;
             document.getElementById('txt-hero-sub').innerText = t.heroSub;
-            document.getElementById('txt-vip-head').innerText = t.vipHead;
-            document.getElementById('txt-vip-sub').innerText = t.vipSub;
-            document.getElementById('txt-form-head').innerText = t.formHead;
-            document.getElementById('lbl-name').innerText = t.lblName;
-            document.getElementById('lbl-type').innerText = t.lblType;
-            document.getElementById('lbl-purpose').innerText = t.lblPurpose;
-            document.getElementById('btn-submit').innerText = t.btnSubmit;
+            document.getElementById('btn-back').innerText = t.btnBack;
 
+            // Guest 1
+            document.getElementById('name-1').innerText = t.name1;
+            document.getElementById('title-1').innerText = t.title1;
+            document.getElementById('desc-1').innerText = t.desc1;
+
+            // Guest 2
+            document.getElementById('name-2').innerText = t.name2;
+            document.getElementById('title-2').innerText = t.title2;
+            document.getElementById('desc-2').innerText = t.desc2;
+
+            // Guest 3
+            document.getElementById('name-3').innerText = t.name3;
+            document.getElementById('title-3').innerText = t.title3;
+            document.getElementById('desc-3').innerText = t.desc3;
+
+            // Font Style Update
             if(lang === 'en') {
                 document.body.classList.remove('lang-sanskrit');
             } else {
