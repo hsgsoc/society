@@ -7,319 +7,514 @@
     
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Tiro+Devanagari+Marathi&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
     <link rel="stylesheet" href="assest/style.css">
 
     <style>
-        /* --- LOCK SCREEN STYLES --- */
-        #login-overlay {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(135deg, #1e293b, #0f172a);
-            z-index: 9999;
+        /* --- LOGIN STYLES --- */
+        .login-wrapper {
+            min-height: 80vh;
             display: flex;
             align-items: center;
             justify-content: center;
-            flex-direction: column;
+            background: linear-gradient(135deg, #fff7ed 0%, #f1f5f9 100%);
         }
-
         .login-box {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
+            background: white;
             padding: 40px;
             border-radius: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.15);
             text-align: center;
-            width: 90%;
             max-width: 400px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            width: 90%;
+            border: 2px solid var(--primary);
         }
-
-        .login-box i { font-size: 3rem; color: #fbbf24; margin-bottom: 20px; }
-        .login-box h2 { color: white; margin-bottom: 20px; font-family: 'Playfair Display', serif; }
-
-        .pass-input {
+        .login-input {
             width: 100%;
             padding: 12px;
-            border-radius: 30px;
-            border: none;
-            outline: none;
-            text-align: center;
-            font-size: 1.1rem;
-            margin-bottom: 15px;
-            background: rgba(255,255,255,0.9);
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 1rem;
         }
-
         .login-btn {
-            background: #c2410c;
-            color: white;
-            padding: 10px 30px;
-            border-radius: 30px;
-            border: none;
-            font-weight: bold;
-            cursor: pointer;
-            transition: 0.3s;
             width: 100%;
+            padding: 12px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            font-weight: bold;
+            margin-top: 10px;
         }
-        .login-btn:hover { background: #ea580c; }
+        .login-btn:hover { background: #9a3412; }
+        .error-msg { color: red; display: none; margin-top: 10px; }
 
-        #error-msg { color: #ff6b6b; margin-top: 10px; font-size: 0.9rem; display: none; }
+        /* --- DASHBOARD STYLES --- */
+        .dashboard-container { display: none; padding-bottom: 60px; }
+        
+        .welcome-banner {
+            background: linear-gradient(to right, var(--primary), #ea580c);
+            color: white;
+            padding: 30px 20px;
+            text-align: center;
+            border-radius: 0 0 30px 30px;
+            margin-bottom: 40px;
+            box-shadow: 0 10px 30px rgba(194, 65, 12, 0.3);
+        }
+        
+        /* Dashboard Grid */
+        .dash-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 20px;
+            max-width: 1000px;
+            margin: 0 auto 40px auto;
+            padding: 0 20px;
+        }
 
-        /* --- DASHBOARD STYLES (Hidden by default) --- */
-        #dashboard-content { display: none; } /* HIDDEN INITIALLY */
-
-        .dashboard-header {
+        /* NOTICE BOARD SECTION */
+        .notice-board {
+            max-width: 800px;
+            margin: 0 auto 50px auto;
             background: white;
-            padding: 20px;
             border-radius: 15px;
-            margin-bottom: 30px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.05);
+            overflow: hidden;
+            border: 1px solid #e2e8f0;
+        }
+        .notice-header {
+            background: var(--secondary);
+            color: white;
+            padding: 15px 25px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            flex-wrap: wrap;
-            gap: 15px;
         }
-        
-        .dash-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 20px;
-        }
-
-        .dash-card {
-            background: white;
-            padding: 25px;
-            border-radius: 15px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-            border-top: 4px solid var(--primary);
-        }
-        
-        .dash-card h3 { color: var(--secondary); margin-bottom: 15px; border-bottom: 1px solid #eee; padding-bottom: 10px; }
+        .notice-list { padding: 20px; }
         
         .notice-item {
-            background: #f8fafc;
-            padding: 10px;
-            margin-bottom: 10px;
-            border-left: 3px solid #fbbf24;
-            font-size: 0.9rem;
-        }
-
-        .bill-status {
-            text-align: center;
-            padding: 20px;
-            background: #ecfccb;
-            color: #3f6212;
-            border-radius: 10px;
-            font-weight: bold;
-        }
-
-        .download-link {
+            border-bottom: 1px solid #eee;
+            padding: 20px 0;
             display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 10px;
-            color: #475569;
-            text-decoration: none;
-            transition: 0.3s;
+            gap: 15px;
+            align-items: flex-start;
+            animation: fadeIn 0.5s;
         }
-        .download-link:hover { color: var(--primary); background: #fff7ed; border-radius: 5px; }
+        .notice-icon { color: var(--primary); font-size: 1.5rem; margin-top: 5px; }
+        
+        /* Notice Meta Data (Date, Author, Contact) */
+        .notice-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 10px;
+            font-size: 0.85rem;
+            color: #64748b;
+            background: #f8fafc;
+            padding: 8px;
+            border-radius: 5px;
+        }
+        .notice-meta span { display: flex; align-items: center; gap: 5px; }
 
-        /* Dark Mode overrides */
-        body.dark-mode .dashboard-header, body.dark-mode .dash-card { background: #1e293b; color: white; border-color: #334155; }
-        body.dark-mode .notice-item { background: #0f172a; color: #cbd5e1; }
-        body.dark-mode .bill-status { background: #14532d; color: #bbf7d0; }
-        body.dark-mode .download-link { color: #94a3b8; }
-        body.dark-mode .download-link:hover { background: #334155; color: white; }
+        /* CONTACTS SECTION */
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .contact-card {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            border-left: 5px solid var(--primary);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+        }
+
+        /* PUBLISH MODAL */
+        #publish-modal {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(5px);
+            display: none;
+            align-items: center; justify-content: center;
+            z-index: 1000;
+        }
+        .modal-content {
+            background: white; padding: 30px; border-radius: 15px; width: 90%; max-width: 500px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+            animation: slideUp 0.3s;
+        }
+        .modal-input {
+            width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 5px;
+        }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
     </style>
 </head>
 <body>
 
-    <div id="login-overlay">
+    <div class="access-bar">
+        <div class="access-controls">
+            <button onclick="toggleDarkMode()"><i class="fa-solid fa-moon"></i></button>
+            <div class="font-controls">
+                <button onclick="changeFontSize(1)">+A</button>
+                <button onclick="changeFontSize(0)">A</button>
+                <button onclick="changeFontSize(-1)">-A</button>
+            </div>
+        </div>
+        <select id="lang-select" onchange="changeMemberLanguage()">
+            <option value="en">English</option>
+            <option value="mr">मराठी</option>
+            <option value="hi">हिन्दी</option>
+        </select>
+    </div>
+
+    <div id="login-section" class="login-wrapper">
         <div class="login-box">
-            <i class="fa-solid fa-user-lock"></i>
-            <h2 id="txt-login-title">Member Access</h2>
-            <p style="color:rgba(255,255,255,0.7); margin-bottom:15px; font-size:0.9rem;">Please enter the Society Passcode</p>
+            <div class="royal-seal" style="width:80px; height:80px; font-size:2.5rem; margin-bottom:20px;">
+                <i class="fa-solid fa-chess-rook"></i>
+            </div>
+            <h2 id="txt-login-title">Member Portal</h2>
+            <p id="txt-login-sub" style="color:#666; margin-bottom:20px;">Restricted Access for Members Only</p>
             
-            <input type="password" id="pass-input" class="pass-input" placeholder="Enter Passcode">
-            <button class="login-btn" onclick="checkHash()">Unlock Dashboard</button>
-            <p id="error-msg"><i class="fa-solid fa-circle-exclamation"></i> Incorrect Passcode</p>
-            
-            <br>
-            <a href="index.html" style="color:rgba(255,255,255,0.5); text-decoration:none; font-size:0.8rem;">
-                <i class="fa-solid fa-arrow-left"></i> Back to Home
-            </a>
+            <input type="password" id="passwordInput" class="login-input" placeholder="Enter Passcode (sambaji)">
+            <button class="login-btn" onclick="checkPass()" id="btn-login-submit">Login Securely</button>
+            <p id="error-msg" class="error-msg">Incorrect Password. Try 'sambaji'</p>
         </div>
     </div>
 
-    <div id="dashboard-content">
+    <div id="dashboard-section" class="dashboard-container">
         
-        <div class="access-bar">
-            <div class="access-controls">
-                <button onclick="toggleDarkMode()"><i class="fa-solid fa-moon"></i></button>
-                <div class="font-controls">
-                    <button onclick="changeFontSize(1)">+A</button>
-                    <button onclick="changeFontSize(0)">A</button>
-                    <button onclick="changeFontSize(-1)">-A</button>
-                </div>
-            </div>
-            <select id="lang-select" onchange="changeMemberLanguage()">
-                <option value="en">English</option>
-                <option value="mr">मराठी</option>
-                <option value="hi">हिन्दी</option>
-            </select>
-        </div>
-
         <header>
             <div class="logo-container">
                 <div class="royal-seal"><i class="fa-solid fa-chess-rook"></i></div>
             </div>
             <div class="title-container">
-                <h1 id="txt-title">SHREE SAMBHAJI RAJE HOUSING SOCIETY</h1>
-                <p>Member Dashboard</p>
+                <h1 id="txt-header-title">SHREE SAMBHAJI RAJE HOUSING SOCIETY</h1>
+                <p id="txt-header-sub">Member Administration Panel</p>
             </div>
         </header>
 
-        <main>
-            <div class="dashboard-header">
-                <div>
-                    <h2 style="color:var(--primary); margin-bottom:5px;" id="txt-welcome">Welcome, Resident</h2>
-                    <p style="opacity:0.7;">Unit: General Member View</p>
-                </div>
-                <button onclick="logout()" class="login-btn" style="width:auto; background:#475569;">
-                    <i class="fa-solid fa-right-from-bracket"></i> Logout
-                </button>
-            </div>
+        <div class="welcome-banner">
+            <h2 id="txt-welcome">Welcome Back, Member</h2>
+            <p>Dashboard Access Granted • <span id="visitor-count">12,405</span> Active Visits</p>
+        </div>
 
-            <div class="dash-grid">
+        <div class="dash-grid">
+            <div class="card alert-card" onclick="alert('Opening Complaint Form...')">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+                <span id="btn-complaint">Complaint</span>
+            </div>
+            <div class="card" onclick="openPublishModal()">
+                <i class="fa-solid fa-bullhorn"></i>
+                <span id="btn-publish">Publish Notice</span>
+            </div>
+            <div class="card" onclick="alert('Redirecting to Enquiry...')">
+                <i class="fa-solid fa-circle-question"></i>
+                <span id="btn-enquiry">Enquiry</span>
+            </div>
+            <div class="card" onclick="window.location.href='about.html'">
+                <i class="fa-solid fa-info-circle"></i>
+                <span id="btn-about">About Soc</span>
+            </div>
+            <div class="card" onclick="alert('Opening Gallery...')">
+                <i class="fa-solid fa-images"></i>
+                <span id="btn-gallery">Gallery</span>
+            </div>
+            <div class="card" onclick="alert('Sending Notification to all Members...')">
+                <i class="fa-solid fa-bell"></i>
+                <span id="btn-notify">Send Notify</span>
+            </div>
+        </div>
+
+        <div class="notice-board">
+            <div class="notice-header">
+                <h3 id="txt-notice-board"><i class="fa-solid fa-clipboard"></i> Official Notice Board</h3>
+                <button id="btn-add-new" onclick="openPublishModal()" style="background:white; color:var(--primary); border:none; padding:5px 15px; border-radius:20px; cursor:pointer; font-weight:bold;">+ Add New</button>
+            </div>
+            <div class="notice-list" id="notice-list">
                 
-                <div class="dash-card">
-                    <h3 id="txt-notice-head"><i class="fa-solid fa-bullhorn"></i> Official Notices</h3>
-                    <div class="notice-item">
-                        <strong>AGM Meeting</strong><br>
-                        <span style="font-size:0.8rem; opacity:0.7;">Date: 25th Jan 2026 | Time: 10:00 AM</span>
+                <div class="notice-item">
+                    <div class="notice-icon"><i class="fa-solid fa-file-invoice"></i></div>
+                    <div style="width:100%;">
+                        <h4 style="color:var(--secondary);">Annual Maintenance Bill</h4>
+                        <p style="font-size:0.95rem; color:#444; margin-bottom:5px;">Issued on Jan 15, 2026. Please clear dues by Feb 10.</p>
+                        <div class="notice-meta">
+                            <span><i class="fa-solid fa-user"></i> <span class="lbl-pub">By:</span> Treasurer</span>
+                            <span><i class="fa-solid fa-calendar"></i> <span class="lbl-date">Date:</span> 15/01/2026</span>
+                            <span><i class="fa-solid fa-phone"></i> <span class="lbl-contact">Ph:</span> 9822XXXXXX</span>
+                        </div>
                     </div>
-                    <div class="notice-item" style="border-color:red;">
-                        <strong>Water Tank Cleaning</strong><br>
-                        <span style="font-size:0.8rem; opacity:0.7;">Date: 28th Jan | No Supply 2pm-5pm</span>
-                    </div>
-                </div>
-
-                <div class="dash-card">
-                    <h3 id="txt-bill-head"><i class="fa-solid fa-file-invoice-dollar"></i> Maintenance</h3>
-                    <div class="bill-status">
-                        <i class="fa-solid fa-check-circle fa-2x"></i><br>
-                        <span id="txt-bill-status">No Outstanding Dues</span>
-                    </div>
-                    <p style="text-align:center; margin-top:15px; font-size:0.9rem; opacity:0.8;">
-                        Next Bill Generation: 01 Feb 2026
-                    </p>
-                    <button class="login-btn" style="margin-top:10px;">View History</button>
-                </div>
-
-                <div class="dash-card">
-                    <h3 id="txt-doc-head"><i class="fa-solid fa-folder-open"></i> Documents</h3>
-                    <a href="#" class="download-link"><i class="fa-solid fa-file-pdf"></i> Society By-Laws PDF</a>
-                    <a href="#" class="download-link"><i class="fa-solid fa-file-pdf"></i> Parking Rules PDF</a>
-                    <a href="#" class="download-link"><i class="fa-solid fa-file-pdf"></i> Renovation Form</a>
-                    <a href="#" class="download-link"><i class="fa-solid fa-file-pdf"></i> MOM - Dec 2025</a>
                 </div>
 
             </div>
-        </main>
+        </div>
 
-        <footer>
-            <div class="copyright">&copy; 2026 Shree Sambhaji Raje HSG SOC</div>
-        </footer>
+        <h2 id="txt-contacts-head" style="text-align:center; color:var(--primary); margin-bottom:20px;">Emergency Contacts</h2>
+        <div class="contact-grid">
+            <div class="contact-card">
+                <h3 id="txt-role-sec"><i class="fa-solid fa-user-tie"></i> Secretary</h3>
+                <p>Mr. Rajesh Patil</p>
+                <p><strong>+91 98XXX XXXXX</strong></p>
+            </div>
+            <div class="contact-card">
+                <h3 id="txt-role-secu"><i class="fa-solid fa-shield-halved"></i> Security Gate</h3>
+                <p>Main Guard Room</p>
+                <p><strong>+91 99XXX XXXXX</strong></p>
+            </div>
+            <div class="contact-card">
+                <h3 id="txt-role-plum"><i class="fa-solid fa-wrench"></i> Plumber</h3>
+                <p>Service On-Call</p>
+                <p><strong>+91 90XXX XXXXX</strong></p>
+            </div>
+        </div>
+
+        <div style="text-align:center; margin-top:40px;">
+            <a href="index.html" style="color:var(--secondary); text-decoration:none; font-weight:bold; padding: 10px 20px; border: 1px solid #ccc; border-radius: 30px;">
+                <i class="fa-solid fa-arrow-left"></i> Logout & Return Home
+            </a>
+        </div>
+
+    </div>
+
+    <footer>
+        <div class="footer-links">
+            <a href="#" class="f-link">PCMC</a>
+            <a href="#" class="f-link">Mahavitran</a>
+            <a href="#" class="f-link">Tax</a>
+            <a href="#" class="f-link">Water</a>
+        </div>
+        <div class="copyright">
+            &copy; 2026 Shree Sambhaji Raje Housing Society | Member Portal
+        </div>
+    </footer>
+
+    <div id="publish-modal">
+        <div class="modal-content">
+            <h3 id="txt-modal-title" style="margin-bottom:15px; color:var(--primary);">Publish New Notice</h3>
+            
+            <input type="text" id="notice-title" class="modal-input" placeholder="Notice Title">
+            <textarea id="notice-desc" class="modal-input" placeholder="Details..." style="height:80px;"></textarea>
+            
+            <input type="text" id="notice-author" class="modal-input" placeholder="Publisher Name (e.g. Secretary)">
+            <input type="text" id="notice-contact" class="modal-input" placeholder="Email or Phone No">
+            
+            <div style="display:flex; gap:10px; margin-top: 10px;">
+                <button id="btn-modal-publish" onclick="publishNotice()" style="flex:1; background:var(--primary); color:white; border:none; padding:10px; border-radius:5px; cursor:pointer;">Publish</button>
+                <button id="btn-modal-cancel" onclick="closePublishModal()" style="flex:1; background:#94a3b8; color:white; border:none; padding:10px; border-radius:5px; cursor:pointer;">Cancel</button>
+            </div>
+        </div>
     </div>
 
     <script>
-        
-        const SECRET_HASH = "5026e9de6b044168f07fffd9200b4cbadc6ad6173c6975d8dbf45ddcecf9b4c6"; 
-
-        async function checkHash() {
-            const input = document.getElementById('pass-input').value;
+        // --- 1. SIMPLE PASSWORD CHECK ---
+        function checkPass() {
+            const input = document.getElementById('passwordInput').value.toLowerCase().trim();
             const errorMsg = document.getElementById('error-msg');
-
-            // Convert input to Hash
-            const msgBuffer = new TextEncoder().encode(input);
-            const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
-            const hashArray = Array.from(new Uint8Array(hashBuffer));
-            const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-
-            // Compare
-            if (hashHex === SECRET_HASH) {
-                // SUCCESS
-                document.getElementById('login-overlay').style.display = 'none';
-                document.getElementById('dashboard-content').style.display = 'block';
-                // Store in session so they don't have to login again if they refresh
-                sessionStorage.setItem('isLoggedIn', 'true');
+            
+            // Password: sambaji (Base64 check to hide it slightly)
+            if (btoa(input) === 'c2FtYmFqaQ==') { 
+                document.getElementById('login-section').style.display = 'none';
+                document.getElementById('dashboard-section').style.display = 'block';
+                sessionStorage.setItem('memberAuth', 'true');
             } else {
-                // FAIL
                 errorMsg.style.display = 'block';
-                document.getElementById('pass-input').value = '';
             }
         }
 
-        function logout() {
-            sessionStorage.removeItem('isLoggedIn');
-            location.reload();
+        if(sessionStorage.getItem('memberAuth') === 'true') {
+            document.getElementById('login-section').style.display = 'none';
+            document.getElementById('dashboard-section').style.display = 'block';
         }
 
-        // Auto-login if session exists
-        window.onload = function() {
-            if(sessionStorage.getItem('isLoggedIn') === 'true') {
-                document.getElementById('login-overlay').style.display = 'none';
-                document.getElementById('dashboard-content').style.display = 'block';
+        // --- 2. PUBLISH NOTICE LOGIC ---
+        function openPublishModal() {
+            document.getElementById('publish-modal').style.display = 'flex';
+        }
+        function closePublishModal() {
+            document.getElementById('publish-modal').style.display = 'none';
+        }
+
+        function publishNotice() {
+            // Get Values
+            const title = document.getElementById('notice-title').value;
+            const desc = document.getElementById('notice-desc').value;
+            const author = document.getElementById('notice-author').value || "Admin";
+            const contact = document.getElementById('notice-contact').value || "N/A";
+            
+            // Get Current Date
+            const dateObj = new Date();
+            const dateStr = dateObj.toLocaleDateString('en-GB'); // DD/MM/YYYY format
+
+            if(title && desc) {
+                const list = document.getElementById('notice-list');
+                
+                // Get labels based on current language
+                const lang = document.getElementById('lang-select').value;
+                const labels = {
+                    en: { by: "By:", date: "Date:", ph: "Ph:" },
+                    mr: { by: "द्वारे:", date: "दिनांक:", ph: "संपर्क:" },
+                    hi: { by: "द्वारा:", date: "दिनांक:", ph: "संपर्क:" }
+                };
+                const l = labels[lang];
+
+                const newNotice = `
+                    <div class="notice-item">
+                        <div class="notice-icon"><i class="fa-solid fa-bullhorn"></i></div>
+                        <div style="width:100%;">
+                            <h4 style="color:var(--primary);">${title}</h4>
+                            <p style="font-size:0.95rem; color:#444; margin-bottom:5px;">${desc}</p>
+                            
+                            <div class="notice-meta">
+                                <span><i class="fa-solid fa-user"></i> <strong>${l.by}</strong> ${author}</span>
+                                <span><i class="fa-solid fa-calendar"></i> <strong>${l.date}</strong> ${dateStr}</span>
+                                <span><i class="fa-solid fa-phone"></i> <strong>${l.ph}</strong> ${contact}</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                list.insertAdjacentHTML('afterbegin', newNotice); // Add to top
+                
+                // Reset Fields
+                document.getElementById('notice-title').value = "";
+                document.getElementById('notice-desc').value = "";
+                document.getElementById('notice-author').value = "";
+                document.getElementById('notice-contact').value = "";
+                
+                closePublishModal();
+                alert("Notice Published Successfully!");
+            } else {
+                alert("Please fill in Title and Description.");
             }
-            // Load default language settings
-            changeMemberLanguage();
         }
 
-        // --- 2. TRANSLATION LOGIC ---
-        const memberTrans = {
+        // --- 3. TRANSLATION LOGIC ---
+        const memTranslations = {
             en: {
-                title: "SHREE SAMBHAJI RAJE HOUSING SOCIETY",
-                welcome: "Welcome, Resident",
-                notices: "Official Notices",
-                bills: "Maintenance",
-                docs: "Documents",
-                status: "No Outstanding Dues"
+                loginTitle: "Member Portal", loginSub: "Restricted Access for Members Only", btnLogin: "Login Securely",
+                headerTitle: "SHREE SAMBHAJI RAJE HOUSING SOCIETY", headerSub: "Member Administration Panel",
+                welcome: "Welcome Back, Member",
+                // Grid Buttons
+                btnComplaint: "Complaint", btnPublish: "Publish Notice", btnEnquiry: "Enquiry",
+                btnAbout: "About Soc", btnGallery: "Gallery", btnNotify: "Send Notify",
+                // Notice Board
+                noticeBoard: "Official Notice Board", btnAdd: "+ Add New",
+                // Contacts
+                contactsHead: "Emergency Contacts", roleSec: "Secretary", roleSecu: "Security Gate", rolePlum: "Plumber",
+                // Modal
+                modalTitle: "Publish New Notice", btnModalPublish: "Publish", btnModalCancel: "Cancel",
+                phTitle: "Notice Title", phDesc: "Details...", phAuthor: "Publisher Name (e.g. Secretary)", phContact: "Email or Phone No",
+                // Meta Labels
+                lblPub: "By:", lblDate: "Date:", lblContact: "Ph:"
             },
             mr: {
-                title: "श्री संभाजी राजे हाऊसिंग सोसायटी",
-                welcome: "स्वागत आहे, रहिवासी",
-                notices: "अधिकृत सूचना",
-                bills: "देखभाल शुल्क",
-                docs: "कागदपत्रे",
-                status: "कोणतीही थकबाकी नाही"
+                loginTitle: "सदस्य पोर्टल", loginSub: "केवळ सदस्यांसाठी प्रवेश", btnLogin: "सुरक्षित लॉगिन करा",
+                headerTitle: "श्री संभाजी राजे हाऊसिंग सोसायटी", headerSub: "सदस्य प्रशासन पॅनेल",
+                welcome: "स्वागत आहे, सभासद",
+                // Grid
+                btnComplaint: "तक्रार", btnPublish: "सूचना प्रकाशित करा", btnEnquiry: "चौकशी",
+                btnAbout: "सोसायटी बद्दल", btnGallery: "फोटो गॅलरी", btnNotify: "सूचना पाठवा",
+                // Notice Board
+                noticeBoard: "अधिकृत सूचना फलक", btnAdd: "+ नवीन जोडा",
+                // Contacts
+                contactsHead: "आपत्कालीन संपर्क", roleSec: "सचिव (सेक्रेटरी)", roleSecu: "सुरक्षा रक्षक", rolePlum: "प्लंबर",
+                // Modal
+                modalTitle: "नवीन सूचना प्रकाशित करा", btnModalPublish: "प्रकाशित करा", btnModalCancel: "रद्द करा",
+                phTitle: "सूचनेचे शीर्षक", phDesc: "तपशील...", phAuthor: "प्रकाशकाचे नाव (उदा. सचिव)", phContact: "ईमेल किंवा फोन",
+                // Meta Labels
+                lblPub: "द्वारे:", lblDate: "दिनांक:", lblContact: "संपर्क:"
             },
             hi: {
-                title: "श्री संभाजी राजे हाउसिंग सोसाइटी",
-                welcome: "स्वागत है, निवासी",
-                notices: "आधिकारिक सूचनाएं",
-                bills: "रखरखाव शुल्क",
-                docs: "दस्तावेज़",
-                status: "कोई बकाया नहीं"
+                loginTitle: "सदस्य पोर्टल", loginSub: "केवल सदस्यों के लिए प्रवेश", btnLogin: "सुरक्षित लॉगिन करें",
+                headerTitle: "श्री संभाजी राजे हाउसिंग सोसाइटी", headerSub: "सदस्य प्रशासन पैनल",
+                welcome: "स्वागत है, सदस्य",
+                // Grid
+                btnComplaint: "शिकायत", btnPublish: "सूचना प्रकाशित करें", btnEnquiry: "पूछताछ",
+                btnAbout: "सोसाइटी के बारे में", btnGallery: "फोटो गैलरी", btnNotify: "नोटिफिकेशन भेजें",
+                // Notice Board
+                noticeBoard: "आधिकारिक सूचना बोर्ड", btnAdd: "+ नया जोड़ें",
+                // Contacts
+                contactsHead: "आपातकालीन संपर्क", roleSec: "सचिव (सेक्रेटरी)", roleSecu: "सुरक्षा गार्ड", rolePlum: "प्लंबर",
+                // Modal
+                modalTitle: "नई सूचना प्रकाशित करें", btnModalPublish: "प्रकाशित करें", btnModalCancel: "रद्द करें",
+                phTitle: "सूचना शीर्षक", phDesc: "विवरण...", phAuthor: "प्रकाशक का नाम (उदा. सचिव)", phContact: "ईमेल या फोन",
+                // Meta Labels
+                lblPub: "द्वारा:", lblDate: "दिनांक:", lblContact: "संपर्क:"
             }
         };
 
         function changeMemberLanguage() {
             const lang = document.getElementById('lang-select').value;
-            const t = memberTrans[lang];
+            const t = memTranslations[lang];
 
-            document.getElementById('txt-title').innerText = t.title;
-            document.getElementById('txt-welcome').innerText = t.welcome;
-            document.getElementById('txt-notice-head').innerHTML = `<i class="fa-solid fa-bullhorn"></i> ${t.notices}`;
-            document.getElementById('txt-bill-head').innerHTML = `<i class="fa-solid fa-file-invoice-dollar"></i> ${t.bills}`;
-            document.getElementById('txt-doc-head').innerHTML = `<i class="fa-solid fa-folder-open"></i> ${t.docs}`;
-            document.getElementById('txt-bill-status').innerText = t.status;
+            // Static Text Updates
+            document.getElementById('txt-login-title').innerText = t.loginTitle;
+            document.getElementById('txt-login-sub').innerText = t.loginSub;
+            document.getElementById('btn-login-submit').innerText = t.btnLogin;
+            document.getElementById('txt-header-title').innerText = t.headerTitle;
+            document.getElementById('txt-header-sub').innerText = t.headerSub;
+            document.getElementById('txt-welcome').innerText = t.welcome.split(',')[0] + ", " + (lang === 'en' ? 'Member' : (lang==='mr'?'सभासद':'सदस्य')); // Keep welcome structure
+            
+            // Buttons
+            document.getElementById('btn-complaint').innerText = t.btnComplaint;
+            document.getElementById('btn-publish').innerText = t.btnPublish;
+            document.getElementById('btn-enquiry').innerText = t.btnEnquiry;
+            document.getElementById('btn-about').innerText = t.btnAbout;
+            document.getElementById('btn-gallery').innerText = t.btnGallery;
+            document.getElementById('btn-notify').innerText = t.btnNotify;
 
-            // Font/Theme logic from main script
-            if(lang === 'en') document.body.classList.remove('lang-sanskrit');
-            else document.body.classList.add('lang-sanskrit');
+            // Notice Section
+            document.getElementById('txt-notice-board').innerHTML = `<i class="fa-solid fa-clipboard"></i> ${t.noticeBoard}`;
+            document.getElementById('btn-add-new').innerText = t.btnAdd;
+
+            // Contacts
+            document.getElementById('txt-contacts-head').innerText = t.contactsHead;
+            document.getElementById('txt-role-sec').innerHTML = `<i class="fa-solid fa-user-tie"></i> ${t.roleSec}`;
+            document.getElementById('txt-role-secu').innerHTML = `<i class="fa-solid fa-shield-halved"></i> ${t.roleSecu}`;
+            document.getElementById('txt-role-plum').innerHTML = `<i class="fa-solid fa-wrench"></i> ${t.rolePlum}`;
+
+            // Modal
+            document.getElementById('txt-modal-title').innerText = t.modalTitle;
+            document.getElementById('btn-modal-publish').innerText = t.btnModalPublish;
+            document.getElementById('btn-modal-cancel').innerText = t.btnModalCancel;
+            
+            // Placeholders
+            document.getElementById('notice-title').placeholder = t.phTitle;
+            document.getElementById('notice-desc').placeholder = t.phDesc;
+            document.getElementById('notice-author').placeholder = t.phAuthor;
+            document.getElementById('notice-contact').placeholder = t.phContact;
+
+            // Update Labels inside existing notices
+            const metas = document.querySelectorAll('.notice-meta');
+            metas.forEach(meta => {
+                const spans = meta.querySelectorAll('span');
+                // We target the strong tag or text node inside
+                // This is a simplified update for demonstration
+                if(spans[0].querySelector('.lbl-pub')) spans[0].querySelector('.lbl-pub').innerText = t.lblPub;
+                if(spans[1].querySelector('.lbl-date')) spans[1].querySelector('.lbl-date').innerText = t.lblDate;
+                if(spans[2].querySelector('.lbl-contact')) spans[2].querySelector('.lbl-contact').innerText = t.lblContact;
+            });
+
+            // Font Family Update
+            if(lang === 'en') {
+                document.body.classList.remove('lang-sanskrit');
+            } else {
+                document.body.classList.add('lang-sanskrit');
+            }
         }
 
-        // --- 3. THEME LOGIC ---
+        // --- 4. THEME TOGGLE ---
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+        }
         let currentSize = 16;
         function changeFontSize(n) {
             if (n === 0) currentSize = 16;
@@ -327,9 +522,6 @@
             if(currentSize > 24) currentSize = 24;
             if(currentSize < 12) currentSize = 12;
             document.documentElement.style.setProperty('--base-size', currentSize + 'px');
-        }
-        function toggleDarkMode() {
-            document.body.classList.toggle('dark-mode');
         }
     </script>
 </body>
