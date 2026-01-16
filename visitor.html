@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visitor Reception - Shree Sambhaji Raje HSG SOC</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Tiro+Devanagari+Marathi&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <link rel="stylesheet" href="assest/style.css">
+
+    <style>
+        /* --- HERO SECTION --- */
+        .visitor-hero {
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1577054947476-80db69c65609?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80');
+            background-size: cover;
+            background-position: center;
+            height: 350px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            position: relative;
+        }
+
+        .visitor-hero h1 { font-size: 3.5rem; color: #fbbf24; text-shadow: 0 4px 10px rgba(0,0,0,0.8); margin-bottom: 10px; }
+        .visitor-hero p { font-size: 1.5rem; font-style: italic; letter-spacing: 2px; }
+
+        /* --- VIP GALLERY (Politicians/Guests) --- */
+        .vip-section {
+            padding: 60px 20px;
+            background: #fdfbf7;
+            text-align: center;
+        }
+        .vip-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            max-width: 1100px;
+            margin: 40px auto 0;
+        }
+        .vip-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            border: 1px solid #e2e8f0;
+            transition: transform 0.3s;
+        }
+        .vip-card:hover { transform: translateY(-10px); }
+        
+        .vip-img-box {
+            height: 250px;
+            width: 100%;
+            overflow: hidden;
+            border-bottom: 4px solid var(--primary);
+        }
+        .vip-img-box img { width: 100%; height: 100%; object-fit: cover; }
+        
+        .vip-info { padding: 20px; }
+        .vip-info h3 { color: var(--primary); margin-bottom: 5px; font-size: 1.4rem; }
+        .vip-info p { color: #64748b; font-size: 0.9rem; margin-bottom: 10px; }
+        .visit-date {
+            display: inline-block;
+            background: #f1f5f9;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            color: #475569;
+            border: 1px solid #cbd5e1;
+        }
+
+        /* --- GUESTBOOK FORM --- */
+        .guestbook-section {
+            padding: 60px 20px;
+            background: white;
+        }
+        .form-wrapper {
+            max-width: 600px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+            border: 2px solid var(--primary);
+            position: relative;
+        }
+        /* Ribbon Effect */
+        .form-wrapper::before {
+            content: '';
+            position: absolute;
+            top: -10px; left: 50%; transform: translateX(-50%);
+            width: 100px; height: 10px;
+            background: var(--primary);
+            border-radius: 10px;
+        }
+
+        .input-group { margin-bottom: 20px; text-align: left; }
+        .input-group label { display: block; margin-bottom: 8px; color: var(--secondary); font-weight: bold; }
+        .input-group input, .input-group select, .input-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            font-size: 1rem;
+            outline: none;
+        }
+        .input-group input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(194, 65, 12, 0.1); }
+
+        .submit-btn {
+            background: var(--primary);
+            color: white;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 30px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+            transition: 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .submit-btn:hover { background: #9a3412; box-shadow: 0 10px 20px rgba(194, 65, 12, 0.3); }
+
+        /* DARK MODE */
+        body.dark-mode .vip-section { background: #0f172a; }
+        body.dark-mode .vip-card { background: #1e293b; border-color: #334155; }
+        body.dark-mode .vip-info h3 { color: #fdba74; }
+        body.dark-mode .vip-info p, body.dark-mode .visit-date { color: #cbd5e1; background: #334155; }
+        body.dark-mode .guestbook-section { background: #0f172a; }
+        body.dark-mode .form-wrapper { background: #1e293b; border-color: #fdba74; }
+        body.dark-mode .input-group label { color: #cbd5e1; }
+        body.dark-mode .input-group input, body.dark-mode select, body.dark-mode textarea { background: #334155; color: white; border-color: #475569; }
+    </style>
+</head>
+<body>
+
+    <div class="access-bar">
+        <div class="access-controls">
+            <button onclick="toggleDarkMode()"><i class="fa-solid fa-moon"></i></button>
+            <div class="font-controls">
+                <button onclick="changeFontSize(1)">+A</button>
+                <button onclick="changeFontSize(0)">A</button>
+                <button onclick="changeFontSize(-1)">-A</button>
+            </div>
+        </div>
+        <select id="lang-select" onchange="changeVisitorLanguage()">
+            <option value="en">English</option>
+            <option value="mr">मराठी</option>
+            <option value="hi">हिन्दी</option>
+        </select>
+    </div>
+
+    <header>
+        <div class="logo-container">
+            <div class="royal-seal"><i class="fa-solid fa-chess-rook"></i></div>
+        </div>
+        <div class="title-container">
+            <h1 id="txt-title">SHREE SAMBHAJI RAJE HOUSING SOCIETY</h1>
+            <p id="txt-subtitle">Excellence in Community Living</p>
+        </div>
+    </header>
+
+    <div class="visitor-hero">
+        <a href="index.html" style="position: absolute; top: 20px; left: 20px; color: white; background: rgba(0,0,0,0.5); padding: 10px 20px; border-radius: 30px; text-decoration: none; backdrop-filter: blur(5px);">
+            <i class="fa-solid fa-arrow-left"></i> Home
+        </a>
+        <h1 id="txt-hero-title">Atithi Devo Bhava</h1>
+        <p id="txt-hero-sub">Honoring Our Esteemed Guests</p>
+    </div>
+
+    <section class="vip-section">
+        <h2 id="txt-vip-head" style="font-size: 2.5rem; color: var(--primary); margin-bottom: 10px;">Distinguished Guests</h2>
+        <p id="txt-vip-sub" style="color: #64748b;">A glipmse of honorable personalities who graced our society.</p>
+        
+        <div class="vip-grid">
+            <div class="vip-card">
+                <div class="vip-img-box">
+                    <img src="https://images.unsplash.com/photo-1557862921-37829c790f19?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60" alt="Chief Guest">
+                </div>
+                <div class="vip-info">
+                    <h3>Hon. Shri. Amit Patil</h3>
+                    <p>MLA (Member of Legislative Assembly)</p>
+                    <span class="visit-date"><i class="fa-solid fa-calendar-check"></i> 15th Aug 2024</span>
+                </div>
+            </div>
+
+            <div class="vip-card">
+                <div class="vip-img-box">
+                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60" alt="Corporator">
+                </div>
+                <div class="vip-info">
+                    <h3>Hon. Mrs. Sunita Deshmukh</h3>
+                    <p>PCMC Corporator (Nagar-Sevak)</p>
+                    <span class="visit-date"><i class="fa-solid fa-calendar-check"></i> 26th Jan 2025</span>
+                </div>
+            </div>
+
+            <div class="vip-card">
+                <div class="vip-img-box">
+                    <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60" alt="Commissioner">
+                </div>
+                <div class="vip-info">
+                    <h3>Dr. R.K. Sharma</h3>
+                    <p>Municipal Commissioner</p>
+                    <span class="visit-date"><i class="fa-solid fa-calendar-check"></i> 10th Oct 2024</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="guestbook-section">
+        <div class="form-wrapper">
+            <h2 id="txt-form-head" style="text-align: center; color: var(--primary); margin-bottom: 30px; font-size: 2rem;">Digital Guest Entry</h2>
+            
+            <div class="input-group">
+                <label id="lbl-name">Full Name</label>
+                <input type="text" placeholder="Enter Name of Guest / Official">
+            </div>
+
+            <div class="input-group">
+                <label id="lbl-type">Visitor Category</label>
+                <select>
+                    <option>Chief Guest (VIP)</option>
+                    <option>Government Official</option>
+                    <option>Relative / Friend</option>
+                    <option>Vendor / Service</option>
+                </select>
+            </div>
+
+            <div class="input-group">
+                <label id="lbl-purpose">Purpose of Visit</label>
+                <textarea rows="3" placeholder="e.g. Inauguration, Meeting, Inspection"></textarea>
+            </div>
+
+            <button class="submit-btn" onclick="registerVisitor()" id="btn-submit">Register Entry</button>
+        </div>
+    </section>
+
+       <footer>
+        <div class="text"> Contact: shrisambhajiraje.hsgsoc.2017@gmail.com</div>
+        <div class="text"> PCMC: egov@pcmcindia.gov.in</div>
+        <div class="footer-links">
+            <a href="https://www.pcmcindia.gov.in" target="_blank" class="f-link"><i class="fa-solid fa-building"></i> PCMC</a>
+            <a href="https://www.mahadiscom.in" target="_blank" class="f-link"><i class="fa-solid fa-bolt"></i> Mahavitran</a>
+            <a href="#" class="f-link"><i class="fa-solid fa-hand-holding-dollar"></i> Tax</a>
+            <a href="#" class="f-link"><i class="fa-solid fa-faucet-drip"></i> Water</a>
+            <a href="https://www.india.gov.in" target="_blank" class="f-link"><i class="fa-solid fa-flag"></i> India Gov</a>
+        </div>
+        <div class="copyright">
+            &copy; 2026 Shree Sambaji Raje Housing Society
+        </div>
+    </footer>
+   
+
+    <script>
+        function registerVisitor() {
+            alert("Visitor Entry Registered Successfully! \nThank you for visiting Shree Sambhaji Raje HSG SOC.");
+            // In a real app, this would send data to a server.
+        }
+
+        // --- TRANSLATIONS ---
+        const vTranslations = {
+            en: {
+                title: "SHREE SAMBHAJI RAJE HOUSING SOCIETY", sub: "Excellence in Community Living",
+                heroTitle: "Atithi Devo Bhava", heroSub: "Honoring Our Esteemed Guests",
+                vipHead: "Distinguished Guests", vipSub: "A glimpse of honorable personalities who graced our society.",
+                formHead: "Digital Guest Entry",
+                lblName: "Full Name", lblType: "Visitor Category", lblPurpose: "Purpose of Visit",
+                btnSubmit: "Register Entry"
+            },
+            mr: {
+                title: "श्री संभाजी राजे हाऊसिंग सोसायटी", sub: "सामुदायिक जीवनातील उत्कृष्टता",
+                heroTitle: "अतिथी देवो भव", heroSub: "आमच्या सन्माननीय पाहुण्यांचा आदर",
+                vipHead: "माननीय अतिथी", vipSub: "आमच्या सोसायटीला भेट देणाऱ्या प्रतिष्ठित व्यक्तींची झलक.",
+                formHead: "डिजिटल अतिथी नोंदणी",
+                lblName: "पूर्ण नाव", lblType: "पाहुण्यांचा प्रकार", lblPurpose: "भेटीचे कारण",
+                btnSubmit: "प्रवेश नोंदवा"
+            },
+            hi: {
+                title: "श्री संभाजी राजे हाउसिंग सोसाइटी", sub: "सामुदायिक जीवन में उत्कृष्टता",
+                heroTitle: "अतिथि देवो भव", heroSub: "हमारे सम्मानित अतिथियों का सम्मान",
+                vipHead: "विशिष्ट अतिथि", vipSub: "हमारे समाज की शोभा बढ़ाने वाले माननीय व्यक्तियों की एक झलक।",
+                formHead: "डिजिटल अतिथि प्रविष्टि",
+                lblName: "पूरा नाम", lblType: "अतिथि श्रेणी", lblPurpose: "आने का कारण",
+                btnSubmit: "प्रविष्टि दर्ज करें"
+            }
+        };
+
+        function changeVisitorLanguage() {
+            const lang = document.getElementById('lang-select').value;
+            const t = vTranslations[lang];
+
+            document.getElementById('txt-title').innerText = t.title;
+            document.getElementById('txt-subtitle').innerText = t.sub;
+            document.getElementById('txt-hero-title').innerText = t.heroTitle;
+            document.getElementById('txt-hero-sub').innerText = t.heroSub;
+            document.getElementById('txt-vip-head').innerText = t.vipHead;
+            document.getElementById('txt-vip-sub').innerText = t.vipSub;
+            document.getElementById('txt-form-head').innerText = t.formHead;
+            document.getElementById('lbl-name').innerText = t.lblName;
+            document.getElementById('lbl-type').innerText = t.lblType;
+            document.getElementById('lbl-purpose').innerText = t.lblPurpose;
+            document.getElementById('btn-submit').innerText = t.btnSubmit;
+
+            if(lang === 'en') {
+                document.body.classList.remove('lang-sanskrit');
+            } else {
+                document.body.classList.add('lang-sanskrit');
+            }
+        }
+
+        // --- THEME & FONT LOGIC ---
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+        }
+        let currentSize = 16;
+        function changeFontSize(n) {
+            if (n === 0) currentSize = 16;
+            else currentSize += n;
+            if(currentSize > 24) currentSize = 24;
+            if(currentSize < 12) currentSize = 12;
+            document.documentElement.style.setProperty('--base-size', currentSize + 'px');
+        }
+    </script>
+</body>
+</html>
