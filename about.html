@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - Shree Sambhaji Raje HSG SOC</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Tiro+Devanagari+Marathi&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" type="image/x-icon" href="assest/image/society.png">
+    <link rel="stylesheet" href="assest/style.css">
+    
+    <style>
+        /* Extra styles specific to About Page */
+        .about-hero {
+            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1564013799919-ab600027ffc6?ixlib=rb-4.0.3');
+            background-size: cover;
+            background-position: center;
+            height: 300px; /* Increased height slightly since it is at the top now */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            position: relative;
+        }
+        
+        .nav-back-btn {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(255,255,255,0.2);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 30px;
+            text-decoration: none;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255,255,255,0.3);
+            transition: 0.3s;
+            font-weight: bold;
+        }
+        .nav-back-btn:hover { background: var(--primary); border-color: var(--primary); }
+
+        .about-row {
+            display: flex;
+            align-items: center;
+            gap: 40px;
+            margin-bottom: 60px;
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            border: 1px solid #eee;
+        }
+        
+        .about-row.reverse { flex-direction: row-reverse; }
+
+        .about-img-box { flex: 1; height: 300px; border-radius: 15px; overflow: hidden; border: 4px solid #f1f5f9; }
+        .about-img-box img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s; }
+        .about-img-box:hover img { transform: scale(1.05); }
+
+        .about-content { flex: 1.2; }
+        .about-content h2 { color: var(--primary); font-size: 2rem; margin-bottom: 15px; }
+        .about-content p { font-size: 1.1rem; line-height: 1.8; color: #475569; }
+
+        /* Dark Mode overrides */
+        body.dark-mode .about-row { background: #1e293b; border-color: #334155; }
+        body.dark-mode .about-content p { color: #cbd5e1; }
+        body.dark-mode .about-img-box { border-color: #334155; }
+
+        @media (max-width: 768px) {
+            .about-row, .about-row.reverse { flex-direction: column; }
+            .about-img-box { width: 100%; height: 200px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="access-bar">
+        <div class="access-controls">
+            <button onclick="toggleDarkMode()"><i class="fa-solid fa-moon"></i></button>
+            <div class="font-controls">
+                <button onclick="changeFontSize(1)">+A</button>
+                <button onclick="changeFontSize(0)">A</button>
+                <button onclick="changeFontSize(-1)">-A</button>
+            </div>
+        </div>
+        <select id="lang-select" onchange="changeAboutLanguage()">
+            <option value="en">English</option>
+            <option value="mr">मराठी</option>
+            <option value="hi">हिन्दी</option>
+        </select>
+    </div>
+
+    <div class="about-hero">
+        <a href="index.html" class="nav-back-btn"><i class="fa-solid fa-arrow-left"></i> Home</a>
+        <div>
+            <h1 id="txt-hero-title" style="font-size: 3rem; text-shadow: 0 4px 10px rgba(0,0,0,0.5);">About Us</h1>
+            <p id="txt-hero-sub" style="font-size: 1.2rem; opacity: 0.9;">History & Surroundings</p>
+        </div>
+    </div>
+
+    <header>
+         <div class="logo-container">
+            
+                <img src="assest/image/society.png" alt="Flowers in Chania" width="200px">
+            </div>
+        <div class="title-container">
+            <h1 id="txt-title">SHREE SAMBHAJI RAJE HOUSING SOCIETY</h1>
+            <p id="txt-subtitle">Excellence in Community Living</p>
+        </div>
+    </header>
+
+    <main>
+        
+        <div class="about-row">
+        
+            <div class="about-content">
+                <h2 id="txt-soc-head">About our Society History</h2>
+                <p id="txt-soc-body">
+                   Shree Sambhaji Raje Housing Society (HSG SOC) is a registered residential cooperative housing society located at Ganesh Nagar, Village Talwade, under the jurisdiction of Pimpri-Chinchwad Municipal Corporation (PCMC), Pune, Maharashtra. The society was established in the year 2017 with the objective of providing organized, secure, and sustainable housing facilities to its members.
+                    The society comprises 20 registered members, as per official mutation records, all of whom are recognized as lawful landlords or allottees of their respective residential units. Each member holds ownership rights in accordance with the Maharashtra Cooperative Societies Act and the society’s approved bylaws. The society functions on democratic principles, ensuring transparency, equal participation, and collective decision-making.
+                    Shree Sambhaji Raje HSG SOC is primarily a residential housing society, designed to promote a peaceful living environment with essential civic amenities. The society actively coordinates with PCMC for municipal services such as water supply, drainage, waste management, road access, street lighting, and sanitation. Regular maintenance and upkeep of common areas are managed by the society through internally approved procedures.
+                    The society is administered by an elected Managing Committee, which is responsible for day-to-day operations, financial management, maintenance planning, and statutory compliance. Periodic general body meetings are conducted to discuss budgets, maintenance charges, repairs, and community matters. Accounts are maintained systematically, and records are updated as per cooperative norms.
+                    Located in Talwade, an area witnessing steady residential and infrastructural development, the society benefits from proximity to industrial zones, educational institutions, public transport, and essential services. The society maintains a community-focused approach, encouraging harmony, cleanliness, and mutual cooperation among residents.
+                    Overall, Shree Sambhaji Raje Housing Society stands as a well-structured and responsibly managed residential society, committed to lawful governance, member welfare, and long-term community development under the PCMC administration.
+
+
+                </p>
+            </div>
+        </div>
+
+        <div class="about-row reverse">
+            <div class="about-img-box">
+                <img src="data:image/jpeg;base64,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" alt="Ganesh Nagar Area">
+            </div>
+            <div class="about-content">
+                <h2 id="txt-area-head">About Ganesh Nagar</h2>
+                <p id="txt-area-body">
+                    Located in the serene locality of Talwade, Ganesh Nagar offers the perfect balance between industrial connectivity and residential peace. Being close to the IT Park, it is a prime location for professionals, yet it maintains a quiet, green atmosphere suitable for families and senior citizens.
+                </p>
+            </div>
+        </div>
+
+        <div class="about-row">
+            <div class="about-img-box">
+                <img src="https://tse4.mm.bing.net/th/id/OIP.PNh9itgRfgD6RQhsTmXAeQHaD4?rs=1&pid=ImgDetMain&o=7&rm=3" alt="PCMC Building">
+            </div>
+            <div class="about-content">
+                <h2 id="txt-pcmc-head">Under PCMC Jurisdiction</h2>
+                <p id="txt-pcmc-body">
+                    We are proud to be under the administration of the Pimpri-Chinchwad Municipal Corporation (PCMC). Known as one of the richest and most well-managed corporations in Asia, PCMC provides us with excellent roads, regular water supply, and efficient waste management systems, ensuring a high standard of living.
+                </p>
+            </div>
+        </div>
+
+    </main>
+
+    <footer>
+        <div class="copyright">
+            &copy; 2026 Shree Sambhaji Raje Housing Society | Ganesh Nagar, Talwade
+        </div>
+    </footer>
+
+    <script>
+        // --- TRANSLATIONS FOR ABOUT PAGE ---
+        const aboutTranslations = {
+            en: {
+                title: "SHREE SAMBHAJI RAJE HOUSING SOCIETY",
+                sub: "Excellence in Community Living",
+                heroTitle: "About Us",
+                heroSub: "History & Surroundings",
+                
+                socHead: "Our Society History",
+                socBody: " Shree Sambhaji Raje Housing Society (HSG SOC) is a registered residential cooperative housing society located at Ganesh Nagar, Village Talwade, under the jurisdiction of Pimpri-Chinchwad Municipal Corporation (PCMC), Pune, Maharashtra. The society was established in the year 2017 with the objective of providing organized, secure, and sustainable housing facilities to its members. The society comprises 20 registered members, as per official mutation records, all of whom are recognized as lawful landlords or allottees of their respective residential units. Each member holds ownership rights in accordance with the Maharashtra Cooperative Societies Act and the society’s approved bylaws. The society functions on democratic principles, ensuring transparency, equal participation, and collective decision-making. Shree Sambhaji Raje HSG SOC is primarily a residential housing society, designed to promote a peaceful living environment with essential civic amenities. The society actively coordinates with PCMC for municipal services such as water supply, drainage, waste management, road access, street lighting, and sanitation. Regular maintenance and upkeep of common areas are managed by the society through internally approved procedures.The society is administered by an elected Managing Committee, which is responsible for day-to-day operations, financial management, maintenance planning, and statutory compliance. Periodic general body meetings are conducted to discuss budgets, maintenance charges, repairs, and community matters. Accounts are maintained systematically, and records are updated as per cooperative norms. Located in Talwade, an area witnessing steady residential and infrastructural development, the society benefits from proximity to industrial zones, educational institutions, public transport, and essential services. The society maintains a community-focused approach, encouraging harmony, cleanliness, and mutual cooperation among residents.Overall, Shree Sambhaji Raje Housing Society stands as a well-structured and responsibly managed residential society, committed to lawful governance, member welfare, and long-term community development under the PCMC administration.",
+                
+                areaHead: "About Ganesh Nagar",
+                areaBody: "Located in the serene locality of Talwade, Ganesh Nagar offers the perfect balance between industrial connectivity and residential peace. Being close to the IT Park, it is a prime location for professionals, yet it maintains a quiet, green atmosphere suitable for families.",
+                
+                pcmcHead: "Under PCMC Jurisdiction",
+                pcmcBody: "We are proud to be under the administration of the Pimpri-Chinchwad Municipal Corporation (PCMC). Known as one of the best-managed corporations, PCMC provides us with excellent roads, regular water supply, and efficient waste management systems."
+            },
+            mr: {
+                title: "श्री संभाजी राजे हाऊसिंग सोसायटी",
+                sub: "सामुदायिक जीवनातील उत्कृष्टता",
+                heroTitle: "आमच्याबद्दल",
+                heroSub: "इतिहास आणि परिसर",
+                
+                socHead: "सोसायटीचा इतिहास",
+                socBody: "श्री संभाजी राजे गृहनिर्माण संस्था (एचएसजी सोसायटी) ही पुणे, महाराष्ट्र येथील पिंपरी-चिंचवड महानगरपालिकेच्या (PCMC) कार्यक्षेत्रात, गणेश नगर, गाव तळवडे येथे स्थित एक नोंदणीकृत निवासी सहकारी गृहनिर्माण संस्था आहे. आपल्या सदस्यांना संघटित, सुरक्षित आणि शाश्वत गृहनिर्माण सुविधा प्रदान करण्याच्या उद्देशाने या संस्थेची स्थापना २०१७ साली करण्यात आली. अधिकृत फेरफार नोंदीनुसार, संस्थेमध्ये २० नोंदणीकृत सदस्य आहेत, जे सर्व त्यांच्या संबंधित निवासी युनिट्सचे कायदेशीर मालक किंवा वाटपधारक म्हणून ओळखले जातात. प्रत्येक सदस्याकडे महाराष्ट्र सहकारी संस्था कायदा आणि संस्थेच्या मंजूर उपविधींनुसार मालकी हक्क आहेत. संस्था लोकशाही तत्त्वांवर कार्य करते, ज्यामुळे पारदर्शकता, समान सहभाग आणि सामूहिक निर्णय प्रक्रिया सुनिश्चित होते. श्री संभाजी राजे गृहनिर्माण संस्था ही प्रामुख्याने एक निवासी गृहनिर्माण संस्था आहे, जी आवश्यक नागरी सुविधांसह शांततापूर्ण जीवनशैलीला प्रोत्साहन देण्यासाठी डिझाइन केलेली आहे. पाणीपुरवठा, सांडपाणी व्यवस्थापन, कचरा व्यवस्थापन, रस्ते, पथदिवे आणि स्वच्छता यांसारख्या महानगरपालिका सेवांसाठी संस्था PCMC सोबत सक्रियपणे समन्वय साधते. सामान्य जागांची नियमित देखभाल आणि दुरुस्ती संस्थेद्वारे अंतर्गत मंजूर कार्यपद्धतीनुसार व्यवस्थापित केली जाते.  संस्थेचा कारभार एका निवडलेल्या व्यवस्थापन समितीद्वारे चालवला जातो, जी दैनंदिन कामकाज, आर्थिक व्यवस्थापन, देखभालीचे नियोजन आणि वैधानिक अनुपालनासाठी जबाबदार असते. अर्थसंकल्प, देखभाल शुल्क, दुरुस्ती आणि सामुदायिक बाबींवर चर्चा करण्यासाठी वेळोवेळी सर्वसाधारण सभा आयोजित केल्या जातात. खाती पद्धतशीरपणे ठेवली जातात आणि सहकारी नियमांनुसार नोंदी अद्ययावत केल्या जातात.  तळवडे येथे स्थित असल्यामुळे, जो परिसर निवासी आणि पायाभूत सुविधांच्या स्थिर विकासाचा साक्षीदार आहे, या संस्थेला औद्योगिक क्षेत्रे, शैक्षणिक संस्था, सार्वजनिक वाहतूक आणि आवश्यक सेवांच्या सान्निध्याचा फायदा होतो. संस्था समुदाय-केंद्रित दृष्टिकोन ठेवते, ज्यामुळे रहिवाशांमध्ये सलोखा, स्वच्छता आणि परस्पर सहकार्याला प्रोत्साहन मिळते.  एकंदरीत, श्री संभाजी राजे गृहनिर्माण संस्था ही एक सुव्यवस्थित आणि जबाबदारीने व्यवस्थापित केलेली निवासी संस्था म्हणून ओळखली जाते, जी PCMC प्रशासनांतर्गत कायदेशीर प्रशासन, सदस्य कल्याण आणि दीर्घकालीन सामुदायिक विकासासाठी वचनबद्ध आहे.",
+                
+                areaHead: "गणेश नगर बद्दल",
+                areaBody: "तळवडेच्या शांत परिसरात वसलेले, गणेश नगर औद्योगिक कनेक्टिव्हिटी आणि निवासी शांतता यांच्यात परिपूर्ण संतुलन देते. आयटी पार्कच्या जवळ असल्याने, हे व्यावसायिकांसाठी एक मुख्य ठिकाण आहे, तरीही येथे कुटुंबांसाठी उपयुक्त शांत आणि हिरवेगार वातावरण आहे.",
+                
+                pcmcHead: "PCMC च्या अधिकारक्षेत्रात",
+                pcmcBody: "पिंपरी-चिंचवड महानगरपालिकेच्या (PCMC) प्रशासनाखाली असल्याचा आम्हाला अभिमान आहे. आशियातील सर्वात श्रीमंत आणि उत्तम व्यवस्थापन असलेल्या महापालिकांपैकी एक म्हणून ओळखली जाणारी PCMC आम्हाला उत्कृष्ट रस्ते, नियमित पाणीपुरवठा आणि कार्यक्षम कचरा व्यवस्थापन प्रदान करते."
+            },
+            hi: {
+                title: "श्री संभाजी राजे हाउसिंग सोसाइटी",
+                sub: "सामुदायिक जीवन में उत्कृष्टता",
+                heroTitle: "हमारे बारे में",
+                heroSub: "इतिहास और परिवेश",
+                
+                socHead: "सोसाइटी का इतिहास",
+                socBody: "श्री संभाजी राजे हाउसिंग सोसाइटी (HSG SOC) एक रजिस्टर्ड आवासीय सहकारी हाउसिंग सोसाइटी है, जो गणेश नगर, गांव तलवडे, पिंपरी-चिंचवड़ नगर निगम (PCMC), पुणे, महाराष्ट्र के अधिकार क्षेत्र में स्थित है। सोसाइटी की स्थापना वर्ष 2017 में अपने सदस्यों को व्यवस्थित, सुरक्षित और टिकाऊ आवास सुविधाएं प्रदान करने के उद्देश्य से की गई थी। आधिकारिक म्यूटेशन रिकॉर्ड के अनुसार, सोसाइटी में 20 रजिस्टर्ड सदस्य हैं, जिनमें से सभी को उनकी संबंधित आवासीय इकाइयों के वैध मकान मालिक या आवंटनकर्ता के रूप में मान्यता प्राप्त है। प्रत्येक सदस्य महाराष्ट्र सहकारी समिति अधिनियम और सोसाइटी के स्वीकृत उपनियमों के अनुसार स्वामित्व अधिकार रखता है। सोसाइटी लोकतांत्रिक सिद्धांतों पर काम करती है, जो पारदर्शिता, समान भागीदारी और सामूहिक निर्णय लेने को सुनिश्चित करती है। श्री संभाजी राजे HSG SOC मुख्य रूप से एक आवासीय हाउसिंग सोसाइटी है, जिसे आवश्यक नागरिक सुविधाओं के साथ एक शांतिपूर्ण रहने का माहौल बनाने के लिए डिज़ाइन किया गया है। सोसाइटी पानी की आपूर्ति, जल निकासी, कचरा प्रबंधन, सड़क पहुंच, स्ट्रीट लाइटिंग और स्वच्छता जैसी नगरपालिका सेवाओं के लिए PCMC के साथ सक्रिय रूप से समन्वय करती है। सामान्य क्षेत्रों का नियमित रखरखाव और देखभाल सोसाइटी द्वारा आंतरिक रूप से स्वीकृत प्रक्रियाओं के माध्यम से प्रबंधित किया जाता है। सोसाइटी का प्रशासन एक निर्वाचित प्रबंध समिति द्वारा किया जाता है, जो दिन-प्रतिदिन के संचालन, वित्तीय प्रबंधन, रखरखाव योजना और वैधानिक अनुपालन के लिए जिम्मेदार है। बजट, रखरखाव शुल्क, मरम्मत और सामुदायिक मामलों पर चर्चा करने के लिए समय-समय पर आम सभा की बैठकें आयोजित की जाती हैं। खाते व्यवस्थित रूप से बनाए रखे जाते हैं, और रिकॉर्ड सहकारी मानदंडों के अनुसार अपडेट किए जाते हैं। तलवडे में स्थित, जो एक ऐसा क्षेत्र है जहां लगातार आवासीय और बुनियादी ढांचे का विकास हो रहा है, सोसाइटी को औद्योगिक क्षेत्रों, शैक्षणिक संस्थानों, सार्वजनिक परिवहन और आवश्यक सेवाओं से निकटता का लाभ मिलता है। सोसाइटी एक समुदाय-केंद्रित दृष्टिकोण बनाए रखती है, जो निवासियों के बीच सद्भाव, स्वच्छता और आपसी सहयोग को प्रोत्साहित करती है। कुल मिलाकर, श्री संभाजी राजे हाउसिंग सोसाइटी एक अच्छी तरह से संरचित और जिम्मेदारी से प्रबंधित आवासीय सोसाइटी के रूप में खड़ी है, जो PCMC प्रशासन के तहत वैध शासन, सदस्य कल्याण और दीर्घकालिक सामुदायिक विकास के लिए प्रतिबद्ध है।",
+                
+                areaHead: "गणेश नगर के बारे में",
+                areaBody: "तलवडे के शांत इलाके में स्थित, गणेश नगर औद्योगिक कनेक्टिविटी और आवासीय शांति के बीच सही संतुलन प्रदान करता है। आईटी पार्क के करीब होने के कारण, यह पेशेवरों के लिए एक प्रमुख स्थान है, फिर भी यहाँ परिवारों के लिए उपयुक्त शांत वातावरण है।",
+                
+                pcmcHead: "PCMC अधिकार क्षेत्र के अंतर्गत",
+                pcmcBody: "हमें पिंपरी-चिंचवड़ नगर निगम (PCMC) के प्रशासन के तहत होने पर गर्व है। सबसे अच्छी तरह से प्रबंधित निगमों में से एक के रूप में जाना जाने वाला PCMC हमें उत्कृष्ट सड़कें, नियमित पानी की आपूर्ति और कुशल कचरा प्रबंधन प्रणाली प्रदान करता है।"
+            }
+        };
+
+        // --- THEME & FONT LOGIC ---
+        let currentSize = 16;
+        function changeFontSize(n) {
+            if (n === 0) currentSize = 16;
+            else currentSize += n;
+            if(currentSize > 24) currentSize = 24;
+            if(currentSize < 12) currentSize = 12;
+            document.documentElement.style.setProperty('--base-size', currentSize + 'px');
+        }
+
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+        }
+
+        // --- TRANSLATE FUNCTION ---
+        function changeAboutLanguage() {
+            const lang = document.getElementById('lang-select').value;
+            const t = aboutTranslations[lang];
+
+            document.getElementById('txt-title').innerText = t.title;
+            document.getElementById('txt-subtitle').innerText = t.sub;
+            document.getElementById('txt-hero-title').innerText = t.heroTitle;
+            document.getElementById('txt-hero-sub').innerText = t.heroSub;
+            document.getElementById('txt-soc-head').innerText = t.socHead;
+            document.getElementById('txt-soc-body').innerText = t.socBody;
+            document.getElementById('txt-area-head').innerText = t.areaHead;
+            document.getElementById('txt-area-body').innerText = t.areaBody;
+            document.getElementById('txt-pcmc-head').innerText = t.pcmcHead;
+            document.getElementById('txt-pcmc-body').innerText = t.pcmcBody;
+
+            if(lang === 'en') {
+                document.body.classList.remove('lang-sanskrit');
+            } else {
+                document.body.classList.add('lang-sanskrit');
+            }
+        }
+    </script>
+</body>
+</html>

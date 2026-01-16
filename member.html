@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Member Portal - Shree Sambhaji Raje HSG SOC</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Tiro+Devanagari+Marathi&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="assest/style.css">
+
+    <style>
+        /* --- LOCK SCREEN STYLES --- */
+        #login-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(135deg, #1e293b, #0f172a);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+
+        .login-box {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 40px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            text-align: center;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+        }
+
+        .login-box i { font-size: 3rem; color: #fbbf24; margin-bottom: 20px; }
+        .login-box h2 { color: white; margin-bottom: 20px; font-family: 'Playfair Display', serif; }
+
+        .pass-input {
+            width: 100%;
+            padding: 12px;
+            border-radius: 30px;
+            border: none;
+            outline: none;
+            text-align: center;
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+            background: rgba(255,255,255,0.9);
+        }
+
+        .login-btn {
+            background: #c2410c;
+            color: white;
+            padding: 10px 30px;
+            border-radius: 30px;
+            border: none;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+            width: 100%;
+        }
+        .login-btn:hover { background: #ea580c; }
+
+        #error-msg { color: #ff6b6b; margin-top: 10px; font-size: 0.9rem; display: none; }
+
+        /* --- DASHBOARD STYLES (Hidden by default) --- */
+        #dashboard-content { display: none; } /* HIDDEN INITIALLY */
+
+        .dashboard-header {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .dash-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .dash-card {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            border-top: 4px solid var(--primary);
+        }
+        
+        .dash-card h3 { color: var(--secondary); margin-bottom: 15px; border-bottom: 1px solid #eee; padding-bottom: 10px; }
+        
+        .notice-item {
+            background: #f8fafc;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-left: 3px solid #fbbf24;
+            font-size: 0.9rem;
+        }
+
+        .bill-status {
+            text-align: center;
+            padding: 20px;
+            background: #ecfccb;
+            color: #3f6212;
+            border-radius: 10px;
+            font-weight: bold;
+        }
+
+        .download-link {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px;
+            color: #475569;
+            text-decoration: none;
+            transition: 0.3s;
+        }
+        .download-link:hover { color: var(--primary); background: #fff7ed; border-radius: 5px; }
+
+        /* Dark Mode overrides */
+        body.dark-mode .dashboard-header, body.dark-mode .dash-card { background: #1e293b; color: white; border-color: #334155; }
+        body.dark-mode .notice-item { background: #0f172a; color: #cbd5e1; }
+        body.dark-mode .bill-status { background: #14532d; color: #bbf7d0; }
+        body.dark-mode .download-link { color: #94a3b8; }
+        body.dark-mode .download-link:hover { background: #334155; color: white; }
+    </style>
+</head>
+<body>
+
+    <div id="login-overlay">
+        <div class="login-box">
+            <i class="fa-solid fa-user-lock"></i>
+            <h2 id="txt-login-title">Member Access</h2>
+            <p style="color:rgba(255,255,255,0.7); margin-bottom:15px; font-size:0.9rem;">Please enter the Society Passcode</p>
+            
+            <input type="password" id="pass-input" class="pass-input" placeholder="Enter Passcode">
+            <button class="login-btn" onclick="checkHash()">Unlock Dashboard</button>
+            <p id="error-msg"><i class="fa-solid fa-circle-exclamation"></i> Incorrect Passcode</p>
+            
+            <br>
+            <a href="index.html" style="color:rgba(255,255,255,0.5); text-decoration:none; font-size:0.8rem;">
+                <i class="fa-solid fa-arrow-left"></i> Back to Home
+            </a>
+        </div>
+    </div>
+
+    <div id="dashboard-content">
+        
+        <div class="access-bar">
+            <div class="access-controls">
+                <button onclick="toggleDarkMode()"><i class="fa-solid fa-moon"></i></button>
+                <div class="font-controls">
+                    <button onclick="changeFontSize(1)">+A</button>
+                    <button onclick="changeFontSize(0)">A</button>
+                    <button onclick="changeFontSize(-1)">-A</button>
+                </div>
+            </div>
+            <select id="lang-select" onchange="changeMemberLanguage()">
+                <option value="en">English</option>
+                <option value="mr">मराठी</option>
+                <option value="hi">हिन्दी</option>
+            </select>
+        </div>
+
+        <header>
+            <div class="logo-container">
+                <div class="royal-seal"><i class="fa-solid fa-chess-rook"></i></div>
+            </div>
+            <div class="title-container">
+                <h1 id="txt-title">SHREE SAMBHAJI RAJE HOUSING SOCIETY</h1>
+                <p>Member Dashboard</p>
+            </div>
+        </header>
+
+        <main>
+            <div class="dashboard-header">
+                <div>
+                    <h2 style="color:var(--primary); margin-bottom:5px;" id="txt-welcome">Welcome, Resident</h2>
+                    <p style="opacity:0.7;">Unit: General Member View</p>
+                </div>
+                <button onclick="logout()" class="login-btn" style="width:auto; background:#475569;">
+                    <i class="fa-solid fa-right-from-bracket"></i> Logout
+                </button>
+            </div>
+
+            <div class="dash-grid">
+                
+                <div class="dash-card">
+                    <h3 id="txt-notice-head"><i class="fa-solid fa-bullhorn"></i> Official Notices</h3>
+                    <div class="notice-item">
+                        <strong>AGM Meeting</strong><br>
+                        <span style="font-size:0.8rem; opacity:0.7;">Date: 25th Jan 2026 | Time: 10:00 AM</span>
+                    </div>
+                    <div class="notice-item" style="border-color:red;">
+                        <strong>Water Tank Cleaning</strong><br>
+                        <span style="font-size:0.8rem; opacity:0.7;">Date: 28th Jan | No Supply 2pm-5pm</span>
+                    </div>
+                </div>
+
+                <div class="dash-card">
+                    <h3 id="txt-bill-head"><i class="fa-solid fa-file-invoice-dollar"></i> Maintenance</h3>
+                    <div class="bill-status">
+                        <i class="fa-solid fa-check-circle fa-2x"></i><br>
+                        <span id="txt-bill-status">No Outstanding Dues</span>
+                    </div>
+                    <p style="text-align:center; margin-top:15px; font-size:0.9rem; opacity:0.8;">
+                        Next Bill Generation: 01 Feb 2026
+                    </p>
+                    <button class="login-btn" style="margin-top:10px;">View History</button>
+                </div>
+
+                <div class="dash-card">
+                    <h3 id="txt-doc-head"><i class="fa-solid fa-folder-open"></i> Documents</h3>
+                    <a href="#" class="download-link"><i class="fa-solid fa-file-pdf"></i> Society By-Laws PDF</a>
+                    <a href="#" class="download-link"><i class="fa-solid fa-file-pdf"></i> Parking Rules PDF</a>
+                    <a href="#" class="download-link"><i class="fa-solid fa-file-pdf"></i> Renovation Form</a>
+                    <a href="#" class="download-link"><i class="fa-solid fa-file-pdf"></i> MOM - Dec 2025</a>
+                </div>
+
+            </div>
+        </main>
+
+        <footer>
+            <div class="copyright">&copy; 2026 Shree Sambhaji Raje HSG SOC</div>
+        </footer>
+    </div>
+
+    <script>
+        
+        const SECRET_HASH = "5026e9de6b044168f07fffd9200b4cbadc6ad6173c6975d8dbf45ddcecf9b4c6"; 
+
+        async function checkHash() {
+            const input = document.getElementById('pass-input').value;
+            const errorMsg = document.getElementById('error-msg');
+
+            // Convert input to Hash
+            const msgBuffer = new TextEncoder().encode(input);
+            const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+            const hashArray = Array.from(new Uint8Array(hashBuffer));
+            const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+
+            // Compare
+            if (hashHex === SECRET_HASH) {
+                // SUCCESS
+                document.getElementById('login-overlay').style.display = 'none';
+                document.getElementById('dashboard-content').style.display = 'block';
+                // Store in session so they don't have to login again if they refresh
+                sessionStorage.setItem('isLoggedIn', 'true');
+            } else {
+                // FAIL
+                errorMsg.style.display = 'block';
+                document.getElementById('pass-input').value = '';
+            }
+        }
+
+        function logout() {
+            sessionStorage.removeItem('isLoggedIn');
+            location.reload();
+        }
+
+        // Auto-login if session exists
+        window.onload = function() {
+            if(sessionStorage.getItem('isLoggedIn') === 'true') {
+                document.getElementById('login-overlay').style.display = 'none';
+                document.getElementById('dashboard-content').style.display = 'block';
+            }
+            // Load default language settings
+            changeMemberLanguage();
+        }
+
+        // --- 2. TRANSLATION LOGIC ---
+        const memberTrans = {
+            en: {
+                title: "SHREE SAMBHAJI RAJE HOUSING SOCIETY",
+                welcome: "Welcome, Resident",
+                notices: "Official Notices",
+                bills: "Maintenance",
+                docs: "Documents",
+                status: "No Outstanding Dues"
+            },
+            mr: {
+                title: "श्री संभाजी राजे हाऊसिंग सोसायटी",
+                welcome: "स्वागत आहे, रहिवासी",
+                notices: "अधिकृत सूचना",
+                bills: "देखभाल शुल्क",
+                docs: "कागदपत्रे",
+                status: "कोणतीही थकबाकी नाही"
+            },
+            hi: {
+                title: "श्री संभाजी राजे हाउसिंग सोसाइटी",
+                welcome: "स्वागत है, निवासी",
+                notices: "आधिकारिक सूचनाएं",
+                bills: "रखरखाव शुल्क",
+                docs: "दस्तावेज़",
+                status: "कोई बकाया नहीं"
+            }
+        };
+
+        function changeMemberLanguage() {
+            const lang = document.getElementById('lang-select').value;
+            const t = memberTrans[lang];
+
+            document.getElementById('txt-title').innerText = t.title;
+            document.getElementById('txt-welcome').innerText = t.welcome;
+            document.getElementById('txt-notice-head').innerHTML = `<i class="fa-solid fa-bullhorn"></i> ${t.notices}`;
+            document.getElementById('txt-bill-head').innerHTML = `<i class="fa-solid fa-file-invoice-dollar"></i> ${t.bills}`;
+            document.getElementById('txt-doc-head').innerHTML = `<i class="fa-solid fa-folder-open"></i> ${t.docs}`;
+            document.getElementById('txt-bill-status').innerText = t.status;
+
+            // Font/Theme logic from main script
+            if(lang === 'en') document.body.classList.remove('lang-sanskrit');
+            else document.body.classList.add('lang-sanskrit');
+        }
+
+        // --- 3. THEME LOGIC ---
+        let currentSize = 16;
+        function changeFontSize(n) {
+            if (n === 0) currentSize = 16;
+            else currentSize += n;
+            if(currentSize > 24) currentSize = 24;
+            if(currentSize < 12) currentSize = 12;
+            document.documentElement.style.setProperty('--base-size', currentSize + 'px');
+        }
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+        }
+    </script>
+</body>
+</html>
