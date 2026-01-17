@@ -334,83 +334,84 @@
     </div>
 
     <script>
-        function updateVisitorCount() {
-            // 1. Get the current count from storage (or 0 if new)
-            let currentCount = localStorage.getItem('societyMemberVisits');
-            
-            if (!currentCount) {
-                currentCount = 0;
-            } else {
-                currentCount = parseInt(currentCount); // Convert text to number
-            }
+        // ==========================================
+        // 1. CONFIGURATION (Essential)
+        // ==========================================
+        // PASTE YOUR GOOGLE APPS SCRIPT WEB APP URL HERE
+        const API_URL = "https://script.google.com/macros/s/AKfycbxqjeosjsJuJKEI1hLta2XAle81vlfCwYmjmBYhr39MUjvVl_G95XyFfTExajJCj3sI/exec"; 
 
-            // 2. Add 1 to the count
-            let newCount = currentCount + 1;
 
-            // 3. Save it back to storage
-            localStorage.setItem('societyMemberVisits', newCount);
-
-            // 4. Display it
-            const counterElement = document.getElementById('visitor-count');
-            if(counterElement) {
-                counterElement.innerText = newCount;
-            }
-        }
-
-        // Run the counter function when page loads
-        updateVisitorCount();
-        // --- 1. SIMPLE PASSWORD CHECK ---
+        // ==========================================
+        // 2. SECURITY & LOGIN
+        // ==========================================
         function checkPass() {
             const input = document.getElementById('passwordInput').value.toLowerCase().trim();
             const errorMsg = document.getElementById('error-msg');
             
-            // Password: sambaji (Base64 check to hide it slightly)
+            // Password: sambaji
             if (btoa(input) === 'c2FtYmFqaQ==') { 
                 document.getElementById('login-section').style.display = 'none';
                 document.getElementById('dashboard-section').style.display = 'block';
                 sessionStorage.setItem('memberAuth', 'true');
+                
+                // LOAD NOTICES AFTER LOGIN
+                loadNotices();
             } else {
                 errorMsg.style.display = 'block';
             }
         }
 
+        // Auto-login check
         if(sessionStorage.getItem('memberAuth') === 'true') {
             document.getElementById('login-section').style.display = 'none';
             document.getElementById('dashboard-section').style.display = 'block';
-        }
-
-        // --- 2. PUBLISH NOTICE LOGIC ---
-        function openPublishModal() {
-            document.getElementById('publish-modal').style.display = 'flex';
-        }
-        function closePublishModal() {
-            document.getElementById('publish-modal').style.display = 'none';
-        }
-
-        function publishNotice() {
-            // Get Values
-            const title = document.getElementById('notice-title').value;
-            const desc = document.getElementById('notice-desc').value;
-            const author = document.getElementById('notice-author').value || "Admin";
-            const contact = document.getElementById('notice-contact').value || "N/A";
             
-            // Get Current Date
-            const dateObj = new Date();
-            const dateStr = dateObj.toLocaleDateString('en-GB'); // DD/MM/YYYY format
+            // LOAD NOTICES ON REFRESH
+            loadNotices();
+        }
 
-            if(title && desc) {
-                const list = document.getElementById('notice-list');
+        function logout() {
+            sessionStorage.removeItem('memberAuth');
+            alert("You have been logged out securely.");
+            window.location.href = 'index.html';
+        }
+
+
+        // ==========================================
+        // 3. GOOGLE SHEET INTEGRATION (NOTICES)
+        // ==========================================
+        
+        // --- LOAD NOTICES FROM SHEET ---
+        function loadNotices() {
+            const list = document.getElementById('notice-list');
+            list.innerHTML = '<p style="text-align:center; padding:20px;">Loading Notices from Database...</p>';
+
+            // Check if API URL is set
+            if(API_URL === "YOUR_WEB_APP_URL" || API_URL === "") {
+                list.innerHTML = '<p style="color:red; text-align:center;">Error: Google Sheet API URL not configured in code.</p>';
+                return;
+            }
+
+            fetch(API_URL + "?action=getNotices")
+            .then(response => response.json())
+            .then(data => {
+                list.innerHTML = ""; // Clear loading message
                 
-                // Get labels based on current language
-                const lang = document.getElementById('lang-select').value;
-                const labels = {
-                    en: { by: "By:", date: "Date:", ph: "Ph:" },
-                    mr: { by: "द्वारे:", date: "दिनांक:", ph: "संपर्क:" },
-                    hi: { by: "द्वारा:", date: "दिनांक:", ph: "संपर्क:" }
-                };
-                const l = labels[lang];
+                if(data.length === 0) {
+                    list.innerHTML = "<p style='text-align:center; padding:20px; color:#666;'>No notices found.</p>";
+                    return;
+                }
 
-                const newNotice = `
+                data.forEach(row => {
+                    // Row structure from Sheet: [Date, Title, Desc, Author, Contact]
+                    const dateRaw = new Date(row[0]);
+                    const dateStr = dateRaw.toLocaleDateString('en-GB'); // DD/MM/YYYY
+                    const title = row[1];
+                    const desc = row[2];
+                    const author = row[3];
+                    const contact = row[4];
+
+                    const html = `
                     <div class="notice-item">
                         <div class="notice-icon"><i class="fa-solid fa-bullhorn"></i></div>
                         <div style="width:100%;">
@@ -418,158 +419,102 @@
                             <p style="font-size:0.95rem; color:#444; margin-bottom:5px;">${desc}</p>
                             
                             <div class="notice-meta">
-                                <span><i class="fa-solid fa-user"></i> <strong>${l.by}</strong> ${author}</span>
-                                <span><i class="fa-solid fa-calendar"></i> <strong>${l.date}</strong> ${dateStr}</span>
-                                <span><i class="fa-solid fa-phone"></i> <strong>${l.ph}</strong> ${contact}</span>
+                                <span><i class="fa-solid fa-user"></i> <strong>By:</strong> ${author}</span>
+                                <span><i class="fa-solid fa-calendar"></i> <strong>Date:</strong> ${dateStr}</span>
+                                <span><i class="fa-solid fa-phone"></i> <strong>Ph:</strong> ${contact}</span>
                             </div>
                         </div>
-                    </div>
-                `;
-                
-                list.insertAdjacentHTML('afterbegin', newNotice); // Add to top
-                
-                // Reset Fields
-                document.getElementById('notice-title').value = "";
-                document.getElementById('notice-desc').value = "";
-                document.getElementById('notice-author').value = "";
-                document.getElementById('notice-contact').value = "";
-                
-                closePublishModal();
-                alert("Notice Published Successfully!");
+                    </div>`;
+                    
+                    list.innerHTML += html;
+                });
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                list.innerHTML = "<p style='color:red; text-align:center;'>Failed to load notices. Check connection.</p>";
+            });
+        }
+
+        // --- PUBLISH NOTICE TO SHEET ---
+        function openPublishModal() { document.getElementById('publish-modal').style.display = 'flex'; }
+        function closePublishModal() { document.getElementById('publish-modal').style.display = 'none'; }
+
+        function publishNotice() {
+            const title = document.getElementById('notice-title').value;
+            const desc = document.getElementById('notice-desc').value;
+            const author = document.getElementById('notice-author').value || "Admin";
+            const contact = document.getElementById('notice-contact').value || "N/A";
+            
+            const btn = document.getElementById('btn-modal-publish');
+
+            if(title && desc) {
+                // Change button state
+                const originalText = btn.innerText;
+                btn.innerText = "Saving...";
+                btn.disabled = true;
+
+                // Prepare Data
+                const formData = new FormData();
+                formData.append('action', 'addNotice');
+                formData.append('title', title);
+                formData.append('desc', desc);
+                formData.append('author', author);
+                formData.append('contact', contact);
+
+                // Send to Google Sheet
+                fetch(API_URL, {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(res => res.json())
+                .then(response => {
+                    if(response.result === 'success') {
+                        alert("Notice Published Successfully!");
+                        closePublishModal();
+                        loadNotices(); // Reload the list to show new notice
+                        
+                        // Clear Inputs
+                        document.getElementById('notice-title').value = "";
+                        document.getElementById('notice-desc').value = "";
+                        document.getElementById('notice-author').value = "";
+                        document.getElementById('notice-contact').value = "";
+                    } else {
+                        alert("Error saving notice.");
+                    }
+                    btn.innerText = originalText;
+                    btn.disabled = false;
+                })
+                .catch(err => {
+                    alert("Network Error. Notice not saved.");
+                    console.error(err);
+                    btn.innerText = originalText;
+                    btn.disabled = false;
+                });
             } else {
                 alert("Please fill in Title and Description.");
             }
         }
+
+
+        // ==========================================
+        // 4. UTILITIES (Visitor Count, Theme, Translation)
+        // ==========================================
         
-        function logout() {
-            // 1. Remove the "Saved" login key
-            sessionStorage.removeItem('memberAuth');
+        function updateVisitorCount() {
+            let currentCount = localStorage.getItem('societyMemberVisits');
+            if (!currentCount) currentCount = 0;
+            else currentCount = parseInt(currentCount);
             
-            // 2. Alert the user (Optional, looks nice)
-            alert("You have been logged out securely.");
+            let newCount = currentCount + 1;
+            localStorage.setItem('societyMemberVisits', newCount);
             
-            // 3. Redirect to Index Page
-            window.location.href = 'index.html';
+            const counterElement = document.getElementById('visitor-count');
+            if(counterElement) counterElement.innerText = newCount;
         }
-        // --- 3. TRANSLATION LOGIC ---
-        const memTranslations = {
-            en: {
-                loginTitle: "Member Portal", loginSub: "Restricted Access for Members Only", btnLogin: "Login Securely",
-                headerTitle: "SHREE SAMBHAJI RAJE HOUSING SOCIETY", headerSub: "Member Administration Panel",
-                welcome: "Welcome Back, Member",
-                // Grid Buttons
-                btnComplaint: "Complaint", btnPublish: "Publish Notice", btnEnquiry: "Enquiry",
-                btnAbout: "About Soc", btnGallery: "Gallery", btnNotify: "Send Notify",
-                // Notice Board
-                noticeBoard: "Official Notice Board", btnAdd: "+ Add New",
-                // Contacts
-                contactsHead: "Emergency Contacts", roleSec: "Secretary", roleSecu: "Security Gate", rolePlum: "Plumber",
-                // Modal
-                modalTitle: "Publish New Notice", btnModalPublish: "Publish", btnModalCancel: "Cancel",
-                phTitle: "Notice Title", phDesc: "Details...", phAuthor: "Publisher Name (e.g. Secretary)", phContact: "Email or Phone No",
-                // Meta Labels
-                lblPub: "By:", lblDate: "Date:", lblContact: "Ph:"
-            },
-            mr: {
-                loginTitle: "सदस्य पोर्टल", loginSub: "केवळ सदस्यांसाठी प्रवेश", btnLogin: "सुरक्षित लॉगिन करा",
-                headerTitle: "श्री संभाजी राजे हाऊसिंग सोसायटी", headerSub: "सदस्य प्रशासन पॅनेल",
-                welcome: "स्वागत आहे, सभासद",
-                // Grid
-                btnComplaint: "तक्रार", btnPublish: "सूचना प्रकाशित करा", btnEnquiry: "चौकशी",
-                btnAbout: "सोसायटी बद्दल", btnGallery: "फोटो गॅलरी", btnNotify: "सूचना पाठवा",
-                // Notice Board
-                noticeBoard: "अधिकृत सूचना फलक", btnAdd: "+ नवीन जोडा",
-                // Contacts
-                contactsHead: "आपत्कालीन संपर्क", roleSec: "सचिव (सेक्रेटरी)", roleSecu: "सुरक्षा रक्षक", rolePlum: "प्लंबर",
-                // Modal
-                modalTitle: "नवीन सूचना प्रकाशित करा", btnModalPublish: "प्रकाशित करा", btnModalCancel: "रद्द करा",
-                phTitle: "सूचनेचे शीर्षक", phDesc: "तपशील...", phAuthor: "प्रकाशकाचे नाव (उदा. सचिव)", phContact: "ईमेल किंवा फोन",
-                // Meta Labels
-                lblPub: "द्वारे:", lblDate: "दिनांक:", lblContact: "संपर्क:"
-            },
-            hi: {
-                loginTitle: "सदस्य पोर्टल", loginSub: "केवल सदस्यों के लिए प्रवेश", btnLogin: "सुरक्षित लॉगिन करें",
-                headerTitle: "श्री संभाजी राजे हाउसिंग सोसाइटी", headerSub: "सदस्य प्रशासन पैनल",
-                welcome: "स्वागत है, सदस्य",
-                // Grid
-                btnComplaint: "शिकायत", btnPublish: "सूचना प्रकाशित करें", btnEnquiry: "पूछताछ",
-                btnAbout: "सोसाइटी के बारे में", btnGallery: "फोटो गैलरी", btnNotify: "नोटिफिकेशन भेजें",
-                // Notice Board
-                noticeBoard: "आधिकारिक सूचना बोर्ड", btnAdd: "+ नया जोड़ें",
-                // Contacts
-                contactsHead: "आपातकालीन संपर्क", roleSec: "सचिव (सेक्रेटरी)", roleSecu: "सुरक्षा गार्ड", rolePlum: "प्लंबर",
-                // Modal
-                modalTitle: "नई सूचना प्रकाशित करें", btnModalPublish: "प्रकाशित करें", btnModalCancel: "रद्द करें",
-                phTitle: "सूचना शीर्षक", phDesc: "विवरण...", phAuthor: "प्रकाशक का नाम (उदा. सचिव)", phContact: "ईमेल या फोन",
-                // Meta Labels
-                lblPub: "द्वारा:", lblDate: "दिनांक:", lblContact: "संपर्क:"
-            }
-        };
+        updateVisitorCount();
 
-        function changeMemberLanguage() {
-            const lang = document.getElementById('lang-select').value;
-            const t = memTranslations[lang];
-
-            // Static Text Updates
-            document.getElementById('txt-login-title').innerText = t.loginTitle;
-            document.getElementById('txt-login-sub').innerText = t.loginSub;
-            document.getElementById('btn-login-submit').innerText = t.btnLogin;
-            document.getElementById('txt-header-title').innerText = t.headerTitle;
-            document.getElementById('txt-header-sub').innerText = t.headerSub;
-            document.getElementById('txt-welcome').innerText = t.welcome.split(',')[0] + ", " + (lang === 'en' ? 'Member' : (lang==='mr'?'सभासद':'सदस्य')); // Keep welcome structure
-            
-            // Buttons
-            document.getElementById('btn-complaint').innerText = t.btnComplaint;
-            document.getElementById('btn-publish').innerText = t.btnPublish;
-            document.getElementById('btn-enquiry').innerText = t.btnEnquiry;
-            document.getElementById('btn-about').innerText = t.btnAbout;
-            document.getElementById('btn-gallery').innerText = t.btnGallery;
-            document.getElementById('btn-notify').innerText = t.btnNotify;
-
-            // Notice Section
-            document.getElementById('txt-notice-board').innerHTML = `<i class="fa-solid fa-clipboard"></i> ${t.noticeBoard}`;
-            document.getElementById('btn-add-new').innerText = t.btnAdd;
-
-            // Contacts
-            document.getElementById('txt-contacts-head').innerText = t.contactsHead;
-            document.getElementById('txt-role-sec').innerHTML = `<i class="fa-solid fa-user-tie"></i> ${t.roleSec}`;
-            document.getElementById('txt-role-secu').innerHTML = `<i class="fa-solid fa-shield-halved"></i> ${t.roleSecu}`;
-            document.getElementById('txt-role-plum').innerHTML = `<i class="fa-solid fa-wrench"></i> ${t.rolePlum}`;
-
-            // Modal
-            document.getElementById('txt-modal-title').innerText = t.modalTitle;
-            document.getElementById('btn-modal-publish').innerText = t.btnModalPublish;
-            document.getElementById('btn-modal-cancel').innerText = t.btnModalCancel;
-            
-            // Placeholders
-            document.getElementById('notice-title').placeholder = t.phTitle;
-            document.getElementById('notice-desc').placeholder = t.phDesc;
-            document.getElementById('notice-author').placeholder = t.phAuthor;
-            document.getElementById('notice-contact').placeholder = t.phContact;
-
-            // Update Labels inside existing notices
-            const metas = document.querySelectorAll('.notice-meta');
-            metas.forEach(meta => {
-                const spans = meta.querySelectorAll('span');
-                // We target the strong tag or text node inside
-                // This is a simplified update for demonstration
-                if(spans[0].querySelector('.lbl-pub')) spans[0].querySelector('.lbl-pub').innerText = t.lblPub;
-                if(spans[1].querySelector('.lbl-date')) spans[1].querySelector('.lbl-date').innerText = t.lblDate;
-                if(spans[2].querySelector('.lbl-contact')) spans[2].querySelector('.lbl-contact').innerText = t.lblContact;
-            });
-
-            // Font Family Update
-            if(lang === 'en') {
-                document.body.classList.remove('lang-sanskrit');
-            } else {
-                document.body.classList.add('lang-sanskrit');
-            }
-        }
-
-        // --- 4. THEME TOGGLE ---
-        function toggleDarkMode() {
-            document.body.classList.toggle('dark-mode');
-        }
+        function toggleDarkMode() { document.body.classList.toggle('dark-mode'); }
+        
         let currentSize = 16;
         function changeFontSize(n) {
             if (n === 0) currentSize = 16;
@@ -577,6 +522,85 @@
             if(currentSize > 24) currentSize = 24;
             if(currentSize < 12) currentSize = 12;
             document.documentElement.style.setProperty('--base-size', currentSize + 'px');
+        }
+
+        const memTranslations = {
+            en: {
+                loginTitle: "Member Portal", loginSub: "Restricted Access for Members Only", btnLogin: "Login Securely",
+                headerTitle: "SHREE SAMBHAJI RAJE HOUSING SOCIETY", headerSub: "Member Administration Panel",
+                welcome: "Welcome Back, Member",
+                btnComplaint: "Complaint", btnPublish: "Publish Notice", btnEnquiry: "Enquiry",
+                btnAbout: "About Soc", btnGallery: "Gallery", btnNotify: "Send Notify",
+                noticeBoard: "Official Notice Board", btnAdd: "+ Add New",
+                contactsHead: "Emergency Contacts", roleSec: "Secretary", roleSecu: "Security Gate", rolePlum: "Plumber",
+                modalTitle: "Publish New Notice", btnModalPublish: "Publish", btnModalCancel: "Cancel",
+                phTitle: "Notice Title", phDesc: "Details...", phAuthor: "Publisher Name (e.g. Secretary)", phContact: "Email or Phone No",
+                btnLogout: "Logout & Return Home"
+            },
+            mr: {
+                loginTitle: "सदस्य पोर्टल", loginSub: "केवळ सदस्यांसाठी प्रवेश", btnLogin: "सुरक्षित लॉगिन करा",
+                headerTitle: "श्री संभाजी राजे हाऊसिंग सोसायटी", headerSub: "सदस्य प्रशासन पॅनेल",
+                welcome: "स्वागत आहे, सभासद",
+                btnComplaint: "तक्रार", btnPublish: "सूचना प्रकाशित करा", btnEnquiry: "चौकशी",
+                btnAbout: "सोसायटी बद्दल", btnGallery: "फोटो गॅलरी", btnNotify: "सूचना पाठवा",
+                noticeBoard: "अधिकृत सूचना फलक", btnAdd: "+ नवीन जोडा",
+                contactsHead: "आपत्कालीन संपर्क", roleSec: "सचिव (सेक्रेटरी)", roleSecu: "सुरक्षा रक्षक", rolePlum: "प्लंबर",
+                modalTitle: "नवीन सूचना प्रकाशित करा", btnModalPublish: "प्रकाशित करा", btnModalCancel: "रद्द करा",
+                phTitle: "सूचनेचे शीर्षक", phDesc: "तपशील...", phAuthor: "प्रकाशकाचे नाव (उदा. सचिव)", phContact: "ईमेल किंवा फोन",
+                btnLogout: "लॉग आउट करा आणि मुख्यपृष्ठावर जा"
+            },
+            hi: {
+                loginTitle: "सदस्य पोर्टल", loginSub: "केवल सदस्यों के लिए प्रवेश", btnLogin: "सुरक्षित लॉगिन करें",
+                headerTitle: "श्री संभाजी राजे हाउसिंग सोसाइटी", headerSub: "सदस्य प्रशासन पैनल",
+                welcome: "स्वागत है, सदस्य",
+                btnComplaint: "शिकायत", btnPublish: "सूचना प्रकाशित करें", btnEnquiry: "पूछताछ",
+                btnAbout: "सोसाइटी के बारे में", btnGallery: "फोटो गैलरी", btnNotify: "नोटिफिकेशन भेजें",
+                noticeBoard: "आधिकारिक सूचना बोर्ड", btnAdd: "+ नया जोड़ें",
+                contactsHead: "आपातकालीन संपर्क", roleSec: "सचिव (सेक्रेटरी)", roleSecu: "सुरक्षा गार्ड", rolePlum: "प्लंबर",
+                modalTitle: "नई सूचना प्रकाशित करें", btnModalPublish: "प्रकाशित करें", btnModalCancel: "रद्द करें",
+                phTitle: "सूचना शीर्षक", phDesc: "विवरण...", phAuthor: "प्रकाशक का नाम (उदा. सचिव)", phContact: "ईमेल या फोन",
+                btnLogout: "लॉग आउट करें और होम पर जाएं"
+            }
+        };
+
+        function changeMemberLanguage() {
+            const lang = document.getElementById('lang-select').value;
+            const t = memTranslations[lang];
+
+            document.getElementById('txt-login-title').innerText = t.loginTitle;
+            document.getElementById('txt-login-sub').innerText = t.loginSub;
+            document.getElementById('btn-login-submit').innerText = t.btnLogin;
+            document.getElementById('txt-header-title').innerText = t.headerTitle;
+            document.getElementById('txt-header-sub').innerText = t.headerSub;
+            document.getElementById('txt-welcome').innerText = t.welcome.split(',')[0] + ", " + (lang === 'en' ? 'Member' : (lang==='mr'?'सभासद':'सदस्य'));
+            
+            document.getElementById('btn-complaint').innerText = t.btnComplaint;
+            document.getElementById('btn-publish').innerText = t.btnPublish;
+            document.getElementById('btn-enquiry').innerText = t.btnEnquiry;
+            document.getElementById('btn-about').innerText = t.btnAbout;
+            document.getElementById('btn-gallery').innerText = t.btnGallery;
+            document.getElementById('btn-notify').innerText = t.btnNotify;
+
+            document.getElementById('txt-notice-board').innerHTML = `<i class="fa-solid fa-clipboard"></i> ${t.noticeBoard}`;
+            document.getElementById('btn-add-new').innerText = t.btnAdd;
+
+            document.getElementById('txt-contacts-head').innerText = t.contactsHead;
+            document.getElementById('txt-role-sec').innerHTML = `<i class="fa-solid fa-user-tie"></i> ${t.roleSec}`;
+            document.getElementById('txt-role-secu').innerHTML = `<i class="fa-solid fa-shield-halved"></i> ${t.roleSecu}`;
+            document.getElementById('txt-role-plum').innerHTML = `<i class="fa-solid fa-wrench"></i> ${t.rolePlum}`;
+
+            document.getElementById('txt-modal-title').innerText = t.modalTitle;
+            document.getElementById('btn-modal-publish').innerText = t.btnModalPublish;
+            document.getElementById('btn-modal-cancel').innerText = t.btnModalCancel;
+            
+            document.getElementById('notice-title').placeholder = t.phTitle;
+            document.getElementById('notice-desc').placeholder = t.phDesc;
+            document.getElementById('notice-author').placeholder = t.phAuthor;
+            document.getElementById('notice-contact').placeholder = t.phContact;
+            document.getElementById('btn-logout').innerText = t.btnLogout;
+
+            if(lang === 'en') document.body.classList.remove('lang-sanskrit');
+            else document.body.classList.add('lang-sanskrit');
         }
     </script>
 </body>
