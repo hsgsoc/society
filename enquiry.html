@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enquiry - Shree Sambhaji Raje HSG SOC</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Tiro+Devanagari+Marathi&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <link rel="stylesheet" href="assest/style.css">
+
+    <style>
+        /* --- ENQUIRY SPECIFIC STYLES --- */
+        .enquiry-container {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 0 20px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 40px;
+        }
+
+        /* Left Side: Contact Info */
+        .contact-info-box {
+            flex: 1;
+            min-width: 300px;
+            background: var(--secondary);
+            color: white;
+            padding: 40px;
+            border-radius: 20px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+        }
+        
+        /* Decorative circle */
+        .contact-info-box::after {
+            content: '';
+            position: absolute;
+            bottom: -50px; right: -50px;
+            width: 150px; height: 150px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+        }
+
+        .info-item {
+            margin-bottom: 30px;
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+        }
+        .info-icon {
+            font-size: 1.5rem;
+            color: #fbbf24; /* Gold */
+            margin-top: 5px;
+        }
+        .info-text h4 { font-size: 1.1rem; margin-bottom: 5px; color: #fbbf24; }
+        .info-text p { font-size: 0.95rem; line-height: 1.6; opacity: 0.9; }
+
+        /* Right Side: Form */
+        .enquiry-form-box {
+            flex: 1.5;
+            min-width: 300px;
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            border: 1px solid #e2e8f0;
+        }
+
+        .form-header h2 { color: var(--primary); margin-bottom: 10px; }
+        .form-header p { color: #64748b; margin-bottom: 30px; }
+
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; font-weight: bold; margin-bottom: 8px; color: var(--secondary); }
+        
+        /* FORCE WHITE INPUTS (User Request) */
+        .form-input, .form-select {
+            width: 100%; padding: 12px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 1rem;
+            transition: 0.3s; 
+            background-color: #ffffff !important;
+            color: #000000 !important;
+        }
+        .form-input:focus, .form-select:focus { 
+            border-color: var(--primary); outline: none; 
+            background-color: #ffffff !important;
+            color: #000000 !important;
+            box-shadow: 0 0 0 3px rgba(194, 65, 12, 0.1); 
+        }
+
+        .submit-btn {
+            background: var(--primary); color: white; border: none; padding: 15px 30px;
+            border-radius: 30px; font-weight: bold; cursor: pointer; width: 100%; font-size: 1.1rem;
+            transition: 0.3s;
+        }
+        .submit-btn:hover { background: #9a3412; }
+
+        /* CONFIRMATION BOX */
+        #confirmation-box {
+            display: none;
+            background: #f0fdf4;
+            border: 2px solid #22c55e;
+            color: #15803d;
+            padding: 30px;
+            border-radius: 20px;
+            text-align: center;
+            animation: fadeIn 0.5s;
+        }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        /* Dark Mode */
+        body.dark-mode .enquiry-form-box { background: #1e293b; border-color: #334155; }
+        body.dark-mode .form-header h2 { color: #fbbf24; }
+        body.dark-mode .form-header p { color: #cbd5e1; }
+        /* Inputs stay white as requested */
+    </style>
+</head>
+<body>
+
+    <div class="access-bar">
+        <div class="access-controls">
+            <button onclick="toggleDarkMode()"><i class="fa-solid fa-moon"></i></button>
+            <div class="font-controls">
+                <button onclick="changeFontSize(1)">+A</button>
+                <button onclick="changeFontSize(0)">A</button>
+                <button onclick="changeFontSize(-1)">-A</button>
+            </div>
+        </div>
+        <select id="lang-select" onchange="changeEnquiryLanguage()">
+            <option value="en">English</option>
+            <option value="mr">मराठी</option>
+            <option value="hi">हिन्दी</option>
+        </select>
+    </div>
+
+    <header>
+        <div class="logo-container">
+            <div class="royal-seal"><i class="fa-solid fa-chess-rook"></i></div>
+        </div>
+        <div class="title-container">
+            <h1 id="txt-title">SHREE SAMBHAJI RAJE HOUSING SOCIETY</h1>
+            <p id="txt-subtitle">Excellence in Community Living</p>
+        </div>
+    </header>
+
+    <div class="enquiry-container">
+        
+        <div class="contact-info-box">
+            <h3 id="txt-contact-head" style="margin-bottom:30px; font-size:1.5rem; border-bottom:1px solid rgba(255,255,255,0.2); padding-bottom:15px;">Contact Information</h3>
+            
+            <div class="info-item">
+                <div class="info-icon"><i class="fa-solid fa-location-dot"></i></div>
+                <div class="info-text">
+                    <h4 id="lbl-address">Address</h4>
+                    <p>Ganesh Nagar, Talwade,<br>Pimpri-Chinchwad, Pune - 411062</p>
+                </div>
+            </div>
+
+            <div class="info-item">
+                <div class="info-icon"><i class="fa-solid fa-envelope"></i></div>
+                <div class="info-text">
+                    <h4 id="lbl-email-info">Email Us</h4>
+                    <p>secretary.sambhaji@gmail.com</p>
+                </div>
+            </div>
+
+            <div class="info-item">
+                <div class="info-icon"><i class="fa-solid fa-phone"></i></div>
+                <div class="info-text">
+                    <h4 id="lbl-phone-info">Office Phone</h4>
+                    <p>+91 98XXX XXXXX<br>(Mon-Sat: 10 AM - 6 PM)</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="enquiry-form-box" id="form-box">
+            <div class="form-header">
+                <h2 id="txt-form-title">General Enquiry</h2>
+                <p id="txt-form-sub">Have a question? Fill the form and we will get back to you.</p>
+            </div>
+
+            <form id="enquiryForm" action="https://formsubmit.co/shrisambhajiraje.hsgsoc.2017@gmail.com" method="POST" onsubmit="submitEnquiry(event)">
+                
+                <input type="hidden" name="_subject" value="New Website Enquiry">
+                <input type="hidden" name="_captcha" value="false">
+
+                <div class="form-group">
+                    <label id="lbl-name">Your Name</label>
+                    <input type="text" name="Name" id="inp-name" class="form-input" placeholder="Enter full name" required>
+                </div>
+
+                <div class="form-group">
+                    <label id="lbl-contact">Phone / Mobile</label>
+                    <input type="tel" name="Phone" id="inp-contact" class="form-input" placeholder="10-digit number" required>
+                </div>
+
+                <div class="form-group">
+                    <label id="lbl-subject">Subject</label>
+                    <select name="Subject" id="inp-subject" class="form-select" required>
+                        <option value="" disabled selected>-- Select Subject --</option>
+                        <option value="Flat Purchase">Flat Purchase / Availability</option>
+                        <option value="Renting">Renting Enquiry</option>
+                        <option value="Vendor">Vendor / Service Proposal</option>
+                        <option value="Guest">Guest Visit Rules</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label id="lbl-message">Message</label>
+                    <textarea name="Message" id="inp-message" class="form-input" rows="4" placeholder="How can we help you?" required></textarea>
+                </div>
+
+                <button type="submit" class="submit-btn" id="btn-submit">Send Enquiry</button>
+            </form>
+        </div>
+
+        <div id="confirmation-box" style="flex:1.5; min-width:300px; display:none; align-items:center; justify-content:center; flex-direction:column;">
+            <i class="fa-solid fa-envelope-circle-check" style="font-size:4rem; margin-bottom:20px;"></i>
+            <h2 id="txt-success-head" style="color:#15803d; margin-bottom:10px;">Enquiry Sent!</h2>
+            <p id="txt-success-sub" style="color:#166534; margin-bottom:20px;">Thank you for contacting us. Our team will respond shortly.</p>
+            <button onclick="window.location.href='index.html'" style="padding:10px 25px; background:#15803d; color:white; border:none; border-radius:30px; cursor:pointer;">Back to Home</button>
+        </div>
+
+    </div>
+
+    <footer>
+        <div class="copyright">
+            &copy; 2026 Shree Sambhaji Raje Housing Society | Enquiry Desk
+        </div>
+    </footer>
+
+    <script>
+        function submitEnquiry(event) {
+            event.preventDefault(); 
+            const form = document.getElementById('enquiryForm');
+            const btn = document.getElementById('btn-submit');
+            const originalText = btn.innerText;
+
+            // Loading State
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Sending...';
+            btn.disabled = true;
+
+            fetch(form.action, {
+                method: "POST",
+                body: new FormData(form),
+                headers: { 'Accept': 'application/json' }
+            })
+            .then(response => {
+                if (response.ok) {
+                    document.getElementById('form-box').style.display = 'none';
+                    document.getElementById('confirmation-box').style.display = 'flex';
+                } else {
+                    alert("Error sending message.");
+                    btn.innerText = originalText;
+                    btn.disabled = false;
+                }
+            })
+            .catch(error => {
+                alert("Network error.");
+                btn.innerText = originalText;
+                btn.disabled = false;
+            });
+        }
+
+        // --- TRANSLATIONS ---
+        const enqTranslations = {
+            en: {
+                title: "SHREE SAMBHAJI RAJE HOUSING SOCIETY", sub: "Excellence in Community Living",
+                contactHead: "Contact Information", lblAddress: "Address", lblEmail: "Email Us", lblPhone: "Office Phone",
+                formTitle: "General Enquiry", formSub: "Have a question? Fill the form and we will get back to you.",
+                lblName: "Your Name", lblContact: "Phone / Mobile", lblSubject: "Subject", lblMsg: "Message",
+                btnSubmit: "Send Enquiry",
+                successHead: "Enquiry Sent!", successSub: "Thank you for contacting us. Our team will respond shortly."
+            },
+            mr: {
+                title: "श्री संभाजी राजे हाऊसिंग सोसायटी", sub: "सामुदायिक जीवनातील उत्कृष्टता",
+                contactHead: "संपर्क माहिती", lblAddress: "पत्ता", lblEmail: "आम्हाला ईमेल करा", lblPhone: "कार्यालय फोन",
+                formTitle: "सामान्य चौकशी", formSub: "काही प्रश्न आहेत? फॉर्म भरा आणि आम्ही तुमच्याशी संपर्क साधू.",
+                lblName: "आपले नाव", lblContact: "फोन / मोबाईल", lblSubject: "विषय", lblMsg: "संदेश",
+                btnSubmit: "चौकशी पाठवा",
+                successHead: "चौकशी पाठवली!", successSub: "आमच्याशी संपर्क साधल्याबद्दल धन्यवाद. आमची टीम लवकरच प्रतिसाद देईल."
+            },
+            hi: {
+                title: "श्री संभाजी राजे हाउसिंग सोसाइटी", sub: "सामुदायिक जीवन में उत्कृष्टता",
+                contactHead: "संपर्क जानकारी", lblAddress: "पता", lblEmail: "हमें ईमेल करें", lblPhone: "कार्यालय फोन",
+                formTitle: "सामान्य पूछताछ", formSub: "कोई प्रश्न है? फॉर्म भरें और हम आपसे संपर्क करेंगे।",
+                lblName: "आपका नाम", lblContact: "फोन / मोबाइल", lblSubject: "विषय", lblMsg: "संदेश",
+                btnSubmit: "पूछताछ भेजें",
+                successHead: "पूछताछ भेजी गई!", successSub: "हमसे संपर्क करने के लिए धन्यवाद। हमारी टीम शीघ्र ही उत्तर देगी।"
+            }
+        };
+
+        function changeEnquiryLanguage() {
+            const lang = document.getElementById('lang-select').value;
+            const t = enqTranslations[lang];
+
+            document.getElementById('txt-title').innerText = t.title;
+            document.getElementById('txt-subtitle').innerText = t.sub;
+            document.getElementById('txt-contact-head').innerText = t.contactHead;
+            document.getElementById('lbl-address').innerText = t.lblAddress;
+            document.getElementById('lbl-email-info').innerText = t.lblEmail;
+            document.getElementById('lbl-phone-info').innerText = t.lblPhone;
+            
+            document.getElementById('txt-form-title').innerText = t.formTitle;
+            document.getElementById('txt-form-sub').innerText = t.formSub;
+            document.getElementById('lbl-name').innerText = t.lblName;
+            document.getElementById('lbl-contact').innerText = t.lblContact;
+            document.getElementById('lbl-subject').innerText = t.lblSubject;
+            document.getElementById('lbl-message').innerText = t.lblMsg;
+            document.getElementById('btn-submit').innerText = t.btnSubmit;
+            
+            document.getElementById('txt-success-head').innerText = t.successHead;
+            document.getElementById('txt-success-sub').innerText = t.successSub;
+
+            if(lang === 'en') document.body.classList.remove('lang-sanskrit');
+            else document.body.classList.add('lang-sanskrit');
+        }
+
+        function toggleDarkMode() { document.body.classList.toggle('dark-mode'); }
+        let currentSize = 16;
+        function changeFontSize(n) {
+            if (n === 0) currentSize = 16;
+            else currentSize += n;
+            if(currentSize > 24) currentSize = 24;
+            if(currentSize < 12) currentSize = 12;
+            document.documentElement.style.setProperty('--base-size', currentSize + 'px');
+        }
+    </script>
+</body>
+</html>
