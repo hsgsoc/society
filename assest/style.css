@@ -361,7 +361,53 @@ body.dark-mode .block-info p { color: #cbd5e1; }
     50% { opacity: 1; filter: hue-rotate(15deg); }
     100% { opacity: 0.6; filter: hue-rotate(0deg); }
 }
+/* --- DARK MODE TEXT FIXES --- */
 
+/* 1. Force main body text to be white */
+body.dark-mode {
+    color: #f8fafc !important; /* Almost White */
+}
+
+/* 2. Fix Header Title & Subtitle */
+body.dark-mode header h1, 
+body.dark-mode header p {
+    color: #ffffff !important;
+}
+
+/* 3. Fix Card Text */
+body.dark-mode .card {
+    background: #1e293b; /* Dark Slate */
+    border-color: #475569;
+}
+body.dark-mode .card span {
+    color: #e2e8f0 !important; /* Light Gray */
+}
+body.dark-mode .card i {
+    color: #fbbf24 !important; /* Gold Icon for visibility */
+}
+
+/* 4. Fix Info & Gallery Section Text */
+body.dark-mode .info-text h2, 
+body.dark-mode .info-text p,
+body.dark-mode .gallery-section h2,
+body.dark-mode .content-block-section h2,
+body.dark-mode .block-info h3,
+body.dark-mode .block-info p {
+    color: #ffffff !important;
+}
+
+/* 5. Fix Stats Numbers */
+body.dark-mode .stat-box strong {
+    color: #fbbf24 !important; /* Gold */
+}
+body.dark-mode .stat-box span {
+    color: #e2e8f0 !important;
+}
+
+/* 6. Fix Map Location Text */
+body.dark-mode .location-section h2 {
+    color: #ffffff !important;
+}
 .map-container {
     position: relative;
     border-radius: 15px;
