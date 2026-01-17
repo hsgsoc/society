@@ -94,11 +94,18 @@ function toggleDarkMode() {
 }
 
 // --- TRANSLATOR ---
+// ... (Keep your translations object as it is) ...
+
+// --- TRANSLATOR ENGINE ---
 function changeLanguage() {
     const lang = document.getElementById('lang-select').value;
+    
+    // 1. SAVE TO MEMORY
+    localStorage.setItem('societyLang', lang);
+
     const t = translations[lang];
 
-    // 1. Header & Main Cards
+    // 2. Apply Translations (Home Page Elements)
     document.getElementById('txt-title').innerText = t.title;
     document.getElementById('txt-subtitle').innerText = t.sub;
     document.getElementById('btn-about').innerText = t.about;
@@ -107,19 +114,13 @@ function changeLanguage() {
     document.getElementById('btn-feedback').innerText = t.feedback;
     document.getElementById('btn-complaint').innerText = t.complaint;
     document.getElementById('btn-enquiry').innerText = t.enquiry;
-
-    // 2. Info Section
     document.getElementById('txt-info-title').innerText = t.infoTitle;
-    document.getElementById('txt-info-desc').innerText = t.infoDesc;
+    document.getElementById('txt-info-desc').innerHTML = t.infoDesc; 
     document.getElementById('btn-readmore').innerText = t.readMore;
-
-    // 3. Stats & Gallery
     document.getElementById('txt-stat-years').innerText = t.years;
     document.getElementById('txt-stat-families').innerText = t.families;
     document.getElementById('txt-stat-acres').innerText = t.acres;
     document.getElementById('txt-gallery-title').innerHTML = `<span class="decorative-line"></span> ${t.galleryTitle} <span class="decorative-line"></span>`;
-
-    // 4. Infrastructure (New)
     document.getElementById('txt-infra-title').innerText = t.infraTitle;
     document.getElementById('txt-soc1-title').innerText = t.soc1Title;
     document.getElementById('txt-soc1-desc').innerText = t.soc1Desc;
@@ -128,10 +129,24 @@ function changeLanguage() {
     document.getElementById('txt-location-title').innerText = t.locationTitle;
     document.getElementById('txt-location-label').innerText = t.locationLabel;
 
-    // 5. Change Font Family Class (Sanskrit Style)
+    // 3. Font Style Update
     if(lang === 'en') {
         document.body.classList.remove('lang-sanskrit');
     } else {
         document.body.classList.add('lang-sanskrit');
     }
 }
+
+// --- INITIALIZE ON LOAD ---
+window.onload = function() {
+    // 1. Get saved language (or default to 'en')
+    const savedLang = localStorage.getItem('societyLang') || 'en';
+    
+    // 2. Set the dropdown to match
+    const langSelect = document.getElementById('lang-select');
+    if(langSelect) {
+        langSelect.value = savedLang;
+        // 3. Trigger the change
+        changeLanguage();
+    }
+};

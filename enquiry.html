@@ -294,8 +294,10 @@
             }
         };
 
-        function changeEnquiryLanguage() {
+       function changeEnquiryLanguage() {
             const lang = document.getElementById('lang-select').value;
+            localStorage.setItem('societyLang', lang); // SAVE
+
             const t = enqTranslations[lang];
 
             document.getElementById('txt-title').innerText = t.title;
@@ -316,10 +318,17 @@
             document.getElementById('txt-success-head').innerText = t.successHead;
             document.getElementById('txt-success-sub').innerText = t.successSub;
 
-            if(lang === 'en') document.body.classList.remove('lang-sanskrit');
+           if(lang === 'en') document.body.classList.remove('lang-sanskrit');
             else document.body.classList.add('lang-sanskrit');
         }
 
+        // INITIALIZE
+        window.onload = function() {
+            const savedLang = localStorage.getItem('societyLang') || 'en';
+            document.getElementById('lang-select').value = savedLang;
+            changeEnquiryLanguage();
+        };
+        
         function toggleDarkMode() { document.body.classList.toggle('dark-mode'); }
         let currentSize = 16;
         function changeFontSize(n) {

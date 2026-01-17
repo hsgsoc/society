@@ -370,6 +370,8 @@
 
         function changeFeedbackLanguage() {
             const lang = document.getElementById('lang-select').value;
+            localStorage.setItem('societyLang', lang); // SAVE
+
             const t = fbTranslations[lang];
 
             document.getElementById('txt-title').innerText = t.title;
@@ -383,12 +385,19 @@
             document.getElementById('btn-submit').innerText = t.btnSubmit;
             document.getElementById('txt-recent-title').innerText = t.recentTitle;
 
-            if(lang === 'en') {
-                document.body.classList.remove('lang-sanskrit');
-            } else {
-                document.body.classList.add('lang-sanskrit');
-            }
+           if(lang === 'en') document.body.classList.remove('lang-sanskrit');
+            else document.body.classList.add('lang-sanskrit');
         }
+
+        // INITIALIZE (Combine with loadFeedback)
+        window.onload = function() {
+            // 1. Load Language
+            const savedLang = localStorage.getItem('societyLang') || 'en';
+            document.getElementById('lang-select').value = savedLang;
+            changeFeedbackLanguage();
+            
+        }
+        
 
         function toggleDarkMode() { document.body.classList.toggle('dark-mode'); }
         let currentSize = 16;

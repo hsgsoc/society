@@ -565,8 +565,11 @@
 
         function changeMemberLanguage() {
             const lang = document.getElementById('lang-select').value;
-            const t = memTranslations[lang];
+            
+            // SAVE TO MEMORY
+            localStorage.setItem('societyLang', lang);
 
+            const t = memTranslations[lang];
             document.getElementById('txt-login-title').innerText = t.loginTitle;
             document.getElementById('txt-login-sub').innerText = t.loginSub;
             document.getElementById('btn-login-submit').innerText = t.btnLogin;
@@ -599,9 +602,18 @@
             document.getElementById('notice-contact').placeholder = t.phContact;
             document.getElementById('btn-logout').innerText = t.btnLogout;
 
-            if(lang === 'en') document.body.classList.remove('lang-sanskrit');
+           if(lang === 'en') document.body.classList.remove('lang-sanskrit');
             else document.body.classList.add('lang-sanskrit');
         }
+
+        // AUTO LOAD LOGIC (Combine with your existing window.onload or visitor counter)
+        // Add this to your existing startup script:
+        
+        // 1. Load Language
+        const savedLang = localStorage.getItem('societyLang') || 'en';
+        document.getElementById('lang-select').value = savedLang;
+        changeMemberLanguage();
+    
     </script>
 </body>
 </html>

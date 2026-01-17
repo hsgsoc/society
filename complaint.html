@@ -315,6 +315,8 @@
 
         function changeComplaintLanguage() {
             const lang = document.getElementById('lang-select').value;
+            localStorage.setItem('societyLang', lang); // SAVE
+
             const t = compTranslations[lang];
 
             document.getElementById('txt-title').innerText = t.title;
@@ -337,6 +339,12 @@
             else document.body.classList.add('lang-sanskrit');
         }
 
+        // INITIALIZE
+        window.addEventListener('load', function() {
+            const savedLang = localStorage.getItem('societyLang') || 'en';
+            document.getElementById('lang-select').value = savedLang;
+            changeComplaintLanguage();
+        });
         // --- THEME ---
         function toggleDarkMode() { document.body.classList.toggle('dark-mode'); }
         let currentSize = 16;

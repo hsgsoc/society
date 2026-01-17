@@ -311,8 +311,11 @@
 
         // --- TRANSLATE FUNCTION ---
         function changeVisitorLanguage() {
-            const lang = document.getElementById('lang-select').value;
-            const t = vipTranslations[lang];
+           const lang = document.getElementById('lang-select').value;
+            localStorage.setItem('societyLang', lang); // SAVE
+
+            const t = fbTranslations[lang];
+
 
             document.getElementById('txt-title').innerText = t.title;
             document.getElementById('txt-subtitle').innerText = t.sub;
@@ -336,12 +339,16 @@
             document.getElementById('desc-3').innerText = t.desc3;
 
             // Font Style Update
-            if(lang === 'en') {
-                document.body.classList.remove('lang-sanskrit');
-            } else {
-                document.body.classList.add('lang-sanskrit');
-            }
+               if(lang === 'en') document.body.classList.remove('lang-sanskrit');
+            else document.body.classList.add('lang-sanskrit');
         }
+
+        // INITIALIZE
+        window.onload = function() {
+            const savedLang = localStorage.getItem('societyLang') || 'en';
+            document.getElementById('lang-select').value = savedLang;
+            changeVisitorLanguage();
+        };
 
         // --- THEME & FONT LOGIC ---
         function toggleDarkMode() {
