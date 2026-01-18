@@ -208,7 +208,7 @@
         </div>
 
         <div class="dash-grid">
-            <div class="card alert-card" onclick="alert('Opening Complaint Form...')">
+           <div class="card" onclick="window.location.href='Complaint(1).html'">
                 <i class="fa-solid fa-triangle-exclamation"></i>
                 <span id="btn-complaint">Complaint</span>
             </div>
@@ -216,7 +216,7 @@
                 <i class="fa-solid fa-bullhorn"></i>
                 <span id="btn-publish">Publish Notice</span>
             </div>
-            <div class="card" onclick="alert('Redirecting to Enquiry...')">
+           <div class="card" onclick="window.location.href='enquiry.html'">
                 <i class="fa-solid fa-circle-question"></i>
                 <span id="btn-enquiry">Enquiry</span>
             </div>
@@ -224,7 +224,7 @@
                 <i class="fa-solid fa-info-circle"></i>
                 <span id="btn-about">About Soc</span>
             </div>
-            <div class="card" onclick="alert('Opening Gallery...')">
+           <div class="card" onclick="window.location.href='gallery.html'">
                 <i class="fa-solid fa-images"></i>
                 <span id="btn-gallery">Gallery</span>
             </div>
@@ -244,8 +244,7 @@
                 <div class="notice-item">
                     <div class="notice-icon"><i class="fa-solid fa-file-invoice"></i></div>
                     <div style="width:100%;">
-                        <h4 style="color:var(--secondary);">Annual Maintenance Bill</h4>
-                        <p style="font-size:0.95rem; color:#444; margin-bottom:5px;">Issued on Jan 15, 2026. Please clear dues by Feb 10.</p>
+                        
                         <div class="notice-meta">
                             <span><i class="fa-solid fa-user"></i> <span class="lbl-pub">By:</span> Treasurer</span>
                             <span><i class="fa-solid fa-calendar"></i> <span class="lbl-date">Date:</span> 15/01/2026</span>
@@ -431,7 +430,7 @@
             })
             .catch(error => {
                 console.error('Error:', error);
-                list.innerHTML = "<p style='color:red; text-align:center;'>Failed to load notices. Check connection.</p>";
+                list.innerHTML = "<p style='color:red; text-align:center;'>Failed to load notices, Try again Later.</p>";
             });
         }
 

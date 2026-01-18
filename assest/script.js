@@ -11,7 +11,7 @@ const translations = {
         infoDesc: "Located in the heart of Pimpri-Chinchwad, Shree Sambaji Raje Housing Society stands as a model of sustainable and peaceful living. With 24/7 security, lush green parks, and a vibrant community, we ensure a high quality of life for all residents.",
         readMore: "Read Our History",
         // Stats
-        years: "Years", families: "Families", acres: "Acres",
+        years: "Years", families: "Families", acres: "Established",
         // Gallery
         galleryTitle: "Society Gallery", // <--- Comma added here
         
@@ -36,7 +36,7 @@ const translations = {
 अधिकृत फेरफार नोंदीनुसार, संस्थेमध्ये २० नोंदणीकृत सदस्य आहेत, जे सर्व त्यांच्या संबंधित निवासी युनिट्सचे कायदेशीर मालक किंवा वाटपधारक म्हणून ओळखले जातात. प्रत्येक सदस्याला महाराष्ट्र सहकारी संस्था कायदा आणि संस्थेच्या मंजूर उपविधींनुसार मालकी हक्क प्राप्त आहेत...",
         readMore: "आमचा इतिहास वाचा",
         // Stats
-        years: "वर्षे", families: "कुटुंबे", acres: "एकर्स",
+        years: "वर्षे", families: "कुटुंबे", acres: "स्थापित",
         // Gallery
         galleryTitle: "सोसायटी चित्रदालन", // <--- Comma added here
 
@@ -60,7 +60,7 @@ const translations = {
         infoDesc: "श्री संभाजी राजे हाउसिंग सोसाइटी (HSG SOC) एक रजिस्टर्ड रेजिडेंशियल कोऑपरेटिव हाउसिंग सोसाइटी है जो गणेश नगर, गांव तलवडे में, पिंपरी-चिंचवड़ नगर निगम (PCMC), पुणे, महाराष्ट्र के अधिकार क्षेत्र में स्थित है। इस सोसाइटी की स्थापना साल 2016 में अपने सदस्यों को व्यवस्थित, सुरक्षित और टिकाऊ आवास सुविधाएं प्रदान करने के उद्देश्य से की गई थी। आधिकारिक म्यूटेशन रिकॉर्ड के अनुसार, सोसाइटी में 20 रजिस्टर्ड सदस्य हैं, जिनमें से सभी को उनके संबंधित आवासीय इकाइयों के कानूनी मकान मालिक या आवंटनकर्ता के रूप में मान्यता प्राप्त है। प्रत्येक सदस्य महाराष्ट्र सहकारी समिति अधिनियम और सोसाइटी के स्वीकृत उपनियमों के अनुसार स्वामित्व अधिकार रखता है...",
         readMore: "हमारा इतिहास पढ़ें",
         // Stats
-        years: "वर्ष", families: "परिवार", acres: "एकड़",
+        years: "वर्ष", families: "परिवार", acres: "स्थापित",
         // Gallery
         galleryTitle: "सोसाइटी गैलरी", 
         locationTitle: "हमारा प्रमुख स्थान",

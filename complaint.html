@@ -3,357 +3,280 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>File a Complaint - Shree Sambhaji Raje HSG SOC</title>
+    <title>Complaint Register - Shree Sambhaji Raje HSG SOC</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Tiro+Devanagari+Marathi&display=swap" rel="stylesheet">
-     <link rel="icon" type="image/x-icon" href="assest/image/society.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
-    <link rel="stylesheet" href="assest/style.css">
+    <link rel="icon" type="image/x-icon" href="assest/image/society.png">
 
     <style>
-        /* --- COMPLAINT SPECIFIC STYLES --- */
-        .complaint-container {
-            max-width: 800px;
-            margin: 40px auto;
-            padding: 0 20px;
-        }
-
-        .complaint-form-card {
-            background: white;
-            padding: 40px;
-            border-radius: 20px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.1);
-            border-top: 5px solid #ef4444; /* Red for Complaint */
-            position: relative;
-            overflow: hidden;
-        }
-
-        /* Decorative Background Pattern inside Card */
-        .complaint-form-card::before {
-            content: '';
-            position: absolute;
-            top: 0; right: 0;
-            width: 150px; height: 150px;
-            background: radial-gradient(circle, rgba(239, 68, 68, 0.1) 0%, transparent 70%);
-            border-radius: 50%;
-            pointer-events: none;
-        }
-
-        .form-header {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-        .form-header h2 { color: #ef4444; margin-bottom: 10px; font-size: 2rem; }
-        .form-header p { color: #64748b; }
-
-        .form-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-        }
-
-        .form-group { margin-bottom: 20px; }
-        .form-group label { display: block; font-weight: bold; margin-bottom: 8px; color: var(--secondary); }
+        :root { --primary: #c2410c; --secondary: #1e293b; --bg-light: #f1f5f9; --text-dark: #333; --base-size: 16px; }
         
-        .form-input, .form-select {
-            width: 100%; padding: 12px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 1rem;
-            transition: 0.3s; background: #f8fafc;
+        body {
+            font-family: 'Times New Roman', Times, serif; /* User Request */
+            background: var(--bg-light); color: var(--text-dark);
+            margin: 0; font-size: var(--base-size); transition: 0.3s;
         }
-        .form-input:focus, .form-select:focus { 
-            border-color: #ef4444; outline: none; background: white;
-            box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1); 
-        }
+        body.dark-mode { background: #0f172a; color: #e2e8f0; --bg-light: #0f172a; --text-dark: #e2e8f0; }
 
-        .full-width { grid-column: span 2; }
+        /* --- ACCESS BAR (Language & Font Adjuster) --- */
+        .access-bar {
+            background: var(--secondary); color: white; padding: 10px 20px;
+            display: flex; justify-content: space-between; align-items: center;
+            font-family: sans-serif; font-size: 0.9rem;
+        }
+        .access-controls button {
+            background: rgba(255,255,255,0.2); border: none; color: white;
+            padding: 5px 10px; cursor: pointer; border-radius: 4px; margin-left: 5px;
+        }
+        .access-controls button:hover { background: var(--primary); }
+        .lang-select { padding: 5px; border-radius: 4px; border: none; }
 
-        .submit-btn {
-            background: #ef4444; color: white; border: none; padding: 15px 30px;
-            border-radius: 30px; font-weight: bold; cursor: pointer; width: 100%; font-size: 1.1rem;
-            transition: 0.3s; display: flex; align-items: center; justify-content: center; gap: 10px;
-        }
-        .submit-btn:hover { background: #dc2626; transform: translateY(-2px); }
+        /* --- HEADER --- */
+        header { text-align: center; padding: 40px 20px; }
+        .royal-seal { font-size: 3rem; color: var(--primary); margin-bottom: 15px; }
+        h1 { font-family: 'Playfair Display', serif; margin: 0; color: var(--primary); }
+        .sanskrit-sub { font-family: 'Tiro Devanagari Marathi', serif; color: var(--secondary); margin-top: 5px; }
 
-        /* CONFIRMATION MESSAGE (Hidden by default) */
-        #confirmation-box {
-            display: none;
-            background: #ecfdf5;
-            border: 2px solid #10b981;
-            color: #065f46;
-            padding: 20px;
-            border-radius: 15px;
-            text-align: center;
-            margin-top: 20px;
-            animation: slideUp 0.5s ease;
+        /* --- CONTAINER & CARD --- */
+        .container { max-width: 800px; margin: 0 auto 50px auto; padding: 0 20px; }
+        
+        .royal-card {
+            background: white; border-radius: 20px; 
+            box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+            border-top: 5px solid var(--primary);
+            padding: 40px; position: relative;
         }
-        .success-icon { font-size: 3rem; color: #10b981; margin-bottom: 10px; }
+        body.dark-mode .royal-card { background: #1e293b; border-color: #c2410c; }
 
-        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        /* --- FORM ELEMENTS --- */
+        .form-input {
+            width: 100%; padding: 12px; margin: 10px 0;
+            border: 1px solid #ccc; border-radius: 8px;
+            font-family: 'Times New Roman', serif; font-size: 1rem;
+            box-sizing: border-box;
+        }
+        .btn {
+            background: var(--primary); color: white; padding: 12px 30px;
+            border: none; border-radius: 30px; cursor: pointer; font-size: 1.1rem;
+            width: 100%; margin-top: 15px; transition: 0.3s;
+        }
+        .btn:hover { background: #9a3412; }
+        .btn:disabled { background: gray; cursor: not-allowed; }
+        
+        /* --- UTILS --- */
+        .hidden { display: none; }
+        .fade-in { animation: fadeIn 0.8s; }
+        @keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
 
-        /* Mobile Responsive */
-        @media (max-width: 768px) {
-            .form-grid { grid-template-columns: 1fr; }
-            .full-width { grid-column: span 1; }
-        }
-        .form-input, .form-select {
-            width: 100%; 
-            padding: 12px; 
-            border: 1px solid #cbd5e1; 
-            border-radius: 8px; 
-            font-size: 1rem;
-            transition: 0.3s; 
-            
-            /* FORCE WHITE BACKGROUND & BLACK TEXT */
-            background-color: #ffffff !important;
-            color: #000000 !important;
-        }
+        /* Footer */
+        footer { text-align: center; padding: 20px; background: var(--secondary); color: white; margin-top: 50px; }
 
-        /* Focus State */
-        .form-input:focus, .form-select:focus { 
-            border-color: #ef4444; 
-            outline: none; 
-            background-color: #ffffff !important;
-            color: #000000 !important;
-            box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1); 
-        }
-
-        /* DROPDOWN OPTIONS (The list that pops up) */
-        .form-select option {
-            background-color: #ffffff;
-            color: #000000;
-            padding: 10px;
-        }
-       body.dark-mode .form-input, 
-        body.dark-mode .form-select { 
-            background-color: #ffffff !important; 
-            color: #000000 !important; 
-            border-color: #cbd5e1;
-        }
     </style>
 </head>
 <body>
 
     <div class="access-bar">
+        <div class="brand">SSRHS Portal</div>
         <div class="access-controls">
-            <button onclick="toggleDarkMode()"><i class="fa-solid fa-moon"></i></button>
-            <div class="font-controls">
-                <button onclick="changeFontSize(1)">+A</button>
-                <button onclick="changeFontSize(0)">A</button>
-                <button onclick="changeFontSize(-1)">-A</button>
-            </div>
+            <button onclick="toggleDarkMode()" title="Dark Mode"><i class="fa-solid fa-moon"></i></button>
+            <button onclick="changeFontSize(-1)">A-</button>
+            <button onclick="changeFontSize(0)">A</button>
+            <button onclick="changeFontSize(1)">A+</button>
+            <select id="lang-select" class="lang-select" onchange="changeLanguage()">
+                <option value="en">English</option>
+                <option value="mr">मराठी</option>
+                <option value="hi">हिन्दी</option>
+            </select>
         </div>
-        <select id="lang-select" onchange="changeComplaintLanguage()">
-            <option value="en">English</option>
-            <option value="mr">मराठी</option>
-            <option value="hi">हिन्दी</option>
-        </select>
     </div>
 
     <header>
-        <div class="logo-container">
-            <div class="royal-seal"><i class="fa-solid fa-chess-rook"></i></div>
-        </div>
-        <div class="title-container">
-            <h1 id="txt-title">SHREE SAMBHAJI RAJE HOUSING SOCIETY</h1>
-            <p id="txt-subtitle">Excellence in Community Living</p>
-        </div>
+        <div class="royal-seal"><i class="fa-solid fa-chess-rook"></i></div>
+        <h1 id="txt-title">SHREE SAMBHAJI RAJE HOUSING SOCIETY</h1>
+        <p class="sanskrit-sub" id="txt-sub">Excellence in Community Living</p>
     </header>
 
-    <div class="complaint-container">
-        
-        <div class="complaint-form-card" id="form-card">
-            <div class="form-header">
-                <h2 id="txt-form-title"><i class="fa-solid fa-triangle-exclamation"></i> Register Complaint</h2>
-                <p id="txt-form-sub">We take your concerns seriously. Please fill in the details below.</p>
+    <div class="container">
+        <div class="royal-card">
+            
+            <div id="gatekeeper" style="text-align:center;">
+                <h2 class="sanskrit-sub">Secure Verification Required</h2>
+                <p>Enter Society Access Password</p>
+                <input type="password" id="gate-pass" class="form-input" placeholder="Password..." style="text-align:center; width:60%;">
+                <button onclick="verifyGatekeeper()" class="btn" style="width:60%;">Enter</button>
             </div>
 
-            <form id="complaintForm" action="https://formsubmit.co/shrisambhajiraje.hsgsoc.2017@gmail.com" method="POST" onsubmit="submitComplaint(event)">
-                
-                <input type="hidden" name="_captcha" value="false">
-                
-                <input type="hidden" name="_next" value="https://yourusername.github.io/complaint.html">
-                
-                <input type="hidden" name="_subject" value="New Society Complaint Registered!">
+            <div id="main-form" class="hidden fade-in">
+                <h2 class="sanskrit-sub" style="border-bottom:1px solid #ccc; padding-bottom:10px;">Register Complaint</h2>
 
-                <div class="form-grid">
-                    <div class="form-group">
-                        <label id="lbl-name">Complainant Name</label>
-                        <input type="text" name="Name" id="inp-name" class="form-input" placeholder="Your Full Name" required>
+                <form id="complaintForm" onsubmit="submitForm(event)">
+                    
+                    <label>Full Name</label>
+                    <input type="text" id="inp-name" class="form-input" required>
+
+                    <label>Phone Number (OTP Verification)</label>
+                    <div style="display:flex; gap:10px;">
+                        <input type="tel" id="inp-phone" class="form-input" placeholder="10 Digit Mobile" maxlength="10">
+                        <button type="button" id="btn-otp" onclick="sendOTP()" class="btn" style="width:auto; margin-top:10px;">Get OTP</button>
                     </div>
                     
-                    <div class="form-group">
-                        <label id="lbl-wing">Wing & Flat No</label>
-                        <input type="text" name="Flat_No" id="inp-flat" class="form-input" placeholder="e.g. A-101" required>
+                    <div id="otp-box" class="hidden" style="background:#fff7ed; padding:10px; margin-top:5px; border-radius:5px;">
+                        <small>OTP Sent! Enter below:</small>
+                        <div style="display:flex; gap:10px;">
+                            <input type="text" id="otp-val" class="form-input" placeholder="XXXX" style="width:100px;">
+                            <button type="button" onclick="verifyOTP()" class="btn" style="width:auto; padding:5px 15px; margin-top:10px;">Verify</button>
+                        </div>
                     </div>
+                    <p id="otp-success" style="color:green; display:none;">✔ Phone Verified</p>
 
-                    <div class="form-group">
-                        <label id="lbl-phone">Phone Number</label>
-                        <input type="tel" name="Phone" id="inp-phone" class="form-input" placeholder="10-digit Mobile No" required>
-                    </div>
+                    <label>Email ID</label>
+                    <input type="email" id="inp-email" class="form-input" required>
 
-                    <div class="form-group">
-                        <label id="lbl-email">Email ID</label>
-                        <input type="email" name="Email" id="inp-email" class="form-input" placeholder="name@example.com" required>
-                    </div>
+                    <label>Complaint Type</label>
+                    <select id="inp-type" class="form-input" required>
+                        <option value="Water">Water Supply</option>
+                        <option value="Electricity">Electricity</option>
+                        <option value="Security">Security</option>
+                        <option value="Other">Other</option>
+                    </select>
 
-                    <div class="form-group full-width">
-                        <label id="lbl-type">Type of Complaint</label>
-                        <select name="Complaint_Type" id="inp-type" class="form-select" required>
-                            <option value="" disabled selected>-- Select Category --</option>
-                            <option value="Water">Water Supply / Leakage</option>
-                            <option value="Electricity">Electricity / Power Failure</option>
-                            <option value="Cleaning">Cleanliness / Garbage</option>
-                            <option value="Security">Security / Parking Issue</option>
-                            <option value="Noise">Noise / Disturbance</option>
-                            <option value="Other">Other / Administrative</option>
-                        </select>
-                    </div>
+                    <label>Description (Max 250 words)</label>
+                    <textarea id="inp-desc" class="form-input" rows="4" required></textarea>
 
-                    <div class="form-group full-width">
-                        <label id="lbl-desc">Complaint Description</label>
-                        <textarea name="Message" id="inp-desc" class="form-input" rows="5" placeholder="Please describe the issue in detail..." required></textarea>
-                    </div>
-                </div>
+                    <label>Attachment (Optional)</label>
+                    <input type="file" id="inp-file" class="form-input">
 
-                <button type="submit" class="submit-btn" id="btn-submit">
-                    <i class="fa-solid fa-paper-plane"></i> Submit Complaint
-                </button>
+                    <button type="submit" id="btn-submit" class="btn" disabled>Submit Complaint</button>
+                </form>
+            </div>
 
-            </form>
         </div>
-
-        <div id="confirmation-box">
-            <div class="success-icon"><i class="fa-solid fa-circle-check"></i></div>
-            <h3 id="txt-success-head">Complaint Registered Successfully!</h3>
-            <p id="txt-success-msg1">Thank you. Your complaint ID is <strong id="complaint-id">#000</strong>.</p>
-            <p id="txt-success-msg2">A confirmation SMS and Email has been sent to your registered contact details.</p>
-            <p style="margin-top:15px; font-size:0.9rem; color:#065f46;">We will resolve this issue within 48 hours.</p>
-            
-            <button onclick="window.location.href='index.html'" style="margin-top:20px; padding:10px 20px; background:#10b981; color:white; border:none; border-radius:20px; cursor:pointer;">Back to Home</button>
-        </div>
-
     </div>
 
     <footer>
-        <div class="copyright">
-            &copy; 2026 Shree Sambhaji Raje Housing Society | Complaint Redressal
-        </div>
+        &copy; 2026 Shree Sambhaji Raje Housing Society
     </footer>
 
-   <script>
-        function submitComplaint(event) {
-            event.preventDefault(); // Stop the standard redirect
+    <script>
+        // *** 1. UNIVERSAL LOGIC (Adjuster Mode) ***
+        let currentSize = parseInt(localStorage.getItem('societyFont')) || 16;
+        document.documentElement.style.setProperty('--base-size', currentSize + 'px');
 
-            const submitBtn = document.getElementById('btn-submit');
-            const form = document.getElementById('complaintForm');
-            
-            // 1. Loading State
-            const originalText = submitBtn.innerHTML;
-            submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Sending...';
-            submitBtn.disabled = true;
-
-            // 2. Generate Random Ticket ID for display
-            const ticketID = "SR-" + Math.floor(1000 + Math.random() * 9000);
-
-            // 3. Send Data using Fetch (AJAX)
-            fetch(form.action, {
-                method: "POST",
-                body: new FormData(form),
-                headers: { 
-                    'Accept': 'application/json' 
-                }
-            })
-            .then(response => {
-                if (response.ok) {
-                    // SUCCESS
-                    document.getElementById('complaint-id').innerText = ticketID;
-                    document.getElementById('form-card').style.display = 'none';
-                    document.getElementById('confirmation-box').style.display = 'block';
-                    form.reset();
-                } else {
-                    // SERVER ERROR
-                    alert("Oops! There was a problem submitting your form.");
-                    submitBtn.innerHTML = originalText;
-                    submitBtn.disabled = false;
-                }
-            })
-            .catch(error => {
-                // NETWORK ERROR
-                alert("Network error. Please check your connection.");
-                submitBtn.innerHTML = originalText;
-                submitBtn.disabled = false;
-            });
+        function changeFontSize(n) {
+            if(n === 0) currentSize = 16;
+            else currentSize += n;
+            document.documentElement.style.setProperty('--base-size', currentSize + 'px');
+            localStorage.setItem('societyFont', currentSize);
         }
 
-        // --- TRANSLATIONS (Keep as is) ---
-        const compTranslations = {
-            en: {
-                title: "SHREE SAMBHAJI RAJE HOUSING SOCIETY", sub: "Excellence in Community Living",
-                formTitle: "Register Complaint", formSub: "We take your concerns seriously. Please fill in the details below.",
-                lblName: "Complainant Name", lblWing: "Wing & Flat No", lblPhone: "Phone Number", lblEmail: "Email ID",
-                lblType: "Type of Complaint", lblDesc: "Complaint Description", btnSubmit: "Submit Complaint",
-                successHead: "Complaint Registered Successfully!", 
-                successMsg2: "A confirmation Email has been sent to your registered contact details."
-            },
-            mr: {
-                title: "श्री संभाजी राजे हाऊसिंग सोसायटी", sub: "सामुदायिक जीवनातील उत्कृष्टता",
-                formTitle: "तक्रार नोंदवा", formSub: "आम्ही तुमच्या समस्या गांभीर्याने घेतो. कृपया खालील तपशील भरा.",
-                lblName: "तक्रारदाराचे नाव", lblWing: "विंग आणि फ्लॅट क्र.", lblPhone: "मोबाईल नंबर", lblEmail: "ईमेल आयडी",
-                lblType: "तक्रारीचा प्रकार", lblDesc: "तक्रार वर्णन", btnSubmit: "तक्रार सबमिट करा",
-                successHead: "तक्रार यशस्वीरित्या नोंदवली गेली!", 
-                successMsg2: "तुमच्या नोंदणीकृत संपर्कावर पुष्टीकरण ईमेल पाठवला गेला आहे."
-            },
-            hi: {
-                title: "श्री संभाजी राजे हाउसिंग सोसाइटी", sub: "सामुदायिक जीवन में उत्कृष्टता",
-                formTitle: "शिकायत दर्ज करें", formSub: "हम आपकी चिंताओं को गंभीरता से लेते हैं। कृपया नीचे विवरण भरें।",
-                lblName: "शिकायतकर्ता का नाम", lblWing: "विंग और फ्लैट नंबर", lblPhone: "फोन नंबर", lblEmail: "ईमेल आईडी",
-                lblType: "शिकायत का प्रकार", lblDesc: "शिकायत विवरण", btnSubmit: "शिकायत जमा करें",
-                successHead: "शिकायत सफलतापूर्वक दर्ज की गई!", 
-                successMsg2: "आपके पंजीकृत संपर्क विवरण पर पुष्टि ईमेल भेजा गया है।"
-            }
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            localStorage.setItem('societyTheme', document.body.classList.contains('dark-mode') ? 'dark' : 'light');
+        }
+
+        // Translation Data
+        const trans = {
+            en: { title: "SHREE SAMBHAJI RAJE HOUSING SOCIETY", sub: "Excellence in Community Living" },
+            mr: { title: "श्री संभाजी राजे हाऊसिंग सोसायटी", sub: "सामुदायिक जीवनातील उत्कृष्टता" },
+            hi: { title: "श्री संभाजी राजे हाउसिंग सोसाइटी", sub: "सामुदायिक जीवन में उत्कृष्टता" }
         };
 
-        function changeComplaintLanguage() {
+        function changeLanguage() {
             const lang = document.getElementById('lang-select').value;
-            localStorage.setItem('societyLang', lang); // SAVE
-
-            const t = compTranslations[lang];
-
-            document.getElementById('txt-title').innerText = t.title;
-            document.getElementById('txt-subtitle').innerText = t.sub;
-            document.getElementById('txt-form-title').innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i> ${t.formTitle}`;
-            document.getElementById('txt-form-sub').innerText = t.formSub;
-            
-            document.getElementById('lbl-name').innerText = t.lblName;
-            document.getElementById('lbl-wing').innerText = t.lblWing;
-            document.getElementById('lbl-phone').innerText = t.lblPhone;
-            document.getElementById('lbl-email').innerText = t.lblEmail;
-            document.getElementById('lbl-type').innerText = t.lblType;
-            document.getElementById('lbl-desc').innerText = t.lblDesc;
-            document.getElementById('btn-submit').innerHTML = `<i class="fa-solid fa-paper-plane"></i> ${t.btnSubmit}`;
-
-            document.getElementById('txt-success-head').innerText = t.successHead;
-            document.getElementById('txt-success-msg2').innerText = t.successMsg2;
-
-            if(lang === 'en') document.body.classList.remove('lang-sanskrit');
-            else document.body.classList.add('lang-sanskrit');
+            localStorage.setItem('societyLang', lang);
+            document.getElementById('txt-title').innerText = trans[lang].title;
+            document.getElementById('txt-sub').innerText = trans[lang].sub;
         }
 
-        // INITIALIZE
-        window.addEventListener('load', function() {
+        // Init Load
+        window.onload = function() {
+            if(localStorage.getItem('societyTheme') === 'dark') document.body.classList.add('dark-mode');
             const savedLang = localStorage.getItem('societyLang') || 'en';
             document.getElementById('lang-select').value = savedLang;
-            changeComplaintLanguage();
-        });
-        // --- THEME ---
-        function toggleDarkMode() { document.body.classList.toggle('dark-mode'); }
-        let currentSize = 16;
-        function changeFontSize(n) {
-            if (n === 0) currentSize = 16;
-            else currentSize += n;
-            if(currentSize > 24) currentSize = 24;
-            if(currentSize < 12) currentSize = 12;
-            document.documentElement.style.setProperty('--base-size', currentSize + 'px');
+            changeLanguage();
+        };
+
+        // *** 2. COMPLAINT LOGIC ***
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwdTSU2fyLyt_0EItEbu2ZVTDMfo8_-ti7NWyKX2tH3UjaF0MsbP5aSS3bd03QD1TJAtw/exec"; 
+        const PASS_HASH = "60d7158583af707f282fe8fb4da970590817d9bdc24b2bd7c76b2315902ccf63"; // Hash for Sambhaji@2026
+        let generatedOTP = null;
+
+        // A. Gatekeeper
+        async function verifyGatekeeper() {
+            const val = document.getElementById('gate-pass').value;
+            const msgBuffer = new TextEncoder().encode(val);
+            const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+            const hashArray = Array.from(new Uint8Array(hashBuffer));
+            const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+            
+            if(hashHex === PASS_HASH) {
+                document.getElementById('gatekeeper').style.display = 'none';
+                document.getElementById('main-form').classList.remove('hidden');
+            } else {
+                alert("Incorrect Password");
+            }
+        }
+
+        // B. OTP
+        function sendOTP() {
+            const phone = document.getElementById('inp-phone').value;
+            if(phone.length < 10) return alert("Invalid Phone");
+            generatedOTP = Math.floor(1000 + Math.random() * 9000);
+            alert("OTP: " + generatedOTP); // Simulation
+            document.getElementById('otp-box').classList.remove('hidden');
+            document.getElementById('btn-otp').style.display = 'none';
+        }
+
+        function verifyOTP() {
+            if(document.getElementById('otp-val').value == generatedOTP) {
+                document.getElementById('otp-box').style.display = 'none';
+                document.getElementById('otp-success').style.display = 'block';
+                document.getElementById('btn-submit').disabled = false;
+            } else {
+                alert("Wrong OTP");
+            }
+        }
+
+        // C. Submit
+        function submitForm(e) {
+            e.preventDefault();
+            const btn = document.getElementById('btn-submit');
+            btn.innerHTML = "Saving...";
+            btn.disabled = true;
+
+            const fileInput = document.getElementById('inp-file');
+            const reader = new FileReader();
+            
+            let payload = {
+                name: document.getElementById('inp-name').value,
+                phone: document.getElementById('inp-phone').value,
+                email: document.getElementById('inp-email').value,
+                type: document.getElementById('inp-type').value,
+                desc: document.getElementById('inp-desc').value,
+                fileData: "", fileName: "", fileMime: ""
+            };
+
+            const send = () => {
+                fetch(SCRIPT_URL, { method: "POST", body: JSON.stringify(payload) })
+                .then(r => r.json())
+                .then(d => {
+                    if(d.status === "success") {
+                        alert(`Success!\nComplaint ID: ${d.id}\nPassword: ${d.pass}\nRedirecting...`);
+                        window.location.href = "index.html";
+                    } else {
+                        alert("Error: " + d.message);
+                        btn.disabled = false;
+                    }
+                });
+            };
+
+            if(fileInput.files.length > 0) {
+                const f = fileInput.files[0];
+                payload.fileName = f.name; payload.fileMime = f.type;
+                reader.onload = (e) => { payload.fileData = e.target.result.split(',')[1]; send(); };
+                reader.readAsDataURL(f);
+            } else { send(); }
         }
     </script>
 </body>

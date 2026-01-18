@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Member Complaint Portal - Shree Sambhaji Raje HSG SOC</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Tiro+Devanagari+Marathi&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="assest/style.css">
+
+    <style>
+        /* --- STYLES (Royal Theme) --- */
+        body { font-family: 'Times New Roman', Times, serif; }
+        .lang-sanskrit { font-family: 'Tiro Devanagari Marathi', serif; }
+        
+        .complaint-wrapper { max-width: 900px; margin: 40px auto; padding: 0 20px; min-height: 80vh; }
+
+        /* 1. SECURITY LOCK */
+        #security-lock {
+            background: white; padding: 50px; border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.2); text-align: center;
+            border-top: 5px solid var(--primary); max-width: 500px; margin: 50px auto;
+        }
+        .secure-input {
+            width: 80%; padding: 12px; font-size: 1.2rem; text-align: center;
+            border: 2px solid #ccc; border-radius: 10px; margin-bottom: 20px; font-family: monospace;
+        }
+
+        /* 2. FORM SECTION */
+        #main-form-section { display: none; animation: fadeIn 0.8s; }
+        .form-card {
+            background: white; padding: 40px; border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1); border: 1px solid #e2e8f0;
+        }
+        .step-header {
+            background: #f8fafc; padding: 15px; border-left: 5px solid var(--primary);
+            margin-bottom: 20px; font-weight: bold; font-size: 1.1rem; color: var(--secondary);
+        }
+        .form-row { display: flex; gap: 20px; margin-bottom: 20px; flex-wrap: wrap; }
+        .form-col { flex: 1; min-width: 250px; }
+        
+        /* Force White Inputs */
+        .c-input, .c-select {
+            width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 5px;
+            font-size: 1rem; background: #ffffff !important; color: #000000 !important;
+        }
+
+        /* OTP Buttons */
+        .otp-group { display: flex; gap: 10px; }
+        .verify-btn {
+            background: #334155; color: white; border: none; padding: 0 20px;
+            cursor: pointer; border-radius: 5px; font-weight: bold;
+        }
+        .verified-badge { 
+            color: green; font-weight: bold; display: none; align-items: center; gap: 5px; margin-top: 5px;
+        }
+
+        /* 3. SUCCESS SCREEN */
+        #success-screen {
+            display: none; text-align: center; background: white; padding: 50px;
+            border-radius: 20px; border-top: 5px solid green;
+        }
+        .ticket-box {
+            background: #f0fdf4; border: 2px solid green; padding: 20px;
+            display: inline-block; margin: 20px 0; border-radius: 10px;
+        }
+
+        .action-btn {
+            background: var(--primary); color: white; border: none; padding: 15px 40px;
+            border-radius: 30px; font-size: 1.2rem; cursor: pointer; font-weight: bold;
+            transition: 0.3s; width: 100%;
+        }
+        .action-btn:hover { background: #9a3412; }
+        .action-btn:disabled { background: #ccc; cursor: not-allowed; }
+
+        @keyframes fadeIn { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
+    </style>
+</head>
+<body>
+
+    <div class="access-bar">
+        <div class="access-controls">
+            <button onclick="toggleDarkMode()"><i class="fa-solid fa-moon"></i></button>
+            <div class="font-controls">
+                <button onclick="changeFontSize(1)">+A</button>
+                <button onclick="changeFontSize(0)">A</button>
+                <button onclick="changeFontSize(-1)">-A</button>
+            </div>
+        </div>
+        <select id="lang-select" onchange="changeLang()">
+            <option value="en">English</option>
+            <option value="mr">मराठी</option>
+            <option value="hi">हिन्दी</option>
+        </select>
+    </div>
+
+    <header>
+        <div class="logo-container">
+            <div class="royal-seal"><i class="fa-solid fa-chess-rook"></i></div>
+        </div>
+        <div class="title-container">
+            <h1 id="txt-title">SHREE SAMBHAJI RAJE HOUSING SOCIETY</h1>
+            <p id="txt-sub">Excellence in Community Living</p>
+        </div>
+    </header>
+
+    <div class="complaint-wrapper">
+
+        <div id="security-lock">
+            <div class="lock-icon"><i class="fa-solid fa-user-lock"></i></div>
+            <h2 id="txt-lock-title">Member Verification Required</h2>
+            <p id="txt-lock-sub">Please enter the Society Password to access the portal.</p>
+            <br>
+            <input type="password" id="mem-pass" class="secure-input" placeholder="Password">
+            <br>
+            <button onclick="verifyMember()" class="action-btn" style="width: auto; padding: 10px 30px;">
+                <i class="fa-solid fa-unlock"></i> <span id="btn-unlock">Unlock Portal</span>
+            </button>
+            <p id="lock-error" style="color:red; display:none; margin-top:10px;">Incorrect Password</p>
+        </div>
+
+        <div id="main-form-section">
+            <div class="form-card">
+                <h2 id="txt-form-head" style="color:var(--primary); border-bottom:2px solid #eee; padding-bottom:10px; margin-bottom:20px;">
+                    <i class="fa-solid fa-pen-to-square"></i> New Complaint Form
+                </h2>
+
+                <form id="complaintForm">
+                    
+                    <div class="step-header">1. Personal Details</div>
+                    <div class="form-row">
+                        <div class="form-col">
+                            <label>Full Name</label>
+                            <input type="text" name="Name" id="inp-name" class="c-input" placeholder="Member Name" required>
+                        </div>
+                    </div>
+
+                    <div class="step-header">2. Phone Verification</div>
+                    <div class="form-row">
+                        <div class="form-col">
+                            <label>Mobile Number</label>
+                            <div class="otp-group">
+                                <input type="tel" name="Phone" id="inp-phone" class="c-input" placeholder="10 Digit Number" required>
+                                <button type="button" onclick="sendOTP('phone')" class="verify-btn" id="btn-otp-phone">Get OTP</button>
+                            </div>
+                            <div id="phone-otp-box" style="display:none; margin-top:10px;">
+                                <input type="text" id="otp-phone-input" class="c-input" style="width:100px; display:inline-block;" placeholder="Enter OTP">
+                                <button type="button" onclick="verifyOTP('phone')" class="verify-btn" style="background:green;">Verify</button>
+                            </div>
+                            <div id="phone-verified" class="verified-badge"><i class="fa-solid fa-circle-check"></i> Verified</div>
+                        </div>
+                    </div>
+
+                    <div class="step-header">3. Email Verification</div>
+                    <div class="form-row">
+                        <div class="form-col">
+                            <label>Email Address</label>
+                            <div class="otp-group">
+                                <input type="email" name="Email" id="inp-email" class="c-input" placeholder="name@example.com" required>
+                                <button type="button" onclick="sendOTP('email')" class="verify-btn" id="btn-otp-email">Get OTP</button>
+                            </div>
+                            <div id="email-otp-box" style="display:none; margin-top:10px;">
+                                <input type="text" id="otp-email-input" class="c-input" style="width:100px; display:inline-block;" placeholder="Enter OTP">
+                                <button type="button" onclick="verifyOTP('email')" class="verify-btn" style="background:green;">Verify</button>
+                            </div>
+                            <div id="email-verified" class="verified-badge"><i class="fa-solid fa-circle-check"></i> Verified</div>
+                        </div>
+                    </div>
+
+                    <div class="step-header">4. Complaint Details</div>
+                    <div class="form-row">
+                        <div class="form-col">
+                            <label>Complaint Type</label>
+                            <select name="Type" id="inp-type" class="c-select" required>
+                                <option value="Water">Water Supply</option>
+                                <option value="Electricity">Electricity</option>
+                                <option value="Cleaning">Cleanliness</option>
+                                <option value="Security">Security</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-col">
+                            <label>Description (Max 250 chars)</label>
+                            <textarea name="Description" id="inp-desc" class="c-input" rows="4" maxlength="250" placeholder="Describe the issue..." required></textarea>
+                        </div>
+                    </div>
+                    
+                    <input type="hidden" name="access_key" value="bc160e35-4fb9-418a-8a88-6a6235c35e8b">
+                    
+                    <input type="hidden" name="subject" value="New Society Complaint">
+                    <input type="hidden" name="Ticket_ID" id="hidden-ticket-id">
+                    <input type="hidden" name="Secret_Pass" id="hidden-pass">
+
+                    <button type="submit" class="action-btn" id="btn-submit">
+                        <i class="fa-solid fa-paper-plane"></i> Submit Complaint
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <div id="success-screen">
+            <i class="fa-solid fa-circle-check" style="color:green; font-size:4rem; margin-bottom:20px;"></i>
+            <h2 id="txt-success-head">Complaint Registered Successfully!</h2>
+            <p id="txt-success-sub">Dear Member, we have recorded your complaint.</p>
+            
+            <div class="ticket-box">
+                <p>Complaint Ticket ID:</p>
+                <h3 id="res-id" style="font-size:2rem; margin:5px 0; color:var(--primary);">#0000</h3>
+                <hr style="margin:10px 0; border:0; border-top:1px dashed green;">
+                <p>Secret Tracking Password:</p>
+                <div id="res-pass" style="font-family:monospace; font-size:1.5rem; color:#dc2626; font-weight:bold;">ABCD@1234</div>
+                <p style="font-size:0.8rem; color:#666; margin-top:5px;">(Please save this for future reference)</p>
+            </div>
+
+            <p style="color:var(--secondary); font-style:italic;">
+                The details have been sent to the Secretary via Email.
+            </p>
+
+            <button onclick="location.reload()" class="action-btn" style="width:auto; padding:10px 30px; margin-top:20px;">Close</button>
+        </div>
+
+    </div>
+
+    <footer>
+        <div class="copyright">&copy; 2026 Shree Sambhaji Raje HSG SOC</div>
+    </footer>
+
+    <script>
+        // --- 1. SECURITY (Hash for Sambhaji@2026) ---
+        const CORRECT_HASH = "60d7158583af707f282fe8fb4da970590817d9bdc24b2bd7c76b2315902ccf63";
+        let isPhoneVerified = false;
+        let isEmailVerified = false;
+        let generatedOTP = "";
+
+        async function sha256(message) {
+            const msgBuffer = new TextEncoder().encode(message);
+            const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+            const hashArray = Array.from(new Uint8Array(hashBuffer));
+            return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+        }
+
+        async function verifyMember() {
+            const input = document.getElementById('mem-pass').value;
+            const hash = await sha256(input);
+            if(hash === CORRECT_HASH) {
+                document.getElementById('security-lock').style.display = 'none';
+                document.getElementById('main-form-section').style.display = 'block';
+            } else {
+                document.getElementById('lock-error').style.display = 'block';
+            }
+        }
+
+        // --- 2. OTP SIMULATION ---
+        function sendOTP(type) {
+            const val = document.getElementById(type === 'phone' ? 'inp-phone' : 'inp-email').value;
+            if(val.length < 5) { alert("Invalid Input"); return; }
+            generatedOTP = Math.floor(1000 + Math.random() * 9000).toString();
+            alert(`[SIMULATION] Your OTP is: ${generatedOTP}`);
+            document.getElementById(`btn-otp-${type}`).style.display = 'none';
+            document.getElementById(`${type}-otp-box`).style.display = 'block';
+        }
+
+        function verifyOTP(type) {
+            const userOtp = document.getElementById(`otp-${type}-input`).value;
+            if(userOtp === generatedOTP) {
+                document.getElementById(`${type}-otp-box`).style.display = 'none';
+                document.getElementById(`${type}-verified`).style.display = 'flex';
+                if(type === 'phone') isPhoneVerified = true;
+                if(type === 'email') isEmailVerified = true;
+            } else {
+                alert("Wrong OTP");
+            }
+        }
+
+        // --- 3. SUBMIT FORM via Web3Forms (fetch) ---
+        const form = document.getElementById('complaintForm');
+        const submitBtn = document.getElementById('btn-submit');
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault(); // Stop standard submission
+
+            // A. Check OTPs
+            if(!isPhoneVerified || !isEmailVerified) {
+                alert("Please verify both Phone and Email using OTP.");
+                return;
+            }
+
+            // B. Prepare Data
+            const ticketID = Math.floor(100000 + Math.random() * 900000);
+            
+            // Random Password Generator
+            const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            const nums = "0123456789";
+            let p1 = ""; let p2 = "";
+            for(let i=0;i<4;i++) p1 += chars.charAt(Math.floor(Math.random()*chars.length));
+            for(let i=0;i<4;i++) p2 += nums.charAt(Math.floor(Math.random()*nums.length));
+            const secretPass = p1 + "@" + p2;
+
+            document.getElementById('hidden-ticket-id').value = ticketID;
+            document.getElementById('hidden-pass').value = secretPass;
+
+            const formData = new FormData(form);
+            const originalText = submitBtn.innerHTML;
+
+            // C. Loading State
+            submitBtn.innerHTML = "Sending...";
+            submitBtn.disabled = true;
+
+            try {
+                // D. Send Data
+                const response = await fetch("https://api.web3forms.com/submit", {
+                    method: "POST",
+                    body: formData
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    // E. Success Logic
+                    document.getElementById('main-form-section').style.display = 'none';
+                    document.getElementById('success-screen').style.display = 'block';
+                    document.getElementById('res-id').innerText = "#" + ticketID;
+                    document.getElementById('res-pass').innerText = secretPass;
+                    form.reset();
+                } else {
+                    alert("Error: " + data.message);
+                    submitBtn.innerHTML = originalText;
+                    submitBtn.disabled = false;
+                }
+
+            } catch (error) {
+                alert("Something went wrong. Please check connection.");
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+            }
+        });
+
+
+        // --- 4. UNIVERSAL SETTINGS (Theme/Lang) ---
+        const cLang = {
+            en: { title:"Member Complaint Portal", lock:"Member Verification", form:"Complaint Form", submit:"Submit" },
+            mr: { title:"सदस्य तक्रार निवारण", lock:"सदस्य पडताळणी", form:"तक्रार अर्ज", submit:"तक्रार नोंदवा" },
+            hi: { title:"सदस्य शिकायत पोर्टल", lock:"सदस्य सत्यापन", form:"शिकायत फॉर्म", submit:"शिकायत जमा करें" }
+        };
+
+        function changeLang() {
+            const l = document.getElementById('lang-select').value;
+            const t = cLang[l];
+            document.getElementById('txt-title').innerText = "SHREE SAMBHAJI RAJE HOUSING SOCIETY"; 
+            document.getElementById('txt-lock-title').innerText = t.lock;
+            document.getElementById('txt-form-head').innerText = t.form;
+            
+            if(l === 'en') document.body.classList.remove('lang-sanskrit');
+            else document.body.classList.add('lang-sanskrit');
+            
+            localStorage.setItem('societyLang', l);
+        }
+
+        let currentSize = parseInt(localStorage.getItem('societyFont')) || 16;
+        document.documentElement.style.setProperty('--base-size', currentSize + 'px');
+
+        function changeFontSize(n) {
+            if (n === 0) currentSize = 16;
+            else currentSize += n;
+            if(currentSize > 24) currentSize = 24;
+            if(currentSize < 12) currentSize = 12;
+            document.documentElement.style.setProperty('--base-size', currentSize + 'px');
+            localStorage.setItem('societyFont', currentSize);
+        }
+
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            if(document.body.classList.contains('dark-mode')) {
+                localStorage.setItem('societyTheme', 'dark');
+            } else {
+                localStorage.setItem('societyTheme', 'light');
+            }
+        }
+
+        window.onload = function() {
+            const savedLang = localStorage.getItem('societyLang') || 'en';
+            document.getElementById('lang-select').value = savedLang;
+            changeLang();
+            if(localStorage.getItem('societyTheme')==='dark') document.body.classList.add('dark-mode');
+        }
+    </script>
+</body>
+</html>
