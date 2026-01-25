@@ -277,14 +277,13 @@
                 }
 
                 data.forEach(row => {
-                    // Google Sheet Row: [ID, Date, Name, Contact, Rating, Message]
-                    // ID is row[0], Date is row[1], Name is row[2], etc.
+                   
                     
                     const id = row[0];
                     const dateRaw = new Date(row[1]);
                     const dateStr = dateRaw.toLocaleDateString();
                     const name = row[2];
-                    const contact = row[3];
+                    
                     const rating = row[4];
                     const message = row[5];
 

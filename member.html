@@ -108,6 +108,27 @@
 
     <script src="assest/script.js"></script>
     <script>
+        async function handleLogin() {
+    const email = document.querySelector('#login-form input[type="email"]').value;
+    const pass = document.querySelector('#login-form input[type="password"]').value;
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbzNDfNfl1q6_0fiaPAoIkkhxEloPC-NT8Ww0LMxBxCD09I1ENn3Q3vomsbxBWQlxv_nfA/exec'; 
+
+    try {
+        const response = await fetch(`${scriptURL}?action=login&email=${email}&pass=${pass}`);
+        const result = await response.json();
+
+        if (result.status === "success") {
+            // Redirect to dashboard with data
+            window.location.href = `dashboard.html?name=${result.name.replace(/ /g, '_')}&flat=${result.flat}`;
+        } else if (result.status === "pending") {
+            alert("Your account is pending approval from the Secretary.");
+        } else {
+            alert("Invalid Email or Password.");
+        }
+    } catch (error) {
+        console.error('Error!', error.message);
+    }
+}
         // Simple script to toggle between forms
         function showLogin() {
             document.getElementById('login-form').style.display = 'block';
