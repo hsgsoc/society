@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Request Received - Shree Sambaji Raje</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="assest/style.css">
+    <style>
+        .thank-you-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 70vh;
+            padding: 20px;
+        }
+        .thank-you-card {
+            background: white;
+            max-width: 500px;
+            width: 100%;
+            padding: 50px 40px;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+            border-top: 5px solid var(--primary);
+        }
+        .success-icon {
+            font-size: 4rem;
+            color: #10b981; /* Success Green */
+            margin-bottom: 20px;
+            animation: scaleIn 0.5s ease-out;
+        }
+        @keyframes scaleIn {
+            0% { transform: scale(0); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .thank-you-card h2 {
+            color: var(--secondary);
+            margin-bottom: 15px;
+            font-family: var(--font-eng);
+        }
+        .thank-you-card p {
+            color: #64748b;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+        .back-home-btn {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            padding: 12px 30px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+        .back-home-btn:hover {
+            background: var(--secondary);
+            transform: translateY(-2px);
+        }
+        /* Dark Mode Support */
+        body.dark-mode .thank-you-card {
+            background: #1e293b;
+            border-color: var(--primary);
+        }
+        body.dark-mode .thank-you-card h2 { color: white; }
+        body.dark-mode .thank-you-card p { color: #cbd5e1; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <img src="assest/image/society.png" alt="Logo" width="80px">
+    </header>
+
+    <main class="thank-you-wrapper">
+        <div class="thank-you-card">
+            <div class="success-icon">
+                <i class="fa-solid fa-circle-check"></i>
+            </div>
+            <h2 id="txt-thanks-title">Application Submitted!</h2>
+            <p id="txt-thanks-desc">
+                Namaste! Your membership registration request has been sent to the <b>Society Secretary</b>. 
+                <br><br>
+                Once your details are verified, you will receive an <b>Approval Email</b> containing your private Dashboard link.
+            </p>
+            <a href="index.html" class="back-home-btn">
+                <i class="fa-solid fa-house"></i> Return Home
+            </a>
+        </div>
+    </main>
+
+    <footer style="margin-top: 50px;">
+        <div class="copyright">
+            © 2026 Shree Sambaji Raje Housing Society
+        </div>
+    </footer>
+
+    <script src="assest/script.js"></script>
+</body>
+</html>
