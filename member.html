@@ -3,160 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Member Portal - Shree Sambhaji Raje HSG SOC</title>
-     <link rel="icon" type="image/x-icon" href="assest/image/society.png">
+    <title>Member Area - Shree Sambaji Raje Housing Society</title>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Tiro+Devanagari+Marathi&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
-    <link rel="stylesheet" href="assest/style.css">
-
-    <style>
-        /* --- LOGIN STYLES --- */
-        .login-wrapper {
-            min-height: 80vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: linear-gradient(135deg, #fff7ed 0%, #f1f5f9 100%);
-        }
-        .login-box {
-            background: white;
-            padding: 40px;
-            border-radius: 20px;
-            box-shadow: 0 25px 50px rgba(0,0,0,0.15);
-            text-align: center;
-            max-width: 400px;
-            width: 90%;
-            border: 2px solid var(--primary);
-        }
-        .login-input {
-            width: 100%;
-            padding: 12px;
-            margin: 10px 0;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            font-size: 1rem;
-        }
-        .login-btn {
-            width: 100%;
-            padding: 12px;
-            background: var(--primary);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 1.1rem;
-            cursor: pointer;
-            font-weight: bold;
-            margin-top: 10px;
-        }
-        .login-btn:hover { background: #9a3412; }
-        .error-msg { color: red; display: none; margin-top: 10px; }
-
-        /* --- DASHBOARD STYLES --- */
-        .dashboard-container { display: none; padding-bottom: 60px; }
-        
-        .welcome-banner {
-            background: linear-gradient(to right, var(--primary), #ea580c);
-            color: white;
-            padding: 30px 20px;
-            text-align: center;
-            border-radius: 0 0 30px 30px;
-            margin-bottom: 40px;
-            box-shadow: 0 10px 30px rgba(194, 65, 12, 0.3);
-        }
-        
-        /* Dashboard Grid */
-        .dash-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-            gap: 20px;
-            max-width: 1000px;
-            margin: 0 auto 40px auto;
-            padding: 0 20px;
-        }
-
-        /* NOTICE BOARD SECTION */
-        .notice-board {
-            max-width: 800px;
-            margin: 0 auto 50px auto;
-            background: white;
-            border-radius: 15px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.05);
-            overflow: hidden;
-            border: 1px solid #e2e8f0;
-        }
-        .notice-header {
-            background: var(--secondary);
-            color: white;
-            padding: 15px 25px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .notice-list { padding: 20px; }
-        
-        .notice-item {
-            border-bottom: 1px solid #eee;
-            padding: 20px 0;
-            display: flex;
-            gap: 15px;
-            align-items: flex-start;
-            animation: fadeIn 0.5s;
-        }
-        .notice-icon { color: var(--primary); font-size: 1.5rem; margin-top: 5px; }
-        
-        /* Notice Meta Data (Date, Author, Contact) */
-        .notice-meta {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 15px;
-            margin-top: 10px;
-            font-size: 0.85rem;
-            color: #64748b;
-            background: #f8fafc;
-            padding: 8px;
-            border-radius: 5px;
-        }
-        .notice-meta span { display: flex; align-items: center; gap: 5px; }
-
-        /* CONTACTS SECTION */
-        .contact-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            max-width: 1000px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        .contact-card {
-            background: white;
-            padding: 20px;
-            border-radius: 15px;
-            border-left: 5px solid var(--primary);
-            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
-        }
-
-        /* PUBLISH MODAL */
-        #publish-modal {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.6);
-            backdrop-filter: blur(5px);
-            display: none;
-            align-items: center; justify-content: center;
-            z-index: 1000;
-        }
-        .modal-content {
-            background: white; padding: 30px; border-radius: 15px; width: 90%; max-width: 500px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
-            animation: slideUp 0.3s;
-        }
-        .modal-input {
-            width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 5px;
-        }
-
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-    </style>
+    <link rel="icon" type="image/x-icon" href="assest/image/society.png">
+    <link rel="stylesheet" href="assest/style.css"> <link rel="stylesheet" href="assest/member.css">
+    <link rel="stylesheet" href="assest/ai.css">
 </head>
 <body>
 
@@ -169,450 +21,107 @@
                 <button onclick="changeFontSize(-1)">-A</button>
             </div>
         </div>
-        <select id="lang-select" onchange="changeMemberLanguage()">
+        <select id="lang-select" onchange="changeLanguage()">
             <option value="en">English</option>
             <option value="mr">मराठी</option>
             <option value="hi">हिन्दी</option>
         </select>
     </div>
 
-    <div id="login-section" class="login-wrapper">
-        <div class="login-box">
-            <div class="royal-seal" style="width:80px; height:80px; font-size:2.5rem; margin-bottom:20px;">
-                <i class="fa-solid fa-chess-rook"></i>
-            </div>
-            <h2 id="txt-login-title">Member Portal</h2>
-            <p id="txt-login-sub" style="color:#666; margin-bottom:20px;">Restricted Access for Members Only</p>
-            
-            <input type="password" id="passwordInput" class="login-input" placeholder="Enter Passcode (sambaji)">
-            <button class="login-btn" onclick="checkPass()" id="btn-login-submit">Login Securely</button>
-            <p id="error-msg" class="error-msg">Incorrect Password. Try 'sambaji'</p>
+    <header>
+        <div class="logo-container">
+            <img src="assest/image/society.png" alt="Society Logo" width="120px">
         </div>
-    </div>
-
-    <div id="dashboard-section" class="dashboard-container">
-        
-        <header>
-            <div class="logo-container">
-                <div class="royal-seal"><i class="fa-solid fa-chess-rook"></i></div>
-            </div>
-            <div class="title-container">
-                <h1 id="txt-header-title">SHREE SAMBHAJI RAJE HOUSING SOCIETY</h1>
-                <p id="txt-header-sub">Member Administration Panel</p>
-            </div>
-        </header>
-
-        <div class="welcome-banner">
-            <h2 id="txt-welcome">Welcome Back, Member</h2>
-            <p>Dashboard Access Granted • <span id="visitor-count">12,405</span> Active Visits</p>
+        <div class="title-container">
+            <h1 id="txt-title">MEMBER PORTAL</h1>
+            <p id="txt-subtitle">Secure Access for Residents</p>
         </div>
+    </header>
 
-        <div class="dash-grid">
-           <div class="card" onclick="window.location.href='Complaint(1).html'">
-                <i class="fa-solid fa-triangle-exclamation"></i>
-                <span id="btn-complaint">Complaint</span>
-            </div>
-            <div class="card" onclick="openPublishModal()">
-                <i class="fa-solid fa-bullhorn"></i>
-                <span id="btn-publish">Publish Notice</span>
-            </div>
-           <div class="card" onclick="window.location.href='enquiry.html'">
-                <i class="fa-solid fa-circle-question"></i>
-                <span id="btn-enquiry">Enquiry</span>
-            </div>
-            <div class="card" onclick="window.location.href='about.html'">
-                <i class="fa-solid fa-info-circle"></i>
-                <span id="btn-about">About Soc</span>
-            </div>
-           <div class="card" onclick="window.location.href='gallery.html'">
-                <i class="fa-solid fa-images"></i>
-                <span id="btn-gallery">Gallery</span>
-            </div>
-            <div class="card" onclick="alert('Sending Notification to all Members...')">
-                <i class="fa-solid fa-bell"></i>
-                <span id="btn-notify">Send Notify</span>
-            </div>
-        </div>
-
-        <div class="notice-board">
-            <div class="notice-header">
-                <h3 id="txt-notice-board"><i class="fa-solid fa-clipboard"></i> Official Notice Board</h3>
-                <button id="btn-add-new" onclick="openPublishModal()" style="background:white; color:var(--primary); border:none; padding:5px 15px; border-radius:20px; cursor:pointer; font-weight:bold;">+ Add New</button>
-            </div>
-            <div class="notice-list" id="notice-list">
-                
-                <div class="notice-item">
-                    <div class="notice-icon"><i class="fa-solid fa-file-invoice"></i></div>
-                    <div style="width:100%;">
-                        
-                        <div class="notice-meta">
-                            <span><i class="fa-solid fa-user"></i> <span class="lbl-pub">By:</span> Treasurer</span>
-                            <span><i class="fa-solid fa-calendar"></i> <span class="lbl-date">Date:</span> 15/01/2026</span>
-                            <span><i class="fa-solid fa-phone"></i> <span class="lbl-contact">Ph:</span> 9822XXXXXX</span>
-                        </div>
-                    </div>
+    <main>
+        <div class="auth-wrapper">
+            <div class="auth-container">
+                <div class="auth-toggle">
+                    <button id="btn-login-view" class="active" onclick="showLogin()">Login</button>
+                    <button id="btn-register-view" onclick="showRegister()">New Registration</button>
                 </div>
 
-            </div>
-        </div>
+                <form id="login-form" class="auth-form">
+                    <h2 style="color:var(--primary); margin-bottom:20px;">Member Login</h2>
+                    
+                    <div class="input-group">
+                        <i class="fa-solid fa-envelope"></i>
+                        <input type="email" placeholder="Registered Email" required>
+                    </div>
 
-        <h2 id="txt-contacts-head" style="text-align:center; color:var(--primary); margin-bottom:20px;">Emergency Contacts</h2>
-        <div class="contact-grid">
-            <div class="contact-card">
-                <h3 id="txt-role-sec"><i class="fa-solid fa-user-tie"></i> Secretary</h3>
-                <p>Mr. Rajesh Patil</p>
-                <p><strong>+91 98XXX XXXXX</strong></p>
-            </div>
-            <div class="contact-card">
-                <h3 id="txt-role-secu"><i class="fa-solid fa-shield-halved"></i> Security Gate</h3>
-                <p>Main Guard Room</p>
-                <p><strong>+91 99XXX XXXXX</strong></p>
-            </div>
-            <div class="contact-card">
-                <h3 id="txt-role-plum"><i class="fa-solid fa-wrench"></i> Plumber</h3>
-                <p>Service On-Call</p>
-                <p><strong>+91 90XXX XXXXX</strong></p>
-            </div>
-        </div>
+                    <div class="input-group">
+                        <i class="fa-solid fa-lock"></i>
+                        <input type="password" placeholder="Password" required>
+                    </div>
 
-        <div style="text-align:center; margin-top:40px;">
-            <div style="text-align:center; margin-top:40px; padding-bottom: 20px;">
-            <button onclick="logout()" style="
-                background: white; 
-                color: var(--secondary); 
-                border: 2px solid #cbd5e1; 
-                padding: 12px 30px; 
-                border-radius: 30px; 
-                cursor: pointer; 
-                font-size: 1rem; 
-                font-weight: bold; 
-                transition: 0.3s;
-                display: inline-flex;
-                align-items: center;
-                gap: 10px;
-            ">
-                <i class="fa-solid fa-power-off" style="color: red;"></i> 
-                <span id="btn-logout">Logout & Return Home</span>
-            </button>
-        </div>
-        </div>
+                    <div class="form-actions">
+                        <a href="#" class="forgot-pass">Forgot Password?</a>
+                        <button type="button" class="submit-btn" onclick="alert('Login requires a database backend. Please use Registration for now.')">LOGIN</button>
+                    </div>
+                </form>
 
-    </div>
+                <form id="register-form" class="auth-form" action="https://formsubmit.co/shrisambhajiraje.hsgsoc.2017@gmail.com" method="POST" style="display: none;">
+                    <h2 style="color:var(--primary); margin-bottom:10px;">Request Membership</h2>
+                    <p style="font-size: 0.9rem; color: #666; margin-bottom: 20px;">Your details will be sent to the Secretary for approval.</p>
+                    
+                    <input type="hidden" name="_subject" value="New Society Member Registration Request!">
+                    <input type="hidden" name="_captcha" value="false">
+                    <input type="hidden" name="_next" value="https://hsgsoc.github.io/society/thankyou.html">
+
+                    <div class="input-group">
+                        <i class="fa-solid fa-user"></i>
+                        <input type="text" name="Full Name" placeholder="Full Name (Owner)" required>
+                    </div>
+
+                    <div class="input-group">
+                        <i class="fa-solid fa-building"></i>
+                        <input type="text" name="Flat Number" placeholder="Wing & Flat No (e.g., A-101)" required>
+                    </div>
+
+                    <div class="input-group">
+                        <i class="fa-solid fa-phone"></i>
+                        <input type="tel" name="Phone" placeholder="Mobile Number" required>
+                    </div>
+
+                    <div class="input-group">
+                        <i class="fa-solid fa-envelope"></i>
+                        <input type="email" name="Email" placeholder="Email Address" required>
+                    </div>
+
+                    <button type="submit" class="submit-btn">SUBMIT FOR APPROVAL</button>
+                </form>
+            </div>
+        </div>
+    </main>
 
     <footer>
         <div class="text"> Contact: shrisambhajiraje.hsgsoc.2017@gmail.com</div>
-        <div class="text"> PCMC: egov@pcmcindia.gov.in</div>
-        <div class="footer-links">
-            <a href="https://www.pcmcindia.gov.in" target="_blank" class="f-link"><i class="fa-solid fa-building"></i> PCMC</a>
-            <a href="https://www.mahadiscom.in" target="_blank" class="f-link"><i class="fa-solid fa-bolt"></i> Mahavitran</a>
-            <a href="#" class="f-link"><i class="fa-solid fa-hand-holding-dollar"></i> Tax</a>
-            <a href="#" class="f-link"><i class="fa-solid fa-faucet-drip"></i> Water</a>
-            <a href="https://www.india.gov.in" target="_blank" class="f-link"><i class="fa-solid fa-flag"></i> India Gov</a>
-        </div>
         <div class="copyright">
-            &copy; 2026 Shree Sambaji Raje Housing Society
+            © 2026 Shree Sambaji Raje Housing Society
         </div>
     </footer>
-   
 
-    <div id="publish-modal">
-        <div class="modal-content">
-            <h3 id="txt-modal-title" style="margin-bottom:15px; color:var(--primary);">Publish New Notice</h3>
-            
-            <input type="text" id="notice-title" class="modal-input" placeholder="Notice Title">
-            <textarea id="notice-desc" class="modal-input" placeholder="Details..." style="height:80px;"></textarea>
-            
-            <input type="text" id="notice-author" class="modal-input" placeholder="Publisher Name (e.g. Secretary)">
-            <input type="text" id="notice-contact" class="modal-input" placeholder="Email or Phone No">
-            
-            <div style="display:flex; gap:10px; margin-top: 10px;">
-                <button id="btn-modal-publish" onclick="publishNotice()" style="flex:1; background:var(--primary); color:white; border:none; padding:10px; border-radius:5px; cursor:pointer;">Publish</button>
-                <button id="btn-modal-cancel" onclick="closePublishModal()" style="flex:1; background:#94a3b8; color:white; border:none; padding:10px; border-radius:5px; cursor:pointer;">Cancel</button>
-            </div>
-        </div>
-    </div>
-
+    <script src="assest/script.js"></script>
     <script>
-        // ==========================================
-        // 1. CONFIGURATION (Essential)
-        // ==========================================
-        // PASTE YOUR GOOGLE APPS SCRIPT WEB APP URL HERE
-        const API_URL = "https://script.google.com/macros/s/AKfycbxqjeosjsJuJKEI1hLta2XAle81vlfCwYmjmBYhr39MUjvVl_G95XyFfTExajJCj3sI/exec"; 
-
-
-        // ==========================================
-        // 2. SECURITY & LOGIN
-        // ==========================================
-        function checkPass() {
-            const input = document.getElementById('passwordInput').value.toLowerCase().trim();
-            const errorMsg = document.getElementById('error-msg');
-            
-            // Password: sambaji
-            if (btoa(input) === 'c2FtYmFqaQ==') { 
-                document.getElementById('login-section').style.display = 'none';
-                document.getElementById('dashboard-section').style.display = 'block';
-                sessionStorage.setItem('memberAuth', 'true');
-                
-                // LOAD NOTICES AFTER LOGIN
-                loadNotices();
-            } else {
-                errorMsg.style.display = 'block';
-            }
+        // Simple script to toggle between forms
+        function showLogin() {
+            document.getElementById('login-form').style.display = 'block';
+            document.getElementById('register-form').style.display = 'none';
+            document.getElementById('btn-login-view').classList.add('active');
+            document.getElementById('btn-register-view').classList.remove('active');
         }
 
-        // Auto-login check
-        if(sessionStorage.getItem('memberAuth') === 'true') {
-            document.getElementById('login-section').style.display = 'none';
-            document.getElementById('dashboard-section').style.display = 'block';
-            
-            // LOAD NOTICES ON REFRESH
-            loadNotices();
+        function showRegister() {
+            document.getElementById('login-form').style.display = 'none';
+            document.getElementById('register-form').style.display = 'block';
+            document.getElementById('btn-login-view').classList.remove('active');
+            document.getElementById('btn-register-view').classList.add('active');
         }
-
-        function logout() {
-            sessionStorage.removeItem('memberAuth');
-            alert("You have been logged out securely.");
-            window.location.href = 'index.html';
-        }
-
-
-        // ==========================================
-        // 3. GOOGLE SHEET INTEGRATION (NOTICES)
-        // ==========================================
-        
-        // --- LOAD NOTICES FROM SHEET ---
-        function loadNotices() {
-            const list = document.getElementById('notice-list');
-            list.innerHTML = '<p style="text-align:center; padding:20px;">Loading Notices from Database...</p>';
-
-            // Check if API URL is set
-            if(API_URL === "YOUR_WEB_APP_URL" || API_URL === "") {
-                list.innerHTML = '<p style="color:red; text-align:center;">Error: Google Sheet API URL not configured in code.</p>';
-                return;
-            }
-
-            fetch(API_URL + "?action=getNotices")
-            .then(response => response.json())
-            .then(data => {
-                list.innerHTML = ""; // Clear loading message
-                
-                if(data.length === 0) {
-                    list.innerHTML = "<p style='text-align:center; padding:20px; color:#666;'>No notices found.</p>";
-                    return;
-                }
-
-                data.forEach(row => {
-                    // Row structure from Sheet: [Date, Title, Desc, Author, Contact]
-                    const dateRaw = new Date(row[0]);
-                    const dateStr = dateRaw.toLocaleDateString('en-GB'); // DD/MM/YYYY
-                    const title = row[1];
-                    const desc = row[2];
-                    const author = row[3];
-                    const contact = row[4];
-
-                    const html = `
-                    <div class="notice-item">
-                        <div class="notice-icon"><i class="fa-solid fa-bullhorn"></i></div>
-                        <div style="width:100%;">
-                            <h4 style="color:var(--primary);">${title}</h4>
-                            <p style="font-size:0.95rem; color:#444; margin-bottom:5px;">${desc}</p>
-                            
-                            <div class="notice-meta">
-                                <span><i class="fa-solid fa-user"></i> <strong>By:</strong> ${author}</span>
-                                <span><i class="fa-solid fa-calendar"></i> <strong>Date:</strong> ${dateStr}</span>
-                                <span><i class="fa-solid fa-phone"></i> <strong>Ph:</strong> ${contact}</span>
-                            </div>
-                        </div>
-                    </div>`;
-                    
-                    list.innerHTML += html;
-                });
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                list.innerHTML = "<p style='color:red; text-align:center;'>Failed to load notices, Try again Later.</p>";
-            });
-        }
-
-        // --- PUBLISH NOTICE TO SHEET ---
-        function openPublishModal() { document.getElementById('publish-modal').style.display = 'flex'; }
-        function closePublishModal() { document.getElementById('publish-modal').style.display = 'none'; }
-
-        function publishNotice() {
-            const title = document.getElementById('notice-title').value;
-            const desc = document.getElementById('notice-desc').value;
-            const author = document.getElementById('notice-author').value || "Admin";
-            const contact = document.getElementById('notice-contact').value || "N/A";
-            
-            const btn = document.getElementById('btn-modal-publish');
-
-            if(title && desc) {
-                // Change button state
-                const originalText = btn.innerText;
-                btn.innerText = "Saving...";
-                btn.disabled = true;
-
-                // Prepare Data
-                const formData = new FormData();
-                formData.append('action', 'addNotice');
-                formData.append('title', title);
-                formData.append('desc', desc);
-                formData.append('author', author);
-                formData.append('contact', contact);
-
-                // Send to Google Sheet
-                fetch(API_URL, {
-                    method: 'POST',
-                    body: formData
-                })
-                .then(res => res.json())
-                .then(response => {
-                    if(response.result === 'success') {
-                        alert("Notice Published Successfully!");
-                        closePublishModal();
-                        loadNotices(); // Reload the list to show new notice
-                        
-                        // Clear Inputs
-                        document.getElementById('notice-title').value = "";
-                        document.getElementById('notice-desc').value = "";
-                        document.getElementById('notice-author').value = "";
-                        document.getElementById('notice-contact').value = "";
-                    } else {
-                        alert("Error saving notice.");
-                    }
-                    btn.innerText = originalText;
-                    btn.disabled = false;
-                })
-                .catch(err => {
-                    alert("Network Error. Notice not saved.");
-                    console.error(err);
-                    btn.innerText = originalText;
-                    btn.disabled = false;
-                });
-            } else {
-                alert("Please fill in Title and Description.");
-            }
-        }
-
-
-        // ==========================================
-        // 4. UTILITIES (Visitor Count, Theme, Translation)
-        // ==========================================
-        
-        function updateVisitorCount() {
-            let currentCount = localStorage.getItem('societyMemberVisits');
-            if (!currentCount) currentCount = 0;
-            else currentCount = parseInt(currentCount);
-            
-            let newCount = currentCount + 1;
-            localStorage.setItem('societyMemberVisits', newCount);
-            
-            const counterElement = document.getElementById('visitor-count');
-            if(counterElement) counterElement.innerText = newCount;
-        }
-        updateVisitorCount();
-
-        function toggleDarkMode() { document.body.classList.toggle('dark-mode'); }
-        
-        let currentSize = 16;
-        function changeFontSize(n) {
-            if (n === 0) currentSize = 16;
-            else currentSize += n;
-            if(currentSize > 24) currentSize = 24;
-            if(currentSize < 12) currentSize = 12;
-            document.documentElement.style.setProperty('--base-size', currentSize + 'px');
-        }
-
-        const memTranslations = {
-            en: {
-                loginTitle: "Member Portal", loginSub: "Restricted Access for Members Only", btnLogin: "Login Securely",
-                headerTitle: "SHREE SAMBHAJI RAJE HOUSING SOCIETY", headerSub: "Member Administration Panel",
-                welcome: "Welcome Back, Member",
-                btnComplaint: "Complaint", btnPublish: "Publish Notice", btnEnquiry: "Enquiry",
-                btnAbout: "About Soc", btnGallery: "Gallery", btnNotify: "Send Notify",
-                noticeBoard: "Official Notice Board", btnAdd: "+ Add New",
-                contactsHead: "Emergency Contacts", roleSec: "Secretary", roleSecu: "Security Gate", rolePlum: "Plumber",
-                modalTitle: "Publish New Notice", btnModalPublish: "Publish", btnModalCancel: "Cancel",
-                phTitle: "Notice Title", phDesc: "Details...", phAuthor: "Publisher Name (e.g. Secretary)", phContact: "Email or Phone No",
-                btnLogout: "Logout & Return Home"
-            },
-            mr: {
-                loginTitle: "सदस्य पोर्टल", loginSub: "केवळ सदस्यांसाठी प्रवेश", btnLogin: "सुरक्षित लॉगिन करा",
-                headerTitle: "श्री संभाजी राजे हाऊसिंग सोसायटी", headerSub: "सदस्य प्रशासन पॅनेल",
-                welcome: "स्वागत आहे, सभासद",
-                btnComplaint: "तक्रार", btnPublish: "सूचना प्रकाशित करा", btnEnquiry: "चौकशी",
-                btnAbout: "सोसायटी बद्दल", btnGallery: "फोटो गॅलरी", btnNotify: "सूचना पाठवा",
-                noticeBoard: "अधिकृत सूचना फलक", btnAdd: "+ नवीन जोडा",
-                contactsHead: "आपत्कालीन संपर्क", roleSec: "सचिव (सेक्रेटरी)", roleSecu: "सुरक्षा रक्षक", rolePlum: "प्लंबर",
-                modalTitle: "नवीन सूचना प्रकाशित करा", btnModalPublish: "प्रकाशित करा", btnModalCancel: "रद्द करा",
-                phTitle: "सूचनेचे शीर्षक", phDesc: "तपशील...", phAuthor: "प्रकाशकाचे नाव (उदा. सचिव)", phContact: "ईमेल किंवा फोन",
-                btnLogout: "लॉग आउट करा आणि मुख्यपृष्ठावर जा"
-            },
-            hi: {
-                loginTitle: "सदस्य पोर्टल", loginSub: "केवल सदस्यों के लिए प्रवेश", btnLogin: "सुरक्षित लॉगिन करें",
-                headerTitle: "श्री संभाजी राजे हाउसिंग सोसाइटी", headerSub: "सदस्य प्रशासन पैनल",
-                welcome: "स्वागत है, सदस्य",
-                btnComplaint: "शिकायत", btnPublish: "सूचना प्रकाशित करें", btnEnquiry: "पूछताछ",
-                btnAbout: "सोसाइटी के बारे में", btnGallery: "फोटो गैलरी", btnNotify: "नोटिफिकेशन भेजें",
-                noticeBoard: "आधिकारिक सूचना बोर्ड", btnAdd: "+ नया जोड़ें",
-                contactsHead: "आपातकालीन संपर्क", roleSec: "सचिव (सेक्रेटरी)", roleSecu: "सुरक्षा गार्ड", rolePlum: "प्लंबर",
-                modalTitle: "नई सूचना प्रकाशित करें", btnModalPublish: "प्रकाशित करें", btnModalCancel: "रद्द करें",
-                phTitle: "सूचना शीर्षक", phDesc: "विवरण...", phAuthor: "प्रकाशक का नाम (उदा. सचिव)", phContact: "ईमेल या फोन",
-                btnLogout: "लॉग आउट करें और होम पर जाएं"
-            }
-        };
-
-        function changeMemberLanguage() {
-            const lang = document.getElementById('lang-select').value;
-            
-            // SAVE TO MEMORY
-            localStorage.setItem('societyLang', lang);
-
-            const t = memTranslations[lang];
-            document.getElementById('txt-login-title').innerText = t.loginTitle;
-            document.getElementById('txt-login-sub').innerText = t.loginSub;
-            document.getElementById('btn-login-submit').innerText = t.btnLogin;
-            document.getElementById('txt-header-title').innerText = t.headerTitle;
-            document.getElementById('txt-header-sub').innerText = t.headerSub;
-            document.getElementById('txt-welcome').innerText = t.welcome.split(',')[0] + ", " + (lang === 'en' ? 'Member' : (lang==='mr'?'सभासद':'सदस्य'));
-            
-            document.getElementById('btn-complaint').innerText = t.btnComplaint;
-            document.getElementById('btn-publish').innerText = t.btnPublish;
-            document.getElementById('btn-enquiry').innerText = t.btnEnquiry;
-            document.getElementById('btn-about').innerText = t.btnAbout;
-            document.getElementById('btn-gallery').innerText = t.btnGallery;
-            document.getElementById('btn-notify').innerText = t.btnNotify;
-
-            document.getElementById('txt-notice-board').innerHTML = `<i class="fa-solid fa-clipboard"></i> ${t.noticeBoard}`;
-            document.getElementById('btn-add-new').innerText = t.btnAdd;
-
-            document.getElementById('txt-contacts-head').innerText = t.contactsHead;
-            document.getElementById('txt-role-sec').innerHTML = `<i class="fa-solid fa-user-tie"></i> ${t.roleSec}`;
-            document.getElementById('txt-role-secu').innerHTML = `<i class="fa-solid fa-shield-halved"></i> ${t.roleSecu}`;
-            document.getElementById('txt-role-plum').innerHTML = `<i class="fa-solid fa-wrench"></i> ${t.rolePlum}`;
-
-            document.getElementById('txt-modal-title').innerText = t.modalTitle;
-            document.getElementById('btn-modal-publish').innerText = t.btnModalPublish;
-            document.getElementById('btn-modal-cancel').innerText = t.btnModalCancel;
-            
-            document.getElementById('notice-title').placeholder = t.phTitle;
-            document.getElementById('notice-desc').placeholder = t.phDesc;
-            document.getElementById('notice-author').placeholder = t.phAuthor;
-            document.getElementById('notice-contact').placeholder = t.phContact;
-            document.getElementById('btn-logout').innerText = t.btnLogout;
-
-           if(lang === 'en') document.body.classList.remove('lang-sanskrit');
-            else document.body.classList.add('lang-sanskrit');
-        }
-
-        // AUTO LOAD LOGIC (Combine with your existing window.onload or visitor counter)
-        // Add this to your existing startup script:
-        
-        // 1. Load Language
-        const savedLang = localStorage.getItem('societyLang') || 'en';
-        document.getElementById('lang-select').value = savedLang;
-        changeMemberLanguage();
-    
     </script>
 </body>
 </html>
