@@ -1,0 +1,126 @@
+/* --- MEMBER PORTAL AUTH STYLES --- */
+.auth-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 60vh;
+}
+
+.auth-container {
+    background: white;
+    width: 100%;
+    max-width: 450px;
+    border-radius: 20px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.1);
+    overflow: hidden;
+    border: 1px solid #e2e8f0;
+}
+
+/* Toggle Tabs */
+.auth-toggle {
+    display: flex;
+    background: #f1f5f9;
+}
+
+.auth-toggle button {
+    flex: 1;
+    padding: 20px;
+    border: none;
+    background: transparent;
+    font-size: 1rem;
+    font-weight: bold;
+    color: #64748b;
+    cursor: pointer;
+    font-family: var(--font-eng);
+    transition: all 0.3s;
+}
+
+.auth-toggle button.active {
+    background: white;
+    color: var(--primary);
+    border-top: 3px solid var(--primary);
+}
+
+/* Forms */
+.auth-form {
+    padding: 40px;
+    text-align: center;
+}
+
+.input-group {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.input-group i {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #94a3b8;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 12px 15px 12px 45px; /* Space for icon */
+    border: 2px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 1rem;
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+.input-group input:focus {
+    border-color: var(--primary);
+}
+
+.submit-btn {
+    width: 100%;
+    padding: 12px;
+    background: var(--primary);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.2s;
+    margin-top: 10px;
+}
+
+.submit-btn:hover {
+    background: #9a3412; /* Darker Orange */
+    transform: translateY(-2px);
+}
+
+.forgot-pass {
+    display: block;
+    margin-bottom: 15px;
+    color: #64748b;
+    font-size: 0.9rem;
+    text-decoration: none;
+}
+
+.forgot-pass:hover {
+    color: var(--primary);
+}
+
+/* Dark Mode Support for Auth */
+body.dark-mode .auth-container {
+    background: #1e293b;
+    border-color: #334155;
+}
+body.dark-mode .auth-toggle {
+    background: #0f172a;
+}
+body.dark-mode .auth-toggle button.active {
+    background: #1e293b;
+}
+body.dark-mode .input-group input {
+    background: #0f172a;
+    border-color: #334155;
+    color: white;
+}
+body.dark-mode p {
+    color: #ccc !important;
+}
