@@ -11,7 +11,21 @@
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; transition: background 0.4s, color 0.4s; }
+/* Makes it feel like a mobile app */
+* {
+    -webkit-tap-highlight-color: transparent; /* Remove blue flash on tap */
+    user-select: none; /* Prevent text selection like a real app */
+}
 
+input, select, textarea {
+    user-select: text; /* Allow typing in boxes */
+}
+
+/* Smooth scrolling for mobile */
+html {
+    scroll-behavior: smooth;
+    overscroll-behavior-y: contain; /* Prevents "pull to refresh" white space */
+}
 body {
     font-family: var(--font-eng);
     background-color: var(--bg-light);

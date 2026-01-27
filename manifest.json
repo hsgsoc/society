@@ -1,0 +1,21 @@
+{
+  "name": "Society_App",
+  "short_name": "SSRHS",
+  "description": "Shree Sambaji Raje Housing Society Member Portal",
+  "start_url": "index.html",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#c2410c",
+  "icons": [
+    {
+      "src": "assest/image/society.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "assest/image/society.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
