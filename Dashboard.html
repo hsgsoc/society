@@ -1,90 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Member Dashboard - Shree Sambaji Raje</title>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>Society Dashboard</title>
     <link rel="stylesheet" href="assest/style.css">
-    <style>
-        .dashboard-card {
-            background: white;
-            border-radius: 20px;
-            padding: 30px;
-            margin-top: -50px;
-            box-shadow: 0 15px 40px rgba(0,0,0,0.1);
-            border: 1px solid #e2e8f0;
-            text-align: center;
-        }
-        .user-badge {
-            background: var(--primary);
-            color: white;
-            padding: 5px 15px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            display: inline-block;
-            margin-bottom: 10px;
-        }
-        .info-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-            margin-top: 30px;
-            text-align: left;
-        }
-        .info-item {
-            padding: 15px;
-            background: #f8fafc;
-            border-radius: 12px;
-            border-left: 4px solid var(--primary);
-        }
-        body.dark-mode .dashboard-card { background: #1e293b; border-color: #334155; }
-        body.dark-mode .info-item { background: #0f172a; }
-    </style>
 </head>
 <body>
-
-    <header style="padding-bottom: 100px;">
-        <h1 id="welcome-msg">Welcome, Resident</h1>
-        <p>Member Portal | Shree Sambaji Raje HSG SOC</p>
+    <header>
+        <h1>Welcome, <span id="userName">Member</span></h1>
+        <button onclick="logout()" style="background:white; color:red; padding:5px 10px; border:none; cursor:pointer;">Logout</button>
     </header>
-
-    <main>
-        <div class="dashboard-card">
-            <div class="user-badge" id="display-role">Verified Member</div>
-            <h2 id="display-name" style="color: var(--secondary); font-size: 2rem;">Loading...</h2>
-            
-            <div class="info-grid">
-                <div class="info-item">
-                    <small style="color: var(--primary); font-weight: bold;">FLAT NO.</small>
-                    <div id="display-flat" style="font-size: 1.2rem; font-weight: 600;">---</div>
-                </div>
-                <div class="info-item">
-                    <small style="color: var(--primary); font-weight: bold;">STATUS</small>
-                    <div style="font-size: 1.2rem; font-weight: 600; color: #10b981;">Active</div>
-                </div>
-            </div>
-
-            <div class="grid-container" style="margin-top: 40px;">
-                <div class="card"><i class="fa-solid fa-file-invoice-dollar"></i><span>Pay Maint.</span></div>
-                <div class="card"><i class="fa-solid fa-bullhorn"></i><span>Notices</span></div>
-                <div class="card" onclick="location.href='index.html'"><i class="fa-solid fa-right-from-bracket"></i><span>Logout</span></div>
-            </div>
-        </div>
+    <main style="text-align:center; padding:50px;">
+        <h2>Dashboard Under Construction</h2>
+        <p>You have successfully logged in.</p>
     </main>
-
     <script>
-        // JS to grab info from the URL
-        const urlParams = new URLSearchParams(window.location.search);
-        const name = urlParams.get('name') || "Member";
-        const flat = urlParams.get('flat') || "Not Assigned";
-        const role = urlParams.get('role') || "Society Resident";
+        // Check Login
+        if(localStorage.getItem("is_logged_in") !== "true") {
+            window.location.href = "member.html";
+        }
+        document.getElementById('userName').innerText = localStorage.getItem("user_name");
 
-        document.getElementById('display-name').innerText = name.replace(/_/g, ' ');
-        document.getElementById('display-flat').innerText = flat;
-        document.getElementById('display-role').innerText = role;
-        document.getElementById('welcome-msg').innerText = "Namaste, " + name.split('_')[0];
+        function logout() {
+            localStorage.clear();
+            window.location.href = "member.html";
+        }
     </script>
 </body>
 </html>

@@ -3,147 +3,345 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Member Area - Shree Sambaji Raje Housing Society</title>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Tiro+Devanagari+Marathi&display=swap" rel="stylesheet">
+    <title>Member Portal - Shree Sambhaji Raje Housing Society</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="icon" type="image/x-icon" href="assest/image/society.png">
-    <link rel="stylesheet" href="assest/style.css"> <link rel="stylesheet" href="assest/member.css">
-    <link rel="stylesheet" href="assest/ai.css">
+    <link rel="stylesheet" href="assest/style.css">
+    
+    <style>
+        /* Specific Member Page Styles */
+        .auth-container {
+            max-width: 450px;
+            margin: 40px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            border-top: 5px solid var(--primary);
+        }
+        
+        body.dark-mode .auth-container {
+            background: #1e293b;
+            border-color: #fbbf24;
+        }
+
+        .toggle-btns {
+            display: flex;
+            margin-bottom: 25px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        .toggle-btn {
+            flex: 1;
+            padding: 15px;
+            border: none;
+            background: none;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            color: #94a3b8;
+            font-family: var(--font-eng);
+        }
+
+        .toggle-btn.active {
+            color: var(--primary);
+            border-bottom: 3px solid var(--primary);
+        }
+        
+        body.dark-mode .toggle-btn.active { color: #fbbf24; border-color: #fbbf24; }
+
+        .form-group { margin-bottom: 20px; text-align: left; }
+        .form-group label { display: block; margin-bottom: 8px; font-weight: bold; font-size: 0.9rem; }
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            font-size: 1rem;
+            background: #f8fafc;
+        }
+        
+        body.dark-mode input, body.dark-mode select {
+            background: #0f172a; border-color: #475569; color: white;
+        }
+
+        .otp-group { display: flex; gap: 10px; }
+        .verify-btn {
+            padding: 0 15px;
+            background: #0f172a;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 14px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: 0.3s;
+        }
+
+        .submit-btn:hover { background: #9a3412; }
+        
+        .hidden { display: none; }
+        
+        .terms { font-size: 0.85rem; display: flex; align-items: flex-start; gap: 10px; }
+        
+        /* Loading Overlay */
+        .loader {
+            display: none;
+            text-align: center;
+            margin-top: 10px;
+            color: var(--primary);
+            font-weight: bold;
+        }
+    </style>
 </head>
 <body>
 
     <div class="access-bar">
         <div class="access-controls">
             <button onclick="toggleDarkMode()"><i class="fa-solid fa-moon"></i></button>
-            <div class="font-controls">
-                <button onclick="changeFontSize(1)">+A</button>
-                <button onclick="changeFontSize(0)">A</button>
-                <button onclick="changeFontSize(-1)">-A</button>
-            </div>
+            <button onclick="window.location.href='index.html'"><i class="fa-solid fa-home"></i> Back</button>
         </div>
-        <select id="lang-select" onchange="changeLanguage()">
-            <option value="en">English</option>
-            <option value="mr">मराठी</option>
-            <option value="hi">हिन्दी</option>
-        </select>
     </div>
 
-    <header>
-        <div class="logo-container">
-            <img src="assest/image/society.png" alt="Society Logo" width="120px">
-        </div>
-        <div class="title-container">
-            <h1 id="txt-title">MEMBER PORTAL</h1>
-            <p id="txt-subtitle">Secure Access for Residents</p>
-        </div>
+    <header style="padding: 20px;">
+        <div class="logo-icon"><i class="fa-solid fa-users-rectangle"></i></div>
+        <h1>Member Portal</h1>
     </header>
 
     <main>
-        <div class="auth-wrapper">
-            <div class="auth-container">
-                <div class="auth-toggle">
-                    <button id="btn-login-view" class="active" onclick="showLogin()">Login</button>
-                    <button id="btn-register-view" onclick="showRegister()">New Registration</button>
+        <div class="auth-container">
+            <div class="toggle-btns">
+                <button class="toggle-btn active" onclick="switchTab('login')">Login</button>
+                <button class="toggle-btn" onclick="switchTab('register')">New Registration</button>
+            </div>
+
+            <form id="loginForm" onsubmit="handleLogin(event)">
+                <div class="form-group">
+                    <label>Login ID / Email / Phone</label>
+                    <input type="text" id="loginId" placeholder="e.g. Anur14" required>
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" id="loginPass" placeholder="Enter password" required>
+                </div>
+                <button type="submit" class="submit-btn">Secure Login <i class="fa-solid fa-lock"></i></button>
+            </form>
+
+            <form id="regForm" class="hidden" onsubmit="handleRegister(event)">
+                <div style="display: flex; gap: 10px;">
+                    <div class="form-group" style="flex:1">
+                        <label>First Name</label>
+                        <input type="text" id="fname" required>
+                    </div>
+                    <div class="form-group" style="flex:1">
+                        <label>Last Name</label>
+                        <input type="text" id="lname" required>
+                    </div>
                 </div>
 
-                <form id="login-form" class="auth-form">
-                    <h2 style="color:var(--primary); margin-bottom:20px;">Member Login</h2>
-                    
-                    <div class="input-group">
-                        <i class="fa-solid fa-envelope"></i>
-                        <input type="email" placeholder="Registered Email" required>
+                <div style="display: flex; gap: 10px;">
+                    <div class="form-group" style="flex:1">
+                        <label>Age</label>
+                        <input type="number" id="age" min="18" required>
                     </div>
-
-                    <div class="input-group">
-                        <i class="fa-solid fa-lock"></i>
-                        <input type="password" placeholder="Password" required>
+                    <div class="form-group" style="flex:1">
+                        <label>Gender</label>
+                        <select id="gender">
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                            <option value="Other">Other</option>
+                        </select>
                     </div>
+                </div>
 
-                    <div class="form-actions">
-                        <a href="#" class="forgot-pass">Forgot Password?</a>
-                        <button type="button" class="submit-btn" onclick="alert('Login requires a database backend. Please use Registration for now.')">LOGIN</button>
+                <div class="form-group">
+                    <label>Phone Number</label>
+                    <div class="otp-group">
+                        <input type="tel" id="phone" placeholder="10 Digit Mobile" pattern="[0-9]{10}" required>
+                        <button type="button" class="verify-btn" onclick="sendOTP()">Verify</button>
                     </div>
-                </form>
+                </div>
+                
+                <div class="form-group hidden" id="otpField">
+                    <label>Enter OTP (Simulated: 1234)</label>
+                    <input type="text" id="otpInput" placeholder="Enter OTP">
+                    <small style="color:green; display:none;" id="verifiedMsg">Verified <i class="fa-solid fa-check"></i></small>
+                </div>
 
-                <form id="register-form" class="auth-form" action="https://formsubmit.co/shrisambhajiraje.hsgsoc.2017@gmail.com" method="POST" style="display: none;">
-                    <h2 style="color:var(--primary); margin-bottom:10px;">Request Membership</h2>
-                    <p style="font-size: 0.9rem; color: #666; margin-bottom: 20px;">Your details will be sent to the Secretary for approval.</p>
-                    
-                    <input type="hidden" name="_subject" value="New Society Member Registration Request!">
-                    <input type="hidden" name="_captcha" value="false">
-                    <input type="hidden" name="_next" value="https://hsgsoc.github.io/society/thankyou.html">
+                <div class="form-group">
+                    <label>Email (Optional)</label>
+                    <input type="email" id="email" placeholder="name@example.com">
+                </div>
 
-                    <div class="input-group">
-                        <i class="fa-solid fa-user"></i>
-                        <input type="text" name="Full Name" placeholder="Full Name (Owner)" required>
-                    </div>
+                <div class="form-group">
+                    <label>Residential Address</label>
+                    <select id="address1" required onchange="updateSubAddress()">
+                        <option value="">Select Wing</option>
+                        <option value="Wing A">Wing A</option>
+                        <option value="Wing B">Wing B</option>
+                        <option value="Row House">Row House</option>
+                    </select>
+                    <select id="address2" style="margin-top: 10px;">
+                        <option value="">Select Flat No</option>
+                        </select>
+                </div>
 
-                    <div class="input-group">
-                        <i class="fa-solid fa-building"></i>
-                        <input type="text" name="Flat Number" placeholder="Wing & Flat No (e.g., A-101)" required>
-                    </div>
+                <div class="form-group terms">
+                    <input type="checkbox" id="agree" required>
+                    <label for="agree">I agree to the <a href="#" style="color:var(--primary)">Terms & Conditions</a> and Society Bylaws.</label>
+                </div>
 
-                    <div class="input-group">
-                        <i class="fa-solid fa-phone"></i>
-                        <input type="tel" name="Phone" placeholder="Mobile Number" required>
-                    </div>
-
-                    <div class="input-group">
-                        <i class="fa-solid fa-envelope"></i>
-                        <input type="email" name="Email" placeholder="Email Address" required>
-                    </div>
-
-                    <button type="submit" class="submit-btn">SUBMIT FOR APPROVAL</button>
-                </form>
-            </div>
+                <button type="submit" class="submit-btn" id="regBtn" disabled>Submit Application</button>
+            </form>
+            
+            <div id="loader" class="loader"><i class="fa-solid fa-circle-notch fa-spin"></i> Processing...</div>
         </div>
     </main>
 
     <footer>
-        <div class="text"> Contact: shrisambhajiraje.hsgsoc.2017@gmail.com</div>
-        <div class="copyright">
-            © 2026 Shree Sambaji Raje Housing Society
-        </div>
+        <div class="copyright">© 2026 Shree Sambaji Raje Housing Society</div>
     </footer>
 
-    <script src="assest/script.js"></script>
     <script>
-        async function handleLogin() {
-    const email = document.querySelector('#login-form input[type="email"]').value;
-    const pass = document.querySelector('#login-form input[type="password"]').value;
-    const scriptURL = ' https://script.google.com/macros/s/AKfycbzNDfNfl1q6_0fiaPAoIkkhxEloPC-NT8Ww0LMxBxCD09I1ENn3Q3vomsbxBWQlxv_nfA/exec'; // Paste your URL here
+        // PASTE YOUR GOOGLE SCRIPT WEB APP URL HERE
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwMxbgl4CelbIyiXwXRj-U6vmYdls7ZfVBtArx4BYkr24ifbf2trVbPGSU1vtV-K1lV/exec"; 
 
-    try {
-        const response = await fetch(`${scriptURL}?action=login&email=${email}&pass=${pass}`);
-        const result = await response.json();
+        // 1. Toggle Tabs
+        function switchTab(tab) {
+            const loginForm = document.getElementById('loginForm');
+            const regForm = document.getElementById('regForm');
+            const btns = document.querySelectorAll('.toggle-btn');
 
-        if (result.status === "success") {
-            // Redirect to dashboard with data
-            window.location.href = `dashboard.html?name=${result.name.replace(/ /g, '_')}&flat=${result.flat}`;
-        } else if (result.status === "pending") {
-            alert("Your account is pending approval from the Secretary.");
-        } else {
-            alert("Invalid Email or Password.");
-        }
-    } catch (error) {
-        console.error('Error!', error.message);
-    }
-}
-        // Simple script to toggle between forms
-        function showLogin() {
-            document.getElementById('login-form').style.display = 'block';
-            document.getElementById('register-form').style.display = 'none';
-            document.getElementById('btn-login-view').classList.add('active');
-            document.getElementById('btn-register-view').classList.remove('active');
+            if(tab === 'login') {
+                loginForm.classList.remove('hidden');
+                regForm.classList.add('hidden');
+                btns[0].classList.add('active');
+                btns[1].classList.remove('active');
+            } else {
+                loginForm.classList.add('hidden');
+                regForm.classList.remove('hidden');
+                btns[0].classList.remove('active');
+                btns[1].classList.add('active');
+            }
         }
 
-        function showRegister() {
-            document.getElementById('login-form').style.display = 'none';
-            document.getElementById('register-form').style.display = 'block';
-            document.getElementById('btn-login-view').classList.remove('active');
-            document.getElementById('btn-register-view').classList.add('active');
+        // 2. Address Logic
+        function updateSubAddress() {
+            const wing = document.getElementById('address1').value;
+            const flatSelect = document.getElementById('address2');
+            flatSelect.innerHTML = ""; // Clear
+
+            let count = 0;
+            if(wing === 'Wing A' || wing === 'Wing B') count = 12; // 12 flats per wing
+            else if(wing === 'Row House') count = 5;
+
+            for(let i=1; i<=count; i++) {
+                let opt = document.createElement('option');
+                opt.value = (wing === 'Row House' ? 'RH-' : 'Flat ') + (i < 10 ? '0'+i : i);
+                opt.innerHTML = opt.value;
+                flatSelect.appendChild(opt);
+            }
         }
 
+        // 3. OTP Simulation (Client Side Only for Demo)
+        let isPhoneVerified = false;
+        function sendOTP() {
+            const phone = document.getElementById('phone').value;
+            if(phone.length !== 10) { alert("Please enter valid 10 digit number"); return; }
+            
+            alert("OTP Sent to " + phone + "\n(For this demo, OTP is 1234)");
+            document.getElementById('otpField').classList.remove('hidden');
+            
+            // Listen for OTP input
+            document.getElementById('otpInput').addEventListener('input', function(e){
+                if(e.target.value === "1234") {
+                    isPhoneVerified = true;
+                    document.getElementById('verifiedMsg').style.display = 'block';
+                    document.getElementById('regBtn').disabled = false;
+                    e.target.style.borderColor = "green";
+                }
+            });
+        }
+
+        // 4. Handle Registration Submit
+        function handleRegister(e) {
+            e.preventDefault();
+            if(!isPhoneVerified) { alert("Please Verify Phone Number First"); return; }
+            
+            const loader = document.getElementById('loader');
+            loader.style.display = "block";
+            
+            // Gather Data
+            const formData = new FormData();
+            formData.append('action', 'register');
+            formData.append('fname', document.getElementById('fname').value);
+            formData.append('lname', document.getElementById('lname').value);
+            formData.append('age', document.getElementById('age').value);
+            formData.append('gender', document.getElementById('gender').value);
+            formData.append('phone', document.getElementById('phone').value);
+            formData.append('email', document.getElementById('email').value);
+            formData.append('address', document.getElementById('address1').value + " - " + document.getElementById('address2').value);
+
+            fetch(SCRIPT_URL, { method: 'POST', body: formData })
+            .then(res => res.json())
+            .then(data => {
+                loader.style.display = "none";
+                alert("Application Submitted Successfully!\n\nThe Admin will verify your details and generate your Login ID (e.g., Name + Age) and send it to your email/phone.\n\nDefault Password will be: society2017");
+                switchTab('login');
+                document.getElementById('regForm').reset();
+            })
+            .catch(err => {
+                loader.style.display = "none";
+                alert("Error submitting form. Please try again.");
+                console.error(err);
+            });
+        }
+
+        // 5. Handle Login
+        function handleLogin(e) {
+            e.preventDefault();
+            const loader = document.getElementById('loader');
+            loader.style.display = "block";
+
+            const formData = new FormData();
+            formData.append('action', 'login');
+            formData.append('username', document.getElementById('loginId').value);
+            formData.append('password', document.getElementById('loginPass').value);
+
+            fetch(SCRIPT_URL, { method: 'POST', body: formData })
+            .then(res => res.json())
+            .then(data => {
+                loader.style.display = "none";
+                if(data.result === "success") {
+                    // Save session
+                    localStorage.setItem("user_name", data.name);
+                    localStorage.setItem("is_logged_in", "true");
+                    window.location.href = "Dashboard.html"; // Redirect
+                } else {
+                    alert("Invalid ID or Password. Please try again.");
+                }
+            })
+            .catch(err => {
+                loader.style.display = "none";
+                alert("Connection Error.");
+            });
+        }
+        
+        // Dark Mode Script (Reused)
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+        }
     </script>
 </body>
 </html>
