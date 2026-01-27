@@ -213,24 +213,23 @@
                 </div>
 
                 <div class="form-group">
-                    <label>Email ID (Optional)</label>
+                    <label>Email (Optional)</label>
                     <input type="email" id="email" placeholder="name@example.com">
                 </div>
 
                 <div class="form-group">
-                    <label>Residential Address(Present Address)</label>
+                    <label>Residential Address</label>
                     <select id="address1" required onchange="updateSubAddress()">
-                        <option value="">Select Address</option>
-                         <option value="Address_2">Shree Sambhaji Raje HSG SOC, ganesh nagar, Talwade Road, Pune , Maharashtra</option>
-                         <option value="Address_2">No Address or Outside Address</option>
-                        
+                        <option value="">Select Wing</option>
+                        <option value="Shree Sambhaji Raje HSG SOC, ganesh nagar, Talwade Road, Pune , Maharashtra">Shree Sambhaji Raje HSG SOC, ganesh nagar, Talwade Road, Pune , Maharashtra</option>
+                        <option value="Not Avialable">Not Avialable</option>
+                       
                     </select>
                     <div style="height: 15px;"></div> 
                     <select id="address2">
-                        <option value="">Select Society Road </option>
-                       <option value="Soc_road_1">Society Road 1(SSRHS)</option>
-                        <option value="Soc_road_2">Society Road 2(SSRHS)</option>
-                        <option value="Soc_road_1">Not Avaliable </option>
+                        <option value="">Select Society No.</option>
+                         <option value="">Society Road 1(SSRHS)</option>
+                         <option value="">Society Road 2(SSRHS)</option>
                     </select>
                 </div>
 
@@ -251,8 +250,8 @@
     </footer>
 
     <script>
-        // REPLACE WITH YOUR NEW DEPLOYMENT URL
-        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycby5GHP7IP6-teXwNnmyNua-N42l6_2SEHnXWZ6_i2js671Y3uICoH2nfrPzZMhYAJ4t/exec"; 
+      
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzDcjVyp9tMeTIdn-QsSHpLdtEr8lIa4UA1jnypJrWSM3zvafAetIVVgjfxPzDW9iF4/exec"; 
 
         // 1. Toggle Tabs
         function switchTab(tab) {
@@ -275,24 +274,50 @@
             }
         }
 
-        // 2. Address Logic
-        function updateSubAddress() {
-            const wing = document.getElementById('address1').value;
-            const flatSelect = document.getElementById('address2');
-            flatSelect.innerHTML = "<option value=''>Select Flat No</option>"; // Reset
+       function updateSubAddress() {
+    const wing = document.getElementById('address1').value;
+    const flatSelect = document.getElementById('address2');
+    
+    // Clear existing options
+    flatSelect.innerHTML = ""; 
 
-            let count = 0;
-            if(wing === 'Wing A' || wing === 'Wing B') count = 12;
-            else if(wing === 'Row House') count = 5;
+    let count = 0;
+    let prefix = "";
 
-            for(let i=1; i<=count; i++) {
-                let opt = document.createElement('option');
-                let val = (wing === 'Row House' ? 'RH-' : 'Flat ') + (i < 10 ? '0'+i : i);
-                opt.value = val;
-                opt.innerText = val;
-                flatSelect.appendChild(opt);
-            }
+    if (wing === "Shree Sambhaji Raje HSG SOC, ganesh nagar, Talwade Road, Pune , Maharashtra") {
+        // For the main society, we show 5 Society Roads
+        count = 2;
+        prefix = "Society Road ";
+        
+        // Default placeholder for this selection
+        let placeholder = document.createElement('option');
+        placeholder.value = "";
+        placeholder.innerText = "Select Society Road";
+        flatSelect.appendChild(placeholder);
+
+        for (let i = 1; i <= count; i++) {
+            let opt = document.createElement('option');
+            let val = prefix + i + " (SSRHS)";
+            opt.value = val;
+            opt.innerText = val;
+            flatSelect.appendChild(opt);
         }
+    } 
+    else if (wing === "Not Avialable") {
+        // If Not Available is selected, just show one option: "Not Available"
+        let opt = document.createElement('option');
+        opt.value = "Not Available";
+        opt.innerText = "Not Available";
+        flatSelect.appendChild(opt);
+    } 
+    else {
+        // Default placeholder when nothing is selected
+        let opt = document.createElement('option');
+        opt.value = "";
+        opt.innerText = "Select Society No.";
+        flatSelect.appendChild(opt);
+    }
+}
 
         // 3. OTP Simulation
         let isPhoneVerified = false;
