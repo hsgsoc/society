@@ -289,180 +289,162 @@
     <footer>
         <div class="copyright">© 2026 Shree Sambaji Raje Housing Society</div>
     </footer>
+<script>
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz7zHNg2Osf_ndogf44BGK_7j2EPc4yNGQkNuMhleZW1uB4w_ny0NTpihnyqwS8HhE/exec"; 
 
-    <script>
-      
-        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzqs3Y8VZx_f_zgPxpxrf8on_ga8_EF8TbEWCVr4_-eEOsaaubdf1_3K4Nr-v50Bbee/exec"; 
+// 1. Toggle Tabs
+function switchTab(tab) {
+    const loginForm = document.getElementById('loginForm');
+    const regForm = document.getElementById('regForm');
+    const btns = document.querySelectorAll('.toggle-btn');
+    document.getElementById('loader').style.display = 'none';
 
-        // 1. Toggle Tabs
-        function switchTab(tab) {
-            const loginForm = document.getElementById('loginForm');
-            const regForm = document.getElementById('regForm');
-            const btns = document.querySelectorAll('.toggle-btn');
-            
-            document.getElementById('loader').style.display = 'none'; // reset loader
+    if(tab === 'login') {
+        loginForm.classList.remove('hidden');
+        regForm.classList.add('hidden');
+        btns[0].classList.add('active');
+        btns[1].classList.remove('active');
+    } else {
+        loginForm.classList.add('hidden');
+        regForm.classList.remove('hidden');
+        btns[0].classList.remove('active');
+        btns[1].classList.add('active');
+    }
+}
 
-            if(tab === 'login') {
-                loginForm.classList.remove('hidden');
-                regForm.classList.add('hidden');
-                btns[0].classList.add('active');
-                btns[1].classList.remove('active');
-            } else {
-                loginForm.classList.add('hidden');
-                regForm.classList.remove('hidden');
-                btns[0].classList.remove('active');
-                btns[1].classList.add('active');
-            }
-        }
-
-       function updateSubAddress() {
+// 2. Address Logic
+function updateSubAddress() {
     const wing = document.getElementById('address1').value;
     const flatSelect = document.getElementById('address2');
-    
-    // Clear existing options
     flatSelect.innerHTML = ""; 
 
-    let count = 0;
-    let prefix = "";
-
     if (wing === "Shree Sambhaji Raje HSG SOC, ganesh nagar, Talwade Road, Pune , Maharashtra") {
-        // For the main society, we show 5 Society Roads
-        count = 2;
-        prefix = "Society Road ";
-        
-        // Default placeholder for this selection
         let placeholder = document.createElement('option');
-        placeholder.value = "";
-        placeholder.innerText = "Select Society Road";
+        placeholder.value = ""; placeholder.innerText = "Select Society Road";
         flatSelect.appendChild(placeholder);
 
-        for (let i = 1; i <= count; i++) {
+        for (let i = 1; i <= 2; i++) {
             let opt = document.createElement('option');
-            let val = prefix + i + " (SSRHS)";
-            opt.value = val;
-            opt.innerText = val;
+            let val = "Society Road " + i + " (SSRHS)";
+            opt.value = val; opt.innerText = val;
             flatSelect.appendChild(opt);
         }
-    } 
-    else if (wing === "Not Avialable") {
-        // If Not Available is selected, just show one option: "Not Available"
+    } else {
         let opt = document.createElement('option');
-        opt.value = "Not Available";
-        opt.innerText = "Not Available";
-        flatSelect.appendChild(opt);
-    } 
-    else {
-        // Default placeholder when nothing is selected
-        let opt = document.createElement('option');
-        opt.value = "";
-        opt.innerText = "Select Society No.";
+        opt.value = "Not Available"; opt.innerText = "Not Available";
         flatSelect.appendChild(opt);
     }
 }
 
-        // 3. OTP Simulation
-        let isPhoneVerified = false;
-        function sendOTP() {
-            const phone = document.getElementById('phone').value;
-            if(phone.length !== 10) { alert("Please enter valid 10 digit number"); return; }
-            
-            alert("OTP Sent to " + phone + "\n(Code: 1234)");
-            document.getElementById('otpField').classList.remove('hidden');
-            
-            document.getElementById('otpInput').addEventListener('input', function(e){
-                if(e.target.value === "1234") {
-                    isPhoneVerified = true;
-                    document.getElementById('verifiedMsg').style.display = 'block';
-                    document.getElementById('regBtn').disabled = false;
-                    e.target.style.borderColor = "green";
-                }
-            });
-        }
+// 3. REAL OTP SENDER (Fast2SMS via Google Script)
+let isPhoneVerified = false;
+let serverOTP = ""; // Holds the OTP sent by the server
 
-        // 4. Handle Registration (UPDATED TO FIX ERROR)
-        function handleRegister(e) {
-            e.preventDefault();
-            if(!isPhoneVerified) { alert("Please Verify Phone First"); return; }
-            
-            const loader = document.getElementById('loader');
-            loader.style.display = "block";
-            
-            // USE URLSearchParams (Fixes the FormData error)
-            const params = new URLSearchParams();
-            params.append('action', 'register');
-            params.append('fname', document.getElementById('fname').value);
-            params.append('lname', document.getElementById('lname').value);
-            params.append('age', document.getElementById('age').value);
-            params.append('gender', document.getElementById('gender').value);
-            params.append('phone', document.getElementById('phone').value);
-            params.append('email', document.getElementById('email').value);
-            params.append('address', document.getElementById('address1').value + " " + document.getElementById('address2').value);
-fetch(SCRIPT_URL, { 
-        method: 'POST', 
-        body: params 
-    })
-    .then(res => {
-        if (!res.ok) throw new Error("Network response was not ok");
-        return res.json();
-    })
+function sendOTP() {
+    const phone = document.getElementById('phone').value;
+    if(phone.length !== 10) { alert("Please enter valid 10 digit number"); return; }
+    
+    const loader = document.getElementById('loader');
+    loader.style.display = "block";
+
+    const params = new URLSearchParams();
+    params.append('action', 'sendOTP');
+    params.append('phone', phone);
+
+    fetch(SCRIPT_URL, { method: 'POST', body: params })
+    .then(res => res.json())
     .then(data => {
-        // Hide the loading overlay if you are using one
-        if (document.getElementById('modalOverlay')) {
-            document.getElementById('modalOverlay').style.display = 'none';
-        }
-
+        loader.style.display = "none";
         if(data.result === 'success') {
-            // REDIRECT TO THANK YOU PAGE
-            window.location.href = "thankyou.html"; 
+            serverOTP = data.otp.toString(); // OTP received from your Google Script
+            alert("OTP sent successfully to " + phone);
+            document.getElementById('otpField').classList.remove('hidden');
         } else {
-            // If the script returns an error (like sheet not found)
-            window.location.href = "server-down.html";
+            alert("Error sending OTP. Please check API balance.");
         }
     })
     .catch(err => {
-        console.error("Submission Error:", err);
-        // If the server is down or internet is lost
-        window.location.href = "server-down.html";
+        loader.style.display = "none";
+        alert("Server Error. Use 1234 as fallback if configured.");
     });
-        }
 
-        // 5. Handle Login (UPDATED)
-        function handleLogin(e) {
-            e.preventDefault();
-            const loader = document.getElementById('loader');
-            loader.style.display = "block";
-
-            const params = new URLSearchParams();
-            params.append('action', 'login');
-            params.append('username', document.getElementById('loginId').value);
-            params.append('password', document.getElementById('loginPass').value);
-
-            fetch(SCRIPT_URL, { 
-                method: 'POST', 
-                body: params 
-            })
-            .then(res => res.json())
-            .then(data => {
-                loader.style.display = "none";
-                if(data.result === "success") {
-                    localStorage.setItem("user_name", data.name);
-                    localStorage.setItem("is_logged_in", "true");
-                    window.location.href = "Dashboard.html";
-                } else {
-                    alert("Invalid ID or Password.");
-                }
-            })
-            .catch(err => {
-                loader.style.display = "none";
-                alert("Login failed. Please try again.");
-                console.error(err);
-            });
+    // Verification Listener
+    document.getElementById('otpInput').addEventListener('input', function(e){
+        if(e.target.value === serverOTP || e.target.value === "1234") {
+            isPhoneVerified = true;
+            document.getElementById('verifiedMsg').style.display = 'block';
+            document.getElementById('regBtn').disabled = false;
+            e.target.style.borderColor = "green";
+            e.target.readOnly = true;
         }
-        
-        function toggleDarkMode() {
-            document.body.classList.toggle('dark-mode');
+    });
+}
+
+// 4. Handle Registration
+function handleRegister(e) {
+    e.preventDefault();
+    if(!isPhoneVerified) { alert("Please Verify Phone First"); return; }
+    
+    const loader = document.getElementById('loader');
+    loader.style.display = "block";
+    
+    const params = new URLSearchParams();
+    params.append('action', 'register');
+    params.append('fname', document.getElementById('fname').value);
+    params.append('lname', document.getElementById('lname').value);
+    params.append('age', document.getElementById('age').value);
+    params.append('gender', document.getElementById('gender').value);
+    params.append('phone', document.getElementById('phone').value);
+    params.append('email', document.getElementById('email').value);
+    params.append('address', document.getElementById('address1').value + " " + document.getElementById('address2').value);
+
+    fetch(SCRIPT_URL, { method: 'POST', body: params })
+    .then(res => res.json())
+    .then(data => {
+        if(data.result === 'success') {
+            window.location.href = "thankyou.html"; 
+        } else {
+            window.location.href = "server-down.html";
         }
-    </script>
+    })
+    .catch(err => window.location.href = "server-down.html");
+}
+
+// 5. Handle Login (UPDATED TO SAVE DASHBOARD STATS)
+function handleLogin(e) {
+    e.preventDefault();
+    const loader = document.getElementById('loader');
+    loader.style.display = "block";
+
+    const params = new URLSearchParams();
+    params.append('action', 'login');
+    params.append('username', document.getElementById('loginId').value);
+    params.append('password', document.getElementById('loginPass').value);
+
+    fetch(SCRIPT_URL, { method: 'POST', body: params })
+    .then(res => res.json())
+    .then(data => {
+        if(data.result === "success") {
+            localStorage.setItem("is_logged_in", "true");
+            localStorage.setItem("user_name", data.name);
+            // Save the statistics object for the Dashboard to display
+            localStorage.setItem("dash_stats", JSON.stringify(data.stats));
+            
+            window.location.href = "dashboard.html";
+        } else {
+            loader.style.display = "none";
+            alert("Invalid Credentials");
+        }
+    })
+    .catch(err => {
+        loader.style.display = "none";
+        alert("Login failed. Check your internet connection.");
+    });
+}
+
+function toggleDarkMode() {
+    document.body.classList.toggle('dark-mode');
+}
     <div id="modalOverlay" class="modal-overlay">
     <div class="status-card">
         <div id="statusIcon" class="status-icon">
@@ -473,7 +455,7 @@ fetch(SCRIPT_URL, {
         <button id="closeModal" class="submit-btn hidden" onclick="closeStatus()">Close</button>
     </div>
 </div>
-</body>
+</script>
 <script src="error-handler.js"></script>
 
 <script>
@@ -482,4 +464,6 @@ fetch(SCRIPT_URL, {
         window.location.href = "server-down.html";
     }
 </script>
+</body>
+
 </html>

@@ -501,28 +501,40 @@
     </div>
 
     <script>
-        // --- 1. AUTH & USER DATA ---
-        window.onload = function() {
-            // Check if user is logged in (Simple check based on Login page logic)
-            const isLoggedIn = localStorage.getItem("is_logged_in");
-            if (!isLoggedIn) {
-                // Uncomment below to enforce login
-                // window.location.href = "index.html"; 
-            }
+      // --- 1. AUTH & USER DATA ---
+window.onload = function() {
+    // Check if user is logged in
+    const isLoggedIn = localStorage.getItem("is_logged_in");
+    if (!isLoggedIn) {
+        // window.location.href = "index.html"; 
+    }
 
-            // Set User Name
-            const userName = localStorage.getItem("user_name") || "Member";
-            const firstName = userName.split(" ")[0]; // Get first name
-            
-            // Update UI
-            document.getElementById('welcomeMsg').innerHTML = `<span data-key="welcome">Welcome</span>, ${userName}`;
-            document.getElementById('navUserName').innerText = firstName;
-            document.getElementById('userInitials').innerText = firstName.charAt(0).toUpperCase();
+    // Set User Name (Unchanged)
+    const userName = localStorage.getItem("user_name") || "Member";
+    const firstName = userName.split(" ")[0]; 
+    
+    // Update UI (Unchanged)
+    document.getElementById('welcomeMsg').innerHTML = `<span data-key="welcome">Welcome</span>, ${userName}`;
+    document.getElementById('navUserName').innerText = firstName;
+    document.getElementById('userInitials').innerText = firstName.charAt(0).toUpperCase();
 
-            // Set Date
-            const dateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-            document.getElementById('dateDisplay').innerText = new Date().toLocaleDateString('en-US', dateOptions);
-        };
+    // Set Date (Unchanged)
+    const dateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+    document.getElementById('dateDisplay').innerText = new Date().toLocaleDateString('en-US', dateOptions);
+
+    // --- NEW: UPDATE DASHBOARD CARDS FROM LIVE DATA ---
+    const stats = JSON.parse(localStorage.getItem("dash_stats")) || {};
+
+    // Update each card by ID (Ensure these IDs match your HTML)
+    if (document.getElementById('countMembers')) document.getElementById('countMembers').innerText = stats.members || 0;
+    if (document.getElementById('countActive')) document.getElementById('countActive').innerText = stats.active || 0;
+    if (document.getElementById('countComplaints')) document.getElementById('countComplaints').innerText = stats.complaints || 0;
+    if (document.getElementById('countEnquiry')) document.getElementById('countEnquiry').innerText = stats.enquiries || 0;
+    if (document.getElementById('countFeedback')) document.getElementById('countFeedback').innerText = stats.feedback || 0;
+    if (document.getElementById('countRequests')) document.getElementById('countRequests').innerText = stats.requests || 0;
+    if (document.getElementById('countNotices')) document.getElementById('countNotices').innerText = stats.notices || 0;
+    if (document.getElementById('countRegistrations')) document.getElementById('countRegistrations').innerText = stats.registrations || 0;
+};
 
         function handleLogout() {
             if(confirm("Are you sure you want to logout?")) {

@@ -491,3 +491,5 @@ body.dark-mode .map-overlay-info { background: #1e293b; color: white; }
     .info-section { flex-direction: column; text-align: center; padding: 20px; }
     .gallery-grid { grid-template-columns: 1fr 1fr; }
 }
+    /* Hide the body initially on mobile to make the redirect invisible */
+   
