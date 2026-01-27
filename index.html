@@ -200,5 +200,13 @@ The society comprises 20 registered members, as per official mutation records, a
 
     <script src="assest/script.js"></script>
     <script src="assest/ai.js"></script>
+    <script src="error-handler.js"></script>
+
+<script>
+    // If the page doesn't exist or returns 404 on GitHub
+    if (document.title.includes("404")) {
+        window.location.href = "server-down.html";
+    }
+</script>
 </body>
 </html>

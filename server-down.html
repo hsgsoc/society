@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Server Maintenance - SSRHS</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root { --primary: #c2410c; --bg: #f8fafc; --text: #334155; }
+        body.dark-mode { --bg: #0f172a; --text: #f1f5f9; }
+        
+        body { 
+            font-family: 'Segoe UI', sans-serif; 
+            background-color: var(--bg); 
+            color: var(--text);
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            height: 100vh; 
+            margin: 0; 
+            text-align: center;
+        }
+
+        .container { padding: 40px; }
+        .icon { font-size: 80px; color: var(--primary); margin-bottom: 20px; }
+        h1 { font-size: 2.5rem; margin-bottom: 10px; }
+        p { font-size: 1.1rem; opacity: 0.8; margin-bottom: 30px; }
+
+        .btn {
+            padding: 12px 30px;
+            background: var(--primary);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: bold;
+            transition: 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+        .btn:hover { opacity: 0.9; transform: scale(1.05); }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="icon"><i class="fa-solid fa-server"></i></div>
+        <h1>System Offline</h1>
+        <p>We're having trouble connecting to the database.<br>Please try again in a few minutes.</p>
+        <button class="btn" onclick="window.location.href='index.html'">Retry Connection</button>
+    </div>
+</body>
+</html>

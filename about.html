@@ -285,5 +285,13 @@
             }
         };
     </script>
+    <script src="error-handler.js"></script>
+
+<script>
+    // If the page doesn't exist or returns 404 on GitHub
+    if (document.title.includes("404")) {
+        window.location.href = "server-down.html";
+    }
+</script>
 </body>
 </html>

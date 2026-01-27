@@ -116,7 +116,48 @@
             cursor: pointer;
             font-weight: bold;
         }
+        /* Full-screen overlay for Loading/Success */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            display: none; /* Hidden by default */
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            backdrop-filter: blur(5px);
+        }
 
+        .status-card {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            text-align: center;
+            max-width: 400px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        body.dark-mode .status-card {
+            background: #1e293b;
+            color: white;
+        }
+
+        .status-icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            color: var(--primary);
+        }
+
+        .spinner {
+            animation: rotate 2s linear infinite;
+        }
+
+        @keyframes rotate {
+            100% { transform: rotate(360deg); }
+        }
         .submit-btn {
             width: 100%;
             padding: 16px;
@@ -356,27 +397,33 @@
             params.append('phone', document.getElementById('phone').value);
             params.append('email', document.getElementById('email').value);
             params.append('address', document.getElementById('address1').value + " " + document.getElementById('address2').value);
+fetch(SCRIPT_URL, { 
+        method: 'POST', 
+        body: params 
+    })
+    .then(res => {
+        if (!res.ok) throw new Error("Network response was not ok");
+        return res.json();
+    })
+    .then(data => {
+        // Hide the loading overlay if you are using one
+        if (document.getElementById('modalOverlay')) {
+            document.getElementById('modalOverlay').style.display = 'none';
+        }
 
-            fetch(SCRIPT_URL, { 
-                method: 'POST', 
-                body: params 
-            })
-            .then(res => res.json())
-            .then(data => {
-                loader.style.display = "none";
-                if(data.result === 'success') {
-                    alert("Application Submitted! Wait for Admin approval.");
-                    switchTab('login');
-                    document.getElementById('regForm').reset();
-                } else {
-                    alert("Error: " + data.error);
-                }
-            })
-            .catch(err => {
-                loader.style.display = "none";
-                alert("Network Error. Check internet or Contact Admin.");
-                console.error(err);
-            });
+        if(data.result === 'success') {
+            // REDIRECT TO THANK YOU PAGE
+            window.location.href = "thankyou.html"; 
+        } else {
+            // If the script returns an error (like sheet not found)
+            window.location.href = "server-down.html";
+        }
+    })
+    .catch(err => {
+        console.error("Submission Error:", err);
+        // If the server is down or internet is lost
+        window.location.href = "server-down.html";
+    });
         }
 
         // 5. Handle Login (UPDATED)
@@ -400,7 +447,7 @@
                 if(data.result === "success") {
                     localStorage.setItem("user_name", data.name);
                     localStorage.setItem("is_logged_in", "true");
-                    window.location.href = "dashboard.html";
+                    window.location.href = "Dashboard.html";
                 } else {
                     alert("Invalid ID or Password.");
                 }
@@ -416,5 +463,23 @@
             document.body.classList.toggle('dark-mode');
         }
     </script>
+    <div id="modalOverlay" class="modal-overlay">
+    <div class="status-card">
+        <div id="statusIcon" class="status-icon">
+            <i class="fa-solid fa-circle-notch spinner"></i>
+        </div>
+        <h2 id="statusTitle">Processing...</h2>
+        <p id="statusMsg">Please do not refresh the page.</p>
+        <button id="closeModal" class="submit-btn hidden" onclick="closeStatus()">Close</button>
+    </div>
+</div>
 </body>
+<script src="error-handler.js"></script>
+
+<script>
+    // If the page doesn't exist or returns 404 on GitHub
+    if (document.title.includes("404")) {
+        window.location.href = "server-down.html";
+    }
+</script>
 </html>
