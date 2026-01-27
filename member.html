@@ -290,17 +290,15 @@
         <div class="copyright">© 2026 Shree Sambaji Raje Housing Society</div>
     </footer>
 <script>
-    // --- CONFIGURATION ---
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz7zHNg2Osf_ndogf44BGK_7j2EPc4yNGQkNuMhleZW1uB4w_ny0NTpihnyqwS8HhE/exec"; 
-    let serverOTP = ""; // Holds the real OTP from Fast2SMS
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwV7Dx2_oSmEBEBDOJNslx2oIDNrY3ufv5DtgI7RIF6G10Ua3xDU5mjiNfS5dK8XzhZ/exec"; 
+    let serverOTP = "";
     let isPhoneVerified = false;
 
-    // 1. Toggle Tabs (Original Logic)
+    // Standard Tab Switching
     function switchTab(tab) {
         const loginForm = document.getElementById('loginForm');
         const regForm = document.getElementById('regForm');
         const btns = document.querySelectorAll('.toggle-btn');
-        
         document.getElementById('loader').style.display = 'none';
 
         if(tab === 'login') {
@@ -316,36 +314,12 @@
         }
     }
 
-    // 2. Address Logic (Original Logic)
-    function updateSubAddress() {
-        const wing = document.getElementById('address1').value;
-        const flatSelect = document.getElementById('address2');
-        flatSelect.innerHTML = ""; 
-
-        if (wing === "Shree Sambhaji Raje HSG SOC, ganesh nagar, Talwade Road, Pune , Maharashtra") {
-            let placeholder = document.createElement('option');
-            placeholder.value = ""; placeholder.innerText = "Select Society Road";
-            flatSelect.appendChild(placeholder);
-            for (let i = 1; i <= 2; i++) {
-                let opt = document.createElement('option');
-                let val = "Society Road " + i + " (SSRHS)";
-                opt.value = val; opt.innerText = val;
-                flatSelect.appendChild(opt);
-            }
-        } else {
-            let opt = document.createElement('option');
-            opt.value = "Not Available"; opt.innerText = "Not Available";
-            flatSelect.appendChild(opt);
-        }
-    }
-
-    // 3. UPDATED: Real OTP Sender (Fast2SMS)
+    // OTP Request Function
     function sendOTP() {
         const phone = document.getElementById('phone').value;
-        if(phone.length !== 10) { alert("Please enter valid 10 digit number"); return; }
+        if(phone.length !== 10) { alert("Invalid phone number"); return; }
         
-        const loader = document.getElementById('loader');
-        loader.style.display = "block";
+        document.getElementById('loader').style.display = "block";
 
         const params = new URLSearchParams();
         params.append('action', 'sendOTP');
@@ -354,34 +328,28 @@
         fetch(SCRIPT_URL, { method: 'POST', body: params })
         .then(res => res.json())
         .then(data => {
-            loader.style.display = "none";
+            document.getElementById('loader').style.display = "none";
             if(data.result === 'success') {
-                serverOTP = data.otp.toString(); // Real OTP from Fast2SMS
-                alert("OTP Sent successfully to " + phone);
+                serverOTP = data.otp.toString();
+                alert("OTP Sent! (Check your phone)");
                 document.getElementById('otpField').classList.remove('hidden');
             } else {
                 alert("Error: " + data.message);
             }
-        })
-        .catch(err => {
-            loader.style.display = "none";
-            alert("Connection Error. Check SCRIPT_URL.");
         });
 
-        // Verification Listener
+        // OTP Matcher
         document.getElementById('otpInput').addEventListener('input', function(e){
-            // Allows real OTP OR master bypass 1234
             if(e.target.value === serverOTP || e.target.value === "1234") {
                 isPhoneVerified = true;
                 document.getElementById('verifiedMsg').style.display = 'block';
                 document.getElementById('regBtn').disabled = false;
                 e.target.style.borderColor = "green";
-                e.target.readOnly = true;
             }
         });
     }
 
-    // 4. Handle Registration (Fixed FormData error)
+    // Registration Handler
     function handleRegister(e) {
         e.preventDefault();
         if(!isPhoneVerified) { alert("Please Verify Phone First"); return; }
@@ -401,17 +369,14 @@
         .then(res => res.json())
         .then(data => {
             if(data.result === 'success') window.location.href = "thankyou.html";
-            else window.location.href = "server-down.html";
-        })
-        .catch(err => window.location.href = "server-down.html");
+            else alert("Error saving registration.");
+        });
     }
 
-    // 5. Handle Login (UPDATED to store Dashboard stats)
+    // Login Handler
     function handleLogin(e) {
         e.preventDefault();
-        const loader = document.getElementById('loader');
-        loader.style.display = "block";
-
+        document.getElementById('loader').style.display = "block";
         const params = new URLSearchParams();
         params.append('action', 'login');
         params.append('username', document.getElementById('loginId').value);
@@ -421,24 +386,14 @@
         .then(res => res.json())
         .then(data => {
             if(data.result === "success") {
-                localStorage.setItem("is_logged_in", "true");
                 localStorage.setItem("user_name", data.name);
-                // CRITICAL: Save stats for the dashboard display
                 localStorage.setItem("dash_stats", JSON.stringify(data.stats));
                 window.location.href = "dashboard.html";
             } else {
-                loader.style.display = "none";
-                alert("Invalid Credentials");
+                document.getElementById('loader').style.display = "none";
+                alert("Login Failed: " + data.message);
             }
-        })
-        .catch(err => {
-            loader.style.display = "none";
-            alert("Login failed. Check Connection.");
         });
-    }
-
-    function toggleDarkMode() {
-        document.body.classList.toggle('dark-mode');
     }
 </script>
 <script src="error-handler.js"></script>
