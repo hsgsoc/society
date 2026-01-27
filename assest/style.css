@@ -20,7 +20,42 @@
 input, select, textarea {
     user-select: text; /* Allow typing in boxes */
 }
+.install-banner {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: white;
+    width: 90%;
+    max-width: 400px;
+    padding: 15px;
+    border-radius: 15px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    z-index: 9999;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid #e2e8f0;
+}
 
+body.dark-mode .install-banner {
+    background: #1e293b;
+    border-color: #334155;
+}
+
+.banner-content { display: flex; align-items: center; gap: 15px; width: 100%; }
+
+.install-btn {
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.hidden { display: none !important; }
 /* Smooth scrolling for mobile */
 html {
     scroll-behavior: smooth;
