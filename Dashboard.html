@@ -5,7 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard - Shree Sambhaji Raje Housing Society</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="assest/style.css"> <style>
+    <link rel="stylesheet" href="assest/style.css"> <link rel="icon" type="image/x-icon" href="assest/image/society.png">
+    <style>
+        style>
         /* --- CORE VARIABLES & RESET (Matching Login Page) --- */
         :root {
             --primary: #c2410c; /* Orange/Rust */
@@ -17,7 +19,26 @@
             --card-bg: #ffffff;
             --accent-gold: #fbbf24;
         }
+        .modal-overlay, .stylish-alert-overlay {
+             position: fixed; inset: 0; background: rgba(0,0,0,0.6);
+            display: flex; align-items: center; justify-content: center; z-index: 2000;
+        }
+        .hidden { display: none !important; }
 
+        .modal-content, .stylish-alert-card {
+            background: white; padding: 25px; border-radius: 20px; width: 90%; max-width: 450px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .stylish-alert-card { text-align: center; border-top: 5px solid #c2410c; }
+        .review-body { text-align: left; background: #f8fafc; padding: 15px; border-radius: 12px; margin: 20px 0; }
+
+        .btn-confirm { background: #c2410c; color: white; border: none; padding: 10px 20px; border-radius: 8px; font-weight: bold; }
+        .btn-cancel { background: #cbd5e1; color: #1e293b; border: none; padding: 10px 20px; border-radius: 8px; margin-right: 10px; }
+
+        /* Dark mode compatibility */
+        .dark-mode .modal-content, .dark-mode .stylish-alert-card { background: #1e293b; color: white; }
+        .dark-mode .review-body { background: #334155; }
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: var(--bg-light);
@@ -342,7 +363,10 @@
             <li><a href="#" class="active"><i class="fa-solid fa-chart-line"></i> <span data-key="nav_dashboard">Dashboard</span></a></li>
             <li><a href="#"><i class="fa-solid fa-info-circle"></i> <span data-key="nav_about">About Society</span></a></li>
             <li><a href="#"><i class="fa-solid fa-bullhorn"></i> <span data-key="nav_notice">Notice Board</span></a></li>
-            <li><a href="#"><i class="fa-solid fa-clipboard-question"></i> <span data-key="nav_enquiry">Enquiry</span></a></li>
+            <li> <a href="javascript:void(0)" onclick="openEnquiryModal()"> <i class="fa-solid fa-clipboard-question"></i>
+                 <span data-key="nav_enquiry">Enquiry</span>
+                 </a> 
+                </li>
             <li><a href="#"><i class="fa-solid fa-triangle-exclamation"></i> <span data-key="nav_complaint">Complaint</span></a></li>
             <li><a href="#"><i class="fa-solid fa-comments"></i> <span data-key="nav_feedback">Feedback</span></a></li>
             <li><a href="#"><i class="fa-solid fa-hand-holding-hand"></i> <span data-key="nav_request">Requests</span></a></li>
@@ -674,6 +698,117 @@ function updateDateDisplay(lang) {
     const locale = lang === 'en' ? 'en-US' : (lang === 'mr' ? 'mr-IN' : 'hi-IN');
     const el = document.getElementById('dateDisplay');
     if(el) el.innerText = new Date().toLocaleDateString(locale, dateOptions);
+    let enquiryData = {}; // Global holder for review
+
+function openEnquiryModal() { document.getElementById('enquiryModal').classList.remove('hidden'); }
+function closeEnquiryModal() { document.getElementById('enquiryModal').classList.add('hidden'); }
+
+// 1. Show Stylish Review Alert
+async function handleEnquiryReview(event) {
+    event.preventDefault();
+    
+    enquiryData = {
+        name: document.getElementById('enqName').value,
+        email: document.getElementById('enqEmail').value,
+        phone: document.getElementById('enqPhone').value,
+        type: document.getElementById('enqType').value,
+        text: document.getElementById('enqText').value
+    };
+
+    const reviewHtml = `
+        <p><strong>Type:</strong> ${enquiryData.type}</p>
+        <p><strong>Phone:</strong> ${enquiryData.phone}</p>
+        <p><strong>Details:</strong> ${enquiryData.text.substring(0, 50)}...</p>
+    `;
+    
+    document.getElementById('reviewContent').innerHTML = reviewHtml;
+    document.getElementById('stylishReview').classList.remove('hidden');
+}
+
+function hideReview() { document.getElementById('stylishReview').classList.add('hidden'); }
+
+// 2. Final Submit to Google Apps Script
+async function finalSubmitEnquiry() {
+    hideReview();
+    showLoader(true); // Assuming you have a global loader
+
+    const fileInput = document.getElementById('enqImg');
+    let base64Img = "";
+    if (fileInput.files.length > 0) {
+        base64Img = await toBase64(fileInput.files[0]);
+    }
+
+    const params = new URLSearchParams({
+        action: 'submitEnquiry',
+        ...enquiryData,
+        image: base64Img
+    });
+
+    try {
+        const res = await fetch(SCRIPT_URL, { method: 'POST', body: params });
+        const data = await res.json();
+        if(data.result === 'success') {
+            alert("Enquiry Sent Successfully!");
+            closeEnquiryModal();
+            location.reload(); // To update dashboard counts
+        }
+    } catch (err) {
+        alert("Server Error. Try again.");
+    } finally {
+        showLoader(false);
+    }
+}
+
+const toBase64 = file => new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result.split(',')[1]);
+    reader.onerror = error => reject(error);
+});
 }</script>
+
+<div id="enquiryModal" class="modal-overlay hidden">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3><i class="fa-solid fa-pen-to-square"></i> New Enquiry</h3>
+            <button class="close-modal" onclick="closeEnquiryModal()">&times;</button>
+        </div>
+        <form id="enquiryForm" onsubmit="handleEnquiryReview(event)">
+            <div class="form-grid">
+                <input type="text" id="enqName" placeholder="Full Name" required>
+                <input type="email" id="enqEmail" placeholder="Email ID" required>
+                <input type="tel" id="enqPhone" placeholder="10-Digit Phone No" pattern="[0-9]{10}" required>
+                <select id="enqType" required>
+                    <option value="">Enquiry Type</option>
+                    <option value="Maintenance">Maintenance</option>
+                    <option value="Parking">Parking Space</option>
+                    <option value="Billing">Billing/Maintenance Dues</option>
+                    <option value="Other">Other</option>
+                </select>
+            </div>
+            <textarea id="enqText" maxlength="250" placeholder="Type your enquiry here (Max 250 chars)..." required></textarea>
+            
+            <div class="upload-section">
+                <label for="enqImg"><i class="fa-solid fa-image"></i> Add Image (Optional)</label>
+                <input type="file" id="enqImg" accept="image/*" onchange="previewImage(this)">
+                <div id="imgPreview"></div>
+            </div>
+
+            <button type="submit" class="btn-primary-full">Review & Submit</button>
+        </form>
+    </div>
+</div>
+
+<div id="stylishReview" class="stylish-alert-overlay hidden">
+    <div class="stylish-alert-card">
+        <div class="alert-icon"><i class="fa-solid fa-magnifying-glass-chart"></i></div>
+        <h3>Review Details</h3>
+        <div id="reviewContent" class="review-body"></div>
+        <div class="alert-actions">
+            <button class="btn-cancel" onclick="hideReview()">Edit</button>
+            <button class="btn-confirm" onclick="finalSubmitEnquiry()">Confirm & Send</button>
+        </div>
+    </div>
+</div>
 </body>
 </html>
