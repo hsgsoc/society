@@ -247,10 +247,11 @@
                     </div>
                 </div>
                 
-                <div class="form-group hidden" id="otpField">
-                    <label>Enter OTP (Type: 1234)</label>
-                    <input type="text" id="otpInput" placeholder="Enter OTP">
-                    <small style="color:green; display:none;" id="verifiedMsg">Verified <i class="fa-solid fa-check"></i></small>
+               <div class="form-group hidden" id="otpField">
+                    <label>Enter Society Access Password</label>
+                    <input type="text" id="otpInput" placeholder="Enter Society Password">
+                    <div id="timerDisplay" style="color: #ea580c; font-weight: bold; margin-top: 5px;">Time remaining: 60s</div>
+                    <small style="color:green; display:none;" id="verifiedMsg">Identity Verified <i class="fa-solid fa-check"></i></small>
                 </div>
 
                 <div class="form-group">
@@ -258,19 +259,18 @@
                     <input type="email" id="email" placeholder="name@example.com">
                 </div>
 
-                <div class="form-group">
+               <div class="form-group">
                     <label>Residential Address</label>
                     <select id="address1" required onchange="updateSubAddress()">
-                        <option value="">Select Wing</option>
+                        <option value="">Select Address</option>
                         <option value="Shree Sambhaji Raje HSG SOC, ganesh nagar, Talwade Road, Pune , Maharashtra">Shree Sambhaji Raje HSG SOC, ganesh nagar, Talwade Road, Pune , Maharashtra</option>
-                        <option value="Not Avialable">Not Avialable</option>
-                       
+                        <option value="Not Available">Not Available</option>
                     </select>
+                    
                     <div style="height: 15px;"></div> 
-                    <select id="address2">
+                    
+                    <select id="address2" disabled required>
                         <option value="">Select Society No.</option>
-                         <option value="">Society Road 1(SSRHS)</option>
-                         <option value="">Society Road 2(SSRHS)</option>
                     </select>
                 </div>
 
@@ -289,113 +289,181 @@
     <footer>
         <div class="copyright">© 2026 Shree Sambaji Raje Housing Society</div>
     </footer>
-<script>
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyJuxdn1DQczN5bi-4TqvtuDY8aBkXWGZONU-4zEZGLhIQNqWqnHFWTj8kunX7V7-HS/exec"; 
-    let serverOTP = "";
-    let isPhoneVerified = false;
+  <script>// --- CONFIGURATION ---
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxJKN0fZYNDxMpjPfBqmahMeBZv7o7Tlj8KcfvdyRZOpy3fAXuj3CA31MXBPZLFe07o/exec"; 
+let isPhoneVerified = false;
+let countdown;
 
-    // Standard Tab Switching
-    function switchTab(tab) {
-        const loginForm = document.getElementById('loginForm');
-        const regForm = document.getElementById('regForm');
-        const btns = document.querySelectorAll('.toggle-btn');
-        document.getElementById('loader').style.display = 'none';
+// --- TAB SWITCHING ---
+function switchTab(tab) {
+    const loginForm = document.getElementById('loginForm');
+    const regForm = document.getElementById('regForm');
+    const btns = document.querySelectorAll('.toggle-btn');
+    
+    if(tab === 'login') {
+        loginForm.classList.remove('hidden');
+        regForm.classList.add('hidden');
+        btns[0].classList.add('active');
+        btns[1].classList.remove('active');
+    } else {
+        loginForm.classList.add('hidden');
+        regForm.classList.remove('hidden');
+        btns[0].classList.remove('active');
+        btns[1].classList.add('active');
+    }
+}
 
-        if(tab === 'login') {
-            loginForm.classList.remove('hidden');
-            regForm.classList.add('hidden');
-            btns[0].classList.add('active');
-            btns[1].classList.remove('active');
-        } else {
-            loginForm.classList.add('hidden');
-            regForm.classList.remove('hidden');
-            btns[0].classList.remove('active');
-            btns[1].classList.add('active');
+// --- SECURE VERIFICATION SYSTEM ---
+function sendOTP() {
+    const phoneInput = document.getElementById('phone');
+    const verifyBtn = document.querySelector('.verify-btn');
+
+    if(phoneInput.value.length !== 10 || isNaN(phoneInput.value)) {
+        alert("Please enter a valid 10-digit mobile number.");
+        return;
+    }
+
+    // Show input field and start the 60s death-timer
+    document.getElementById('otpField').classList.remove('hidden');
+    verifyBtn.disabled = true;
+    verifyBtn.innerText = "Waiting...";
+    
+    startSixtySecondTimer();
+}
+
+function startSixtySecondTimer() {
+    let timeLeft = 60;
+    const timerDisplay = document.getElementById('timerDisplay');
+    
+    clearInterval(countdown);
+    countdown = setInterval(() => {
+        timeLeft--;
+        timerDisplay.innerText = `Time remaining: ${timeLeft}s`;
+        
+        if (timeLeft <= 0) {
+            clearInterval(countdown);
+            alert("Security timeout! Verification expired. Restarting form...");
+            location.reload(); 
         }
-    }
+    }, 1000);
+}
 
-    // OTP Request Function
-    function sendOTP() {
-        const phone = document.getElementById('phone').value;
-        if(phone.length !== 10) { alert("Invalid phone number"); return; }
-        
-        document.getElementById('loader').style.display = "block";
-
+// Check password against Google Script (Securely)
+document.getElementById('otpInput').addEventListener('input', function(e) {
+    const userInput = e.target.value;
+    
+    // We only check once the user stops typing or reaches a reasonable length
+    if(userInput.length >= 10) { 
         const params = new URLSearchParams();
-        params.append('action', 'sendOTP');
-        params.append('phone', phone);
+        params.append('action', 'checkPassword');
+        params.append('pass', userInput);
 
         fetch(SCRIPT_URL, { method: 'POST', body: params })
         .then(res => res.json())
         .then(data => {
-            document.getElementById('loader').style.display = "none";
             if(data.result === 'success') {
-                serverOTP = data.otp.toString();
-                alert("OTP Sent! (Check your phone)");
-                document.getElementById('otpField').classList.remove('hidden');
-            } else {
-                alert("Error: " + data.message);
-            }
-        });
-
-        // OTP Matcher
-        document.getElementById('otpInput').addEventListener('input', function(e){
-            if(e.target.value === serverOTP || e.target.value === "1234") {
                 isPhoneVerified = true;
+                clearInterval(countdown);
+                
+                // UI Success State
                 document.getElementById('verifiedMsg').style.display = 'block';
+                document.getElementById('timerDisplay').style.display = 'none';
                 document.getElementById('regBtn').disabled = false;
-                e.target.style.borderColor = "green";
+                document.getElementById('phone').readOnly = true;
+                e.target.readOnly = true;
+                e.target.style.borderColor = "#10b981";
+                document.querySelector('.verify-btn').innerText = "Verified ✅";
+                document.querySelector('.verify-btn').style.background = "#10b981";
             }
         });
     }
+});
 
-    // Registration Handler
-    function handleRegister(e) {
-        e.preventDefault();
-        if(!isPhoneVerified) { alert("Please Verify Phone First"); return; }
+// --- REGISTRATION HANDLER ---
+function handleRegister(e) {
+    e.preventDefault();
+    if(!isPhoneVerified) return alert("Security verification incomplete.");
+
+    document.getElementById('loader').style.display = "block";
+    const params = new URLSearchParams();
+    params.append('action', 'register');
+    params.append('fname', document.getElementById('fname').value);
+    params.append('lname', document.getElementById('lname').value);
+    params.append('age', document.getElementById('age').value);
+    params.append('gender', document.getElementById('gender').value);
+    params.append('phone', document.getElementById('phone').value);
+    params.append('email', document.getElementById('email').value);
+    params.append('address', document.getElementById('address1').value + " " + document.getElementById('address2').value);
+
+    fetch(SCRIPT_URL, { method: 'POST', body: params })
+    .then(res => res.json())
+    .then(data => {
+        if(data.result === 'success') {
+            window.location.href = "thankyou.html";
+        } else {
+            alert("Registration failed. Try again.");
+            document.getElementById('loader').style.display = "none";
+        }
+    })
+    .catch(() => window.location.href = "server-down.html");
+}
+function updateSubAddress() {
+    const mainAddress = document.getElementById('address1').value;
+    const subAddress = document.getElementById('address2');
+    
+    // Clear current options
+    subAddress.innerHTML = '<option value="">Select Society No.</option>';
+    
+    if (mainAddress === "") {
+        // If nothing is selected, keep the second box disabled
+        subAddress.disabled = true;
+    } 
+    else if (mainAddress === "Not Available") {
+        // If Wing is Not Available, Society No. must also be Not Available
+        subAddress.disabled = false;
+        let opt = document.createElement('option');
+        opt.value = "Not Available";
+        opt.innerText = "Not Available";
+        opt.selected = true; // Auto-select it
+        subAddress.appendChild(opt);
+    } 
+    else {
+        // If the Society Address is selected, show the specific roads
+        subAddress.disabled = false;
+        const roads = ["Society Road 1 (SSRHS)", "Society Road 2 (SSRHS)"];
         
-        document.getElementById('loader').style.display = "block";
-        const params = new URLSearchParams();
-        params.append('action', 'register');
-        params.append('fname', document.getElementById('fname').value);
-        params.append('lname', document.getElementById('lname').value);
-        params.append('age', document.getElementById('age').value);
-        params.append('gender', document.getElementById('gender').value);
-        params.append('phone', document.getElementById('phone').value);
-        params.append('email', document.getElementById('email').value);
-        params.append('address', document.getElementById('address1').value + " " + document.getElementById('address2').value);
-
-        fetch(SCRIPT_URL, { method: 'POST', body: params })
-        .then(res => res.json())
-        .then(data => {
-            if(data.result === 'success') window.location.href = "thankyou.html";
-            else alert("Error saving registration.");
+        roads.forEach(road => {
+            let opt = document.createElement('option');
+            opt.value = road;
+            opt.innerText = road;
+            subAddress.appendChild(opt);
         });
     }
+}
+// --- LOGIN HANDLER ---
+function handleLogin(e) {
+    e.preventDefault();
+    document.getElementById('loader').style.display = "block";
+    
+    const params = new URLSearchParams();
+    params.append('action', 'login');
+    params.append('username', document.getElementById('loginId').value);
+    params.append('password', document.getElementById('loginPass').value);
 
-    // Login Handler
-    function handleLogin(e) {
-        e.preventDefault();
-        document.getElementById('loader').style.display = "block";
-        const params = new URLSearchParams();
-        params.append('action', 'login');
-        params.append('username', document.getElementById('loginId').value);
-        params.append('password', document.getElementById('loginPass').value);
-
-        fetch(SCRIPT_URL, { method: 'POST', body: params })
-        .then(res => res.json())
-        .then(data => {
-            if(data.result === "success") {
-                localStorage.setItem("user_name", data.name);
-                localStorage.setItem("dash_stats", JSON.stringify(data.stats));
-                window.location.href = "dashboard.html";
-            } else {
-                document.getElementById('loader').style.display = "none";
-                alert("Login Failed: " + data.message);
-            }
-        });
-    }
-</script>
+    fetch(SCRIPT_URL, { method: 'POST', body: params })
+    .then(res => res.json())
+    .then(data => {
+        if(data.result === "success") {
+            localStorage.setItem("is_logged_in", "true");
+            localStorage.setItem("user_name", data.name);
+            window.location.href = "Dashboard.html";
+        } else {
+            document.getElementById('loader').style.display = "none";
+            alert("Login Failed: " + data.message);
+        }
+    })
+    .catch(() => window.location.href = "server-down.html");
+}</script>
 <script src="error-handler.js"></script>
 
 <script>
