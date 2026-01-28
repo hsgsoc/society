@@ -20,40 +20,6 @@
 input, select, textarea {
     user-select: text; /* Allow typing in boxes */
 }
-.install-banner {
-    position: fixed;
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: white;
-    width: 90%;
-    max-width: 400px;
-    padding: 15px;
-    border-radius: 15px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-    z-index: 9999;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border: 1px solid #e2e8f0;
-}
-
-body.dark-mode .install-banner {
-    background: #1e293b;
-    border-color: #334155;
-}
-
-.banner-content { display: flex; align-items: center; gap: 15px; width: 100%; }
-
-.install-btn {
-    background: var(--primary);
-    color: white;
-    border: none;
-    padding: 8px 15px;
-    border-radius: 8px;
-    font-weight: bold;
-    cursor: pointer;
-}
 
 .hidden { display: none !important; }
 /* Smooth scrolling for mobile */
@@ -491,5 +457,84 @@ body.dark-mode .map-overlay-info { background: #1e293b; color: white; }
     .info-section { flex-direction: column; text-align: center; padding: 20px; }
     .gallery-grid { grid-template-columns: 1fr 1fr; }
 }
-    /* Hide the body initially on mobile to make the redirect invisible */
-   
+  
+/* --- CLEAN AD-STYLE INSTALL BANNER --- */
+.install-banner {
+    position: fixed;
+    bottom: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 95%;
+    max-width: 420px;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    padding: 10px 15px;
+    border-radius: 12px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border: 1px solid rgba(0,0,0,0.05);
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+/* Fix: The hidden class must use !important to override the flex display */
+.install-banner.hidden {
+    display: none !important;
+}
+
+body.dark-mode .install-banner {
+    background: rgba(30, 41, 59, 0.95);
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.banner-content {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.banner-content img {
+    width: 45px;
+    height: 45px;
+    border-radius: 10px;
+    object-fit: cover;
+}
+
+.banner-text {
+    display: flex;
+    flex-direction: column;
+}
+
+.banner-text strong {
+    font-size: 0.9rem;
+    color: var(--secondary);
+    line-height: 1.2;
+}
+
+body.dark-mode .banner-text strong { color: #fff; }
+
+.banner-text span {
+    font-size: 0.7rem;
+    color: #64748b;
+}
+
+/* Rating Stars for Advertisement Feel */
+.stars {
+    color: #fbbf24;
+    font-size: 0.65rem;
+    margin-top: 2px;
+}
+
+.download-btn {
+    background: var(--primary);
+    color: white !important;
+    border: none;
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-weight: 700;
+    font-size: 0.75rem;
+    cursor: pointer;
+    text-transform: uppercase;
+}

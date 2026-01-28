@@ -19,6 +19,28 @@
             --card-bg: #ffffff;
             --accent-gold: #fbbf24;
         }
+        /* Force Dark Text for User Name and Activity Labels */
+        .user-name, .user-profile h3, .user-id {
+            color: #1e293b !important; /* Deep Navy Dark */
+            font-weight: 700;
+        }
+
+        /* Activity Table Text Color */
+        #activityTableBody td, .activity-details {
+            color: #334155 !important; /* Dark Slate Grey */
+        }
+
+        /* Ensuring labels inside cards are dark */
+        .section-card h3, .stat-label {
+            color: #0f172a !important;
+        }
+
+        /* --- DARK MODE ADJUSTMENTS --- */
+        /* If you want the text to turn White only in Dark Mode */
+        body.dark-mode .user-name, 
+        body.dark-mode #activityTableBody td {
+            color: #f8fafc !important; 
+        }
         
 /* --- ENQUIRY MODAL & STYLISH ALERT --- */
         .modal-overlay, .stylish-alert-overlay {
