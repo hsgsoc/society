@@ -14,10 +14,26 @@
             --primary-dark: #9a3412;
             --secondary: #1e293b;
             --bg-light: #f1f5f9;
-            --text-dark: #334155; /* Already Dark */
-            --text-light: #334155; /* Changed from light gray (#64748b) to Dark Slate */
+            --text-dark: #0f172a; /* Deepest Navy */
+            --text-light: #334155; /* Changed from light gray to dark slate */
             --card-bg: #ffffff;
-            --accent-gold: #fbbf24;
+        }
+
+        /* Force dark color on the labels under the numbers */
+        .stat-info p {
+            color: #1e293b !important;
+            font-weight: 600;
+            opacity: 1; /* Ensure no transparency is making it look gray */
+        }
+
+        /* Force dark color on the numbers themselves */
+        .stat-info h3 {
+            color: #0f172a !important;
+        }
+
+        /* Header Date/Loading Text */
+        .welcome-text span {
+            color: #334155 !important;
         }
         /* Update this section in your <style> tag */
         .user-name, 
@@ -807,19 +823,19 @@ function handleLogout() {
    DASHBOARD STATS
 ===================================================== */
 function loadDashboardStats() {
-    const stats = JSON.parse(localStorage.getItem("dash_stats")) || {};
-
-    const map = {
-        countMembers: stats.members || 0,
-        countActive: stats.active || 0,
-        countComplaints: stats.complaints || 0,
-        countEnquiry: stats.enquiries || 0,
-        countRequests: stats.requests || 0
+    // Retrieve the stats object saved during login
+    const stats = JSON.parse(localStorage.getItem("dash_stats")) || {
+        members: 0, active: 0, complaints: 0, enquiries: 0, requests: 0, houses: 450
     };
 
-    Object.keys(map).forEach(id => animateCount(id, map[id]));
+    // Mapping the data to your HTML IDs
+    animateCount("countMembers", stats.members);
+    animateCount("countActive", stats.active);
+    animateCount("countComplaints", stats.complaints);
+    animateCount("countEnquiry", stats.enquiries);
+    animateCount("countRequests", stats.requests);
+    animateCount("countHouses", stats.houses);
 }
-
 function animateCount(id, end) {
     const el = document.getElementById(id);
     if (!el) return;
