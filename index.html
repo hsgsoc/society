@@ -162,21 +162,41 @@ The society comprises 20 registered members, as per official mutation records, a
             </div>
         </div>
     </section>
-      <div id="install-banner" class="install-banner hidden">
+     <div id="install-banner" class="install-banner hidden">
     <div class="banner-content">
-        <img src="assest/image/society.png" alt="App Icon">
+        <div class="app-icon-wrapper">
+            <img src="assest/image/society.png" alt="App Icon">
+        </div>
         <div class="banner-text">
-            <strong>SSRHS Official App</strong>
-            <span>4.9 MB • <span class="stars">★★★★★</span></span>
-            <span id="install-subtitle">Fast & Secure Access</span>
+            <strong>Sambhaji Raje Society</strong>
+            <div class="stars">
+                <i class="fa-solid fa-star"></i>
+                <i class="fa-solid fa-star"></i>
+                <i class="fa-solid fa-star"></i>
+                <i class="fa-solid fa-star"></i>
+                <i class="fa-solid fa-star-half-stroke"></i>
+                <span class="rating-count">(4.9)</span>
+            </div>
+            <span class="app-tagline">Official Digital Portal • Free</span>
         </div>
     </div>
-    <div style="display: flex; align-items: center; gap: 10px;">
-        <button id="btn-download" class="download-btn">Get</button>
-        <button onclick="hideBanner()" class="close-banner" style="background:none; border:none; color:#94a3b8; cursor:pointer;">✕</button>
+    <div class="banner-actions">
+        <button id="btn-download" class="download-btn">GET</button>
+        <button onclick="hideBanner()" class="close-x">✕</button>
     </div>
 </div>
 
+<div id="ios-guide" class="ios-modal hidden">
+    <div class="ios-modal-content">
+        <h3>Install on iPhone</h3>
+        <ol>
+            <li>Tap the <strong>Share</strong> button <i class="fa-solid fa-share-from-square"></i> at the bottom.</li>
+            <li>Scroll down and tap <strong>'Add to Home Screen'</strong> <i class="fa-solid fa-plus-square"></i>.</li>
+            <li>Tap <strong>'Add'</strong> in the top right corner.</li>
+        </ol>
+        <button onclick="closeIosGuide()" class="close-guide">Got it!</button>
+    </div>
+</div>
     <footer>
         <div class="text"> Contact: shrisambhajiraje.hsgsoc.2017@gmail.com</div>
         <div class="text"> PCMC: egov@pcmcindia.gov.in</div>

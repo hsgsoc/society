@@ -458,30 +458,26 @@ body.dark-mode .map-overlay-info { background: #1e293b; color: white; }
     .gallery-grid { grid-template-columns: 1fr 1fr; }
 }
   
-/* --- CLEAN AD-STYLE INSTALL BANNER --- */
 .install-banner {
-    position: fixed;
-    bottom: 15px;
+    position: fixed; /* Keep it floating */
+    bottom: 20px;    /* Give it some space from the bottom */
     left: 50%;
     transform: translateX(-50%);
-    width: 95%;
-    max-width: 420px;
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(10px);
-    padding: 10px 15px;
-    border-radius: 12px;
-    box-shadow: 0 8px 32px rgba(0,0,0,0.2);
-    z-index: 10000;
+    width: 90%;
+    max-width: 400px;
+    background: white;
+    padding: 12px;
+    border-radius: 15px;
+    box-shadow: 0 5px 25px rgba(0,0,0,0.2); /* Add shadow for depth */
     display: flex;
     align-items: center;
     justify-content: space-between;
-    border: 1px solid rgba(0,0,0,0.05);
-    transition: transform 0.3s ease, opacity 0.3s ease;
+    z-index: 1000;
 }
 
-/* Fix: The hidden class must use !important to override the flex display */
-.install-banner.hidden {
-    display: none !important;
+/* Ensure the map doesn't get hidden behind it */
+.location-section {
+    padding-bottom: 100px; 
 }
 
 body.dark-mode .install-banner {
@@ -537,4 +533,9 @@ body.dark-mode .banner-text strong { color: #fff; }
     font-size: 0.75rem;
     cursor: pointer;
     text-transform: uppercase;
+}
+footer {
+    margin-top: 50px;
+    padding: 40px 20px;
+    /* ... rest of your code */
 }

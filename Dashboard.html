@@ -10,15 +10,24 @@
         style>
         /* --- CORE VARIABLES & RESET (Matching Login Page) --- */
         :root {
-            --primary: #c2410c; /* Orange/Rust */
+            --primary: #c2410c;
             --primary-dark: #9a3412;
-            --secondary: #1e293b; /* Dark Slate */
+            --secondary: #1e293b;
             --bg-light: #f1f5f9;
-            --text-dark: #334155;
-            --text-light: #64748b;
+            --text-dark: #334155; /* Already Dark */
+            --text-light: #334155; /* Changed from light gray (#64748b) to Dark Slate */
             --card-bg: #ffffff;
             --accent-gold: #fbbf24;
         }
+        /* Update this section in your <style> tag */
+        .user-name, 
+        .user-profile h3, 
+        .user-id, 
+        .stat-info p,        /* This targets the 'Total Members' etc. */
+        .welcome-text span,  /* This targets the date/loading text */
+        .notice-date {       /* This targets the gray dates in notices */
+            color: #1e293b !important; /* Deep Navy Dark */
+            font-weight: 600;}
         /* Force Dark Text for User Name and Activity Labels */
         .user-name, .user-profile h3, .user-id {
             color: #1e293b !important; /* Deep Navy Dark */
@@ -715,7 +724,7 @@
 /* =====================================================
    GLOBAL CONFIG
 ===================================================== */
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz2MWdEBGJJiG089TbOWRUrXxjwCGP2C9AAvCxcyQ2DYYOiQHrJAC1kO8jDpaUVbdUk/exec";
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyX-EHFyM2_rTj6jl--WmDp6Xk_xGbbRCLWxjfyl9hFyrUhZPa_H7ZBYTaMDVSUYmjG/exec";
 
 /* =====================================================
    PAGE LOAD & AUTH
