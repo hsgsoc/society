@@ -291,7 +291,7 @@
         <div class="copyright">© 2026 Shree Sambaji Raje Housing Society</div>
     </footer>
   <script>// --- CONFIGURATION ---
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyx24smE-ELTlm5s9ZwV-tx8rcBxcXlaJhlhfi6QnGuXe7zJqNnf_VlFkuehIxFkkNz/exec"; 
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz2MWdEBGJJiG089TbOWRUrXxjwCGP2C9AAvCxcyQ2DYYOiQHrJAC1kO8jDpaUVbdUk/exec"; 
 let isPhoneVerified = false;
 let countdown;
 
@@ -451,20 +451,36 @@ function handleLogin(e) {
     params.append('username', document.getElementById('loginId').value);
     params.append('password', document.getElementById('loginPass').value);
 
-    fetch(SCRIPT_URL, { method: 'POST', body: params })
-    .then(res => res.json())
+    fetch(SCRIPT_URL, { 
+        method: 'POST', 
+        body: params,
+        mode: 'cors' // Ensure CORS is handled
+    })
+    .then(res => {
+        if (!res.ok) throw new Error('Network response was not ok');
+        return res.json();
+    })
     .then(data => {
-        if(data.result === "success") {
+        // Log data to console to see what the server actually sends
+        console.log("Server Response:", data);
+
+        if(data && data.result === "success") {
             localStorage.setItem("is_logged_in", "true");
             localStorage.setItem("user_name", data.name);
+            localStorage.setItem("user_id", document.getElementById('loginId').value); 
             window.location.href = "Dashboard.html";
         } else {
             document.getElementById('loader').style.display = "none";
-            alert("Login Failed: " + data.message);
+            alert("Login Failed: " + (data.message || "Unknown error"));
         }
     })
-    .catch(() => window.location.href = "server-down.html");
-}</script>
+    .catch((error) => {
+        console.error("Detailed Error:", error);
+        document.getElementById('loader').style.display = "none";
+        alert("Server connection error or Script Error. Check Console.");
+    });
+}
+</script>
 <script src="error-handler.js"></script>
 
 <script>
